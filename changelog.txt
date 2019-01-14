@@ -10,5 +10,4 @@ Changes:
 - Fix bugs and errors
 - Change UI (based on Multi-Highlight)
 - Change extension icon
-- Remove word-only search restriction
 - Simplify code

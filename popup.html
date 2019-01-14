@@ -7,7 +7,16 @@
          .container { width: 360px; font-family: Arial, "微软雅黑"; }
          .textarea-wrap { position: relative; }
          /* Tip */
-         .textarea-wrap .tip { display: block; overflow: hidden; height: 16px; line-height: 16px; vertical-align: middle; padding-bottom: 8px; cursor: default; }
+         .textarea-wrap .tip { display: block; overflow: hidden; height: 16px; line-height: 16px; vertical-align: middle; padding-bottom: 8px; cursor: default; 
+            /* disable double clicking popup text */
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+             user-select: none; /* Non-prefixed version, currently
+                                   supported by Chrome and Opera */
+         }
          .textarea-wrap .tip .main-tip { font-size: 14px; color: #999; }
          .textarea-wrap .tip .sub-tip  { font-size: 11px; color: #aaa; padding-top: 1px; font-style: }
          .highlight-words { border: 1px dashed #aaa; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.1) inset; }
@@ -45,7 +54,7 @@
          <div class="textarea-wrap">
             <div class="tip">
                <span class="main-tip">Highlight words below </span>
-               <span class="sub-tip">(&nbsp;separated by a&nbsp;<input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;)<label id="instantLabel">(&nbsp;instant mode <input type="checkbox" id="instant" name="instant">)</label>
+               <span class="sub-tip">(&nbsp;separated by a&nbsp;<input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;)<label id="instantLabel">(&nbsp;<input type="checkbox" id="instant" name="instant">instant mode )</label>
                </span>
             </div>
             <div class="highlight-words" id="highlight-words">

@@ -73,13 +73,15 @@ document.addEventListener('DOMContentLoaded', function () {
     tksID = "tabs_"+currTab.id+"_tks";
     if (currTab) { // Sanity check
 
-      chrome.storage.local.get({'C':{}, 'delim':" ", [tksID]:[], 'styleI':0}, function(result){
+      chrome.storage.local.get({'C':{}, 'delim':" ", [tksID]:[], 'styleI':0, 'isInstant':false}, function(result){
         C = result.C;
         delim = result.delim; // default " "
         delimiter.value = delim;
         tks = result[tksID]; // default ""
         highlightWords.value = tks.join(delim);
         styleI = result.styleI; // default 0
+        isInstant = result.isInstant; // default false
+        instant.checked = isInstant;
         // console.log("variables retrived");
 
         $("#highlightWords").on("input", function(){

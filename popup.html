@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>PopUp</title>
+      <style>
+         .container { width: 360px; font-family: Arial, "微软雅黑"; }
+         .textarea-wrap { position: relative; }
+         /* Tip */
+         .textarea-wrap .tip { display: block; overflow: hidden; height: 16px; line-height: 16px; vertical-align: middle; padding-bottom: 8px; cursor: default; }
+         .textarea-wrap .tip .main-tip { font-size: 14px; color: #999; }
+         .textarea-wrap .tip .sub-tip  { font-size: 11px; color: #aaa; padding-top: 1px; font-style: }
+         .highlight-words { border: 1px dashed #aaa; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.1) inset; }
+         .highlight-words textarea { display: block; width: 100%; min-height: 50px; padding: 5px; box-sizing: border-box; outline: 0; border: 0; background: transparent;  resize:none }
+         .highlight-words,
+         .highlight-words textarea { line-height: 16px; font-size: 12px; color: #666;  }
+         /* delimiter */
+         .textarea-wrap .tip .sub-tip #delimiter { width: 1em; height: 70%; border: 0px; text-align: center; background-color: #c6e8ff; border-radius: 5px; color: #666; font-size: 14px; } /* vinc */
+         .textarea-wrap .tip .sub-tip #delimiter:focus { border: 0px } /* vinc */
+         /* instant */
+         .textarea-wrap .tip .sub-tip input#instant {
+         width: 13px;
+         height: 13px;
+         padding: 0;
+         margin:0;
+         vertical-align: bottom;
+         position: relative;
+         top: -1px;
+         *overflow: hidden;
+         }
+         /* Scroll bar */
+         .highlight-words textarea::-webkit-scrollbar { width: 11px; height:auto; }
+         .highlight-words textarea::-webkit-scrollbar-button{}
+         .highlight-words textarea::-webkit-scrollbar-button:start:decrement,
+         .highlight-words textarea::-webkit-scrollbar-button:end:increment{width:0;height:0;}
+         .highlight-words textarea::-webkit-scrollbar-track-piece{ background-clip:padding-box; background-color:#fff; border: 0; }
+         .highlight-words textarea::-webkit-scrollbar-thumb { border-radius: 7px; background-color: #888; background-clip:padding-box; border: 2px solid transparent; -webkit-transition: all 0.5s ease; }
+         .highlight-words textarea::-webkit-scrollbar-thumb:hover { background-color: #777; }
+         .highlight-words textarea::-webkit-scrollbar-thumb:vertical   { width: 7px; min-height:24px; }
+         .highlight-words textarea::-webkit-scrollbar-thumb:horizontal { height: 7px; min-width:24px; }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <div class="textarea-wrap">
+            <div class="tip">
+               <span class="main-tip">Highlight words below </span>
+               <span class="sub-tip">(&nbsp;separated by a&nbsp;<input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;)<label id="instantLabel">(&nbsp;instant mode <input type="checkbox" id="instant" name="instant">)</label>
+               </span>
+            </div>
+            <div class="highlight-words" id="highlight-words">
+               <textarea id="highlightWords" spellcheck="false" " autofocus></textarea>
+            </div>
+         </div>
+      </div>
+      <script src="jquery.js"></script>
+      <script src="jquery.highlight.js"></script>
+      <script src="app.js"></script>
+   </body>
+</html>

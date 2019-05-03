@@ -4,10 +4,11 @@
       <meta charset="UTF-8">
       <title>PopUp</title>
       <style>
-         .container { width: 360px; font-family: Arial, "微软雅黑"; }
+         body{ margin: 3px; }
+         .container { width: 250px; font-family: Arial, "微软雅黑"; }
          .textarea-wrap { position: relative; }
          /* Tip */
-         .textarea-wrap .tip { display: block; overflow: hidden; height: 16px; line-height: 16px; vertical-align: middle; padding-bottom: 8px; cursor: default; 
+         .textarea-wrap .tip { display: block; overflow: hidden; height: 16px; line-height: 16px; vertical-align: middle; padding-bottom: 3px; 
             /* disable double clicking popup text */
             -webkit-touch-callout: none; /* iOS Safari */
             -webkit-user-select: none; /* Safari */
@@ -17,10 +18,10 @@
              user-select: none; /* Non-prefixed version, currently
                                    supported by Chrome and Opera */
          }
-         .textarea-wrap .tip .main-tip { font-size: 14px; color: #999; }
-         .textarea-wrap .tip .sub-tip  { font-size: 11px; color: #aaa; padding-top: 1px; font-style: }
+         .textarea-wrap .tip .main-tip { font-size: 13px; color: #606060; font-weight: bold; }
+         .textarea-wrap .tip .sub-tip  { font-size: 11px; color: #484848; padding-top: 1px; font-style: }
          .highlight-words { border: 1px dashed #aaa; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.1) inset; }
-         .highlight-words textarea { display: block; width: 100%; min-height: 50px; padding: 5px; box-sizing: border-box; outline: 0; border: 0; background: transparent;  resize:none }
+         .highlight-words textarea { display: block; width: 100%; min-height: 40px; padding: 5px; box-sizing: border-box; outline: 0; border: 0; background: transparent;  resize:none }
          .highlight-words,
          .highlight-words textarea { line-height: 16px; font-size: 12px; color: #666;  }
          /* delimiter */
@@ -53,12 +54,12 @@
       <div class="container">
          <div class="textarea-wrap">
             <div class="tip">
-               <span class="main-tip">Highlight words below </span>
-               <span class="sub-tip">(&nbsp;separated by a&nbsp;<input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;)<label id="instantLabel">(&nbsp;<input type="checkbox" id="instant" name="instant">instant mode )</label>
+               <span class="main-tip">Multi Highlight</span>
+               <span class="sub-tip">&nbsp;<label id="instantLabel"><input type="checkbox" id="instant" name="instant">instant search | </label>delimiter <input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;
                </span>
             </div>
             <div class="highlight-words" id="highlight-words">
-               <textarea id="highlightWords" spellcheck="false" " autofocus></textarea>
+               <textarea id="highlightWords" spellcheck="false" autofocus></textarea>
             </div>
          </div>
       </div>

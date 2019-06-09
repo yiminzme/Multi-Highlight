@@ -2,6 +2,9 @@
 
 Efficiently mark multiple words in a page.
 
+20190609:
+- Add "paste keywords to new pages" mode
+
 20190503:
 - Minimize extension size
 

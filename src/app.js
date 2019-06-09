@@ -1,27 +1,28 @@
-var C, delim, tks, styleI, currTab, tksID, isInstant;
+// var C, delim, tks, style_nbr, currTab, tksID, isInstant;
+var settings, tabinfo;
 
-function hl_search(tksAdded) {
-    for (var i=0; i < tksAdded.length; i++) {
-      styleI += 1;
+function hl_search(addedKws) {
+    for (var i=0; i < addedKws.length; i++) {
+      tabinfo.style_nbr += 1;
       chrome.tabs.executeScript(null,
-      {code:"$(document.body).highlight('"+tksAdded[i]
-        +"', {className:'"
-        +C.sCSS1+" "
-        +(C.sCSS2+(styleI%C.NHL))+" "
-        +(C.sCSS3+encodeURI(tksAdded[i])) // escape special characters
-        +"'})"
+      {code:"$(document.body).highlight('"+addedKws[i]
+        + "', {className:'"
+        + settings.sCSS1 + " "
+        + (settings.sCSS2 + (tabinfo.style_nbr % settings.max_style_nbr)) + " "
+        + (settings.sCSS3 + encodeURI(addedKws[i])) // escape special characters
+        + "'})"
       }, _=>chrome.runtime.lastError);
     }
 }
 
 
-function hl_clear(tksRemoved) {
+function hl_clear(removedKws) {
 
   // remove in reverse order to avoid removing nested-highlighted-words
-  for (var i=tksRemoved.length-1; i >= 0; i--) {
-    styleI -= 1;
+  for (var i = removedKws.length - 1; i >= 0; i--) {
+    tabinfo.style_nbr -= 1;
     // escape meta-characters, special characters
-    className = (C.sCSS3+encodeURI(tksRemoved[i])).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\\\$&");
+    className = (settings.sCSS3+encodeURI(removedKws[i])).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\\\$&");
     chrome.tabs.executeScript(null,
         {code:"$(document.body).unhighlight({className:'"+className+"'})"}, _=>chrome.runtime.lastError);
   }
@@ -30,61 +31,73 @@ function hl_clear(tksRemoved) {
 
 function hl_clearall() {
   chrome.tabs.executeScript(null,
-      {code:"$(document.body).unhighlight({className:'"+C.sCSS1+"'})"}, _=>chrome.runtime.lastError);
+      {code:"$(document.body).unhighlight({className:'" + settings.sCSS1+"'})"}, _=>chrome.runtime.lastError);
 }
 
 
 function handle_highlightWords_change() {
   inputStr = highlightWords.value;
 
-  if (isInstant || inputStr.slice(-1) == delim || !inputStr){ // check if (last char of input is delimiter) or (empty string)
-    newTks = inputStr.split(delim).filter(i => i);
-    tksAdded = $(newTks).not(tks).get(); // get tokens only occur in new input
-    tksRemoved = $(tks).not(newTks).get(); // get tokens only occur in old input
-    // console.log("new input: ", newTks, "previous input: ", tks);
-    // console.log("[words added: ", tksAdded, "words removed: ", tksRemoved, "]");
-    hl_clear(tksRemoved);
-    hl_search(tksAdded);
-    tks = newTks;
-    chrome.storage.local.set({[tksID]:tks, 'styleI':styleI});
+  // check if (instant search mode) or (last char of input is delimiter) or (empty string)
+  if (settings.isInstant || inputStr.slice(-1) == settings.delim || !inputStr){
+    newKws = inputStr.split(settings.delim).filter(i => i);
+    addedKws = $(newKws).not(tabinfo.keywords).get(); // get tokens only occur in new input
+    removedKws = $(tabinfo.keywords).not(newKws).get(); // get tokens only occur in old input
+    hl_clear(removedKws);
+    hl_search(addedKws);
+    tabinfo.keywords = newKws;
+    settings.last_keywords = newKws;
+    chrome.storage.local.set({ [tabinfo.tabkey]:tabinfo, "settings":settings });
   }
 }
 
 
 function handle_delimiter_change() {
-  delim = delimiter.value;
-  chrome.storage.local.set({'delim':delim});
-  // reset "highlightWords" input after delimiter changed
+  settings.delim = delimiter.value;
+  chrome.storage.local.set({'settings':settings});
+  // reset keywords
   highlightWords.value = "";
   handle_highlightWords_change();
 }
 
 
-function handle_instant_change(){
-  isInstant = $('#instant').is(':checked');
-  chrome.storage.local.set({'isInstant':isInstant});
+function handle_instant_mode_change(){
+  settings.isInstant = $('#instant').is(':checked');
+  chrome.storage.local.set({'settings':settings});
+}
+
+
+function handle_pasteKeywords_mode_change(){
+  settings.isPasteKws = $('#pasteKeywords').is(':checked');
+  chrome.storage.local.set({'settings':settings});
 }
 
 
 document.addEventListener('DOMContentLoaded', function () {
 
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    currTab = tabs[0];
-    tksID = "tabs_"+currTab.id+"_tks";
+    var currTab = tabs[0];
     if (currTab) { // Sanity check
-
-      chrome.storage.local.get({'C':{}, 'delim':" ", [tksID]:[], 'styleI':0, 'isInstant':true}, function(result){
-        C = result.C;
-        delim = result.delim; // default " "
-        delimiter.value = delim;
-        tks = result[tksID]; // default ""
-        highlightWords.value = tks.join(delim);
-        highlightWords.value += highlightWords.value ? delim : "";
-        styleI = result.styleI; // default 0
-        isInstant = result.isInstant; // default true
-        instant.checked = isInstant;
-        // console.log("variables retrived");
-
+      var tabkey = "multi-highlight_" + currTab.id;
+      chrome.storage.local.get( ['settings', tabkey], function(result){
+        // store
+        settings = result.settings;
+        tabinfo = result[tabkey];
+        // set html
+        delimiter.value = settings.delim;
+        instant.checked = settings.isInstant;
+        pasteKeywords.checked = settings.isPasteKws;
+        if ( settings.isPasteKws && tabinfo.isNewPage ){
+          highlightWords.value = settings.last_keywords.join(settings.delim);
+          highlightWords.value += highlightWords.value ? settings.delim : "";
+          handle_highlightWords_change();
+        } else {
+          highlightWords.value = tabinfo.keywords.join(settings.delim);
+          highlightWords.value += highlightWords.value ? settings.delim : "";
+        }
+        tabinfo.isNewPage = false;
+        chrome.storage.local.set({ [tabinfo.tabkey]:tabinfo });
+        // register listener
         $("#highlightWords").on("input", function(){
           handle_highlightWords_change();
         })
@@ -92,16 +105,13 @@ document.addEventListener('DOMContentLoaded', function () {
           handle_delimiter_change();
         })
         $("#instant").on("input", function(){
-          handle_instant_change();
+          handle_instant_mode_change();
         })
-        document.onkeydown = function(evt) {
-            evt = evt || window.event;
-            // respond to Backspace, Delete
-            if (evt.keyCode == 8 || evt.keyCode == 46) {
-              handle_highlightWords_change();
-            }
-        };
-      })
+        $("#pasteKeywords").on("input", function(){
+          handle_pasteKeywords_mode_change();
+        })
+        
+      });
     }
   });
 });

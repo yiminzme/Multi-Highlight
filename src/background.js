@@ -1,18 +1,26 @@
-var C = {
-	NHL : 6, // number of available highlight styles
-	sCSS1 : "chrome-extension-FindManyStrings", // fixed CSS class name 1
-	sCSS2 : "chrome-extension-FindManyStrings-style-", // fixed CSS class name 2
-	sCSS3 : "CE-FMS-" //fixed CSS class name 3
-};
+chrome.runtime.onInstalled.addListener(function(details){
+	var settings = {
+		isInstant: true,
+		isPasteKws: true,
+		delim: ' ',
+		last_keywords: [],
 
-
-chrome.storage.local.set({'C':C, "styleI":0}, function(){
-	// console.log("initialized variabes");
+		max_style_nbr: 6, // number of available highlight colors
+		sCSS1: "chrome-extension-FindManyStrings",
+		sCSS2: "chrome-extension-FindManyStrings-style-",
+		sCSS3: "CE-FMS-"
+	}
+	chrome.storage.local.set( {'settings':settings} );
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId , info) {
-  if (info.status === 'complete') {
-  	tksID = "tabs_"+tabId+"_tks";
-    chrome.storage.local.set({[tksID]:[]});
+	if (info.status === 'complete') {
+		var tabkey = "multi-highlight_"+tabId;
+		var tabinfo = {};
+		tabinfo.tabkey = tabkey;
+		tabinfo.style_nbr = 0;
+		tabinfo.isNewPage = true;
+		tabinfo.keywords = [];
+		chrome.storage.local.set({ [tabkey]:tabinfo });
   }
 });

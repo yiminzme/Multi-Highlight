@@ -2,6 +2,9 @@ Efficiently mark multiple words in a page.
 
 *This extension is open-source. Welcome to make any contribution or comment.
 
+20190609:
+- Add "paste keywords to new pages" mode
+
 20190503:
 - Minimize extension size
 

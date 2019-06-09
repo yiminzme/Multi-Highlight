@@ -1,20 +1,22 @@
-Multi-Highlight
-=================
+# Multi-Highlight
 
-An **Chrome Extension** helps you quickly search and highlight multiple words in webpages.
+Efficiently mark multiple words in a page.
 
-An improved combination of [Find Many Strings](https://github.com/psankar/Find-Many-Strings) and [Multi-highlight](https://chrome.google.com/webstore/detail/multi-highlight/pfgfgjlejbbpfmcfjhdmikihihddeeji)
+20190609:
+- Add "paste keywords to new pages" mode
 
-### New Features
-- Highlight any strings (beyond full word)
-- New Instant Mode (highlight on-the-fly)
-- Customized delimiter
-- Multi-Pages capability (Highlight different words in different pages)
-- Better User Experience
-- Default shortcut Ctrl+Shift+F
+20190503:
+- Minimize extension size
 
-### Changes
-- Fix bugs and errors
+20190110:
+- Highlight any strings (not just full word)
+- Add Instant Search (highlight on-the-fly)
+- Add customizable delimiter
+- Make Highlight Words individual to each tab
+- UI changes
+- Add Ctrl+Shift+F as default shortcut
+
+20181231:
+- Organize code
 - Change UI (based on Multi-Highlight)
 - Change extension icon
-- Simplify code

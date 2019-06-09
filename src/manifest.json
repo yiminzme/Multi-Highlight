@@ -3,7 +3,7 @@
 
   "manifest_version": 2,
   "name": "Multi Highlight",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Search and highlight multiple words on web pages.",
   "browser_action": {
     "default_icon": {

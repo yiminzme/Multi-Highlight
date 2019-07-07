@@ -2,6 +2,10 @@
 
 Efficiently mark multiple words in a page.
 
+20190707:
+- Add options page
+- Add "Add Keyword" and "Remove Keyword" into context menu
+
 20190609:
 - Add "paste keywords to new pages" mode
 

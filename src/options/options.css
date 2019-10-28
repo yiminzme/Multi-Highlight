@@ -3,6 +3,7 @@ body {
     font-family: sans-serif;
     font-size: 80%;
 }
+
 /*h4{
     text-align: left;
     border-bottom: 1px solid #D4D4D4;
@@ -10,6 +11,7 @@ body {
 p.buttons {
     margin: 0.5em 0;
 }
+
 #main-heading {
     font-size: 150%;
     padding-left: 85px;
@@ -18,6 +20,7 @@ p.buttons {
     background: url("../img/icon350.png") no-repeat left center;
     background-size: 72px;
 }
+
 .section-heading {
     background: #ebeff9;
     border-top: 1px solid #b5c7de;
@@ -26,88 +29,108 @@ p.buttons {
     font-weight: bold;
     margin-top: 2em;
 }
+
 .subsection-heading {
     background: #eee;
     font-size: 80%;
     border-top: 1px solid #D4D4D4;
     padding: 2px 0 3px 5px;
 }
+
 .section,
 .subsection {
     margin-left: 1em;
 }
+
 .section-option label {
     background: #f3f3f3;
     border-bottom: 1px solid #D4D4D4;
     /*  font-weight: bold; */
 }
+
 .section-option label:hover,
 .engine-options-popup label:hover {
     cursor: pointer;
 }
+
 #content {
     margin: 0 auto;
     width: 95%;
     min-width: 800px;
     padding-bottom: 6em;
 }
+
 a.delete {
     text-decoration: none;
     color: #CA171A;
     font-weight: bold;
 }
+
 #show-more-variables {
     font-size: 0.9em;
 }
+
 #more-variables {
     display: none;
     font-size: 0.85em;
 }
+
 dt {
     font-weight: bold;
 }
+
 hr {
     border: none;
     border-bottom: 1px solid #aaa;
 }
+
 #engines {
     margin-top: 0.5em;
     width: 100%;
     border-collapse: separate;
     border-spacing: 0.1em 0;
 }
+
 #engines th:first-child {
     width: 1em;
 }
+
 #engines th:nth-child(2),
 #engines td:nth-child(2) {
     width: 10em;
 }
+
 #engines th:last-child,
 #engines tr td:last-child {
     width: 25px;
     text-align: center;
 }
+
 #engines th:nth-child(5),
 #engines td.engine-options {
     width: 35px;
     text-align: center;
 }
+
 #engines input {
     width: 100%;
     border: 1px solid #D4D4D4;
 }
+
 .menu-folder-end td:nth-child(2) {
     padding: 0.5em 0;
 }
+
 .menu-separator {
     height: 26px;
 }
+
 .separator-bg {
     height: 3px;
     margin-top: 1px;
     background: #808080;
 }
+
 .engine-opts-link {
     display: inline-block;
     width: 16px;
@@ -115,6 +138,7 @@ hr {
     background: url("../img/engine-options.png") no-repeat center center;
     opacity: 0.8;
 }
+
 .engine-options-popup {
     position: absolute;
     display: none;
@@ -126,11 +150,13 @@ hr {
     box-shadow: 0 0 6px #aaa;
     border-radius: 3px;
 }
+
 .separate-menus-msg {
     font-size: 8pt;
     padding-top: 5px;
     font-style: italic;
 }
+
 .close-popup {
     width: 12px;
     height: 12px;
@@ -140,44 +166,55 @@ hr {
     border: 1px solid #aaa;
     border-radius: 2px;
 }
+
 .engine-options-popup input {
     width: auto !important;
 }
+
 .engine-options-popup p {
     margin: 0;
 }
+
 #wrap-edit-separate-engines {
     display: none;
     font-style: italic;
 }
+
 #popup-advanced-options {
     margin-left: 1em;
     padding-left: 0.5em;
     border-left: 2px solid #eee;
 }
+
 #style {
     width: 100%;
     height: 15em;
 }
+
 #save-buttons {
     padding: 1em;
 }
+
 #save {
     margin-right: 3em;
 }
+
 .save-restore-buttons-wrapper {
     height: 4em;
     margin-top: 3em;
 }
+
 .save-restore-buttons {
     width: 100%;
     transition: background 0.5s;
 }
+
 .save-restore-buttons.changed {
     backdrop-filter: blur(2px);
     background-color: rgba(125, 193, 102, 0.9);
     border-radius: 4px;
 }
+
 .save-restore-buttons.changed.floating {
     position: fixed;
     bottom: 0;
@@ -187,32 +224,41 @@ hr {
     margin: 0 auto;
     border-radius: 4px 4px 0 0;
 }
+
 .save-restore-buttons.changed.floating #save-buttons {
     padding: 0.5em 1em;
 }
+
 #preview {
     float: left;
 }
+
 #preview-button {
     margin-left: 2em;
 }
+
 #head-remove-icons,
 #head-show-in-input {
     margin-top: 2.5em;
 }
+
 .only-popup-msg {
     font-style: italic;
     text-decoration: underline;
 }
+
 #html {
     display: none;
 }
+
 #mousebutton {
     margin-top: 2em;
 }
+
 .clearb {
     clear: both;
 }
+
 .info {
     /*  background:#F0FFDC; */
     /*  background: #F9F8E2; */
@@ -224,45 +270,56 @@ hr {
     font-size: 9pt;
     line-height: 1.5;
 }
+
 .warning {
     background: #FFE492;
 }
+
 .subsection .info {
     background: #F9F8E2;
 }
+
 a {
     color: #2E6DAC;
     text-decoration: none;
 }
+
 #activator_heading {
     margin-bottom: 0.5em;
 }
+
 .theme_def,
 .activator_options,
 #contextmenu_active,
 #toolbar_popup_active {
     display: none;
 }
+
 .activator_options,
 #contextmenu_active,
 #toolbar_popup_active {
     margin-left: 3em;
     margin-bottom: 2em;
 }
+
 #customize {
     display: none;
 }
+
 #find-engines input[type='text'] {
     border: 1px solid #D4D4D4;
 }
+
 .drag-target {
     cursor: move;
     background: url("../img/move.png") no-repeat center center;
 }
+
 .drag-moving,
 #engines tr:not(:first-child):hover {
     background: #ddd;
 }
+
 #hotkey_info {
     background: #FFE9DA;
     position: absolute;
@@ -272,50 +329,59 @@ a {
     -webkit-box-shadow: 0 0 3px #aaa;
     width: 400px;
 }
+
 .clear-hotkey {
     font-size: 0.8em;
     margin-left: 0.5em;
     color: #333;
 }
+
 #export-import a.selected {
     text-decoration: underline;
 }
+
 #export-settings,
 #import-settings {
     display: none;
 }
+
 #export-settings ul,
 #import-settings ul {
     list-style-type: none;
     padding: 0 0.5em;
 }
+
 #export-settings ul ul,
 #import-settings ul ul {
     padding-left: 2em;
 }
+
 #export-settings textarea,
 #import-settings textarea {
     -webkit-box-sizing: border-box;
     resize: vertical;
     width: 100%;
 }
+
 #import-replace-engines-opt {
     display: none;
 }
+
 /*#encode-output{
     margin-top: 0.8em;
 }*/
 #popup-advanced-options {
     display: none;
 }
+
 .blacklist-info {
     display: none;
     margin-bottom: 1em;
 }
+
 #blacklist-definitions {
     width: 100%;
 }
-
 
 
 /* delimiter */
@@ -329,10 +395,18 @@ a {
     color: #666;
     font-size: 14px;
 }
-#delimiter:focus { 
-    border: 0px 
+
+#delimiter:focus {
+    border: 0px
 }
-.logo{
+
+.logo {
     height: 2.5em;
     margin: 0.5em;
+}
+
+/* Popup window size */
+#popupHeight, #popupWidth{
+    margin: 0px 4px;
+    width: 50px;
 }

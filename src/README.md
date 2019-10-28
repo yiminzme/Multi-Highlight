@@ -2,6 +2,10 @@
 
 Efficiently mark multiple words in a page.
 
+20191028:
+- Customizable window size
+- Add 4 more colors (now contains 10 colors)
+
 20190609:
 - Add "paste keywords to new pages" mode
 

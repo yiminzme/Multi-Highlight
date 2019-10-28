@@ -5,7 +5,7 @@
       <title>PopUp</title>
       <style>
          body{ margin: 3px; }
-         .container { width: 350px; font-family: Arial, "微软雅黑"; }
+         #container { width: 340px; font-family: Arial, "微软雅黑"; }
          .textarea-wrap { position: relative; }
          /* Tip */
          .textarea-wrap .tip { display: block; overflow: hidden; height: 16px; line-height: 16px; vertical-align: middle; padding-bottom: 3px; 
@@ -27,9 +27,9 @@
          /* delimiter */
          .textarea-wrap .tip .sub-tip #delimiter { width: 1em; height: 70%; border: 0px; text-align: center; background-color: #c6e8ff; border-radius: 5px; color: #666; font-size: 14px; } /* vinc */
          .textarea-wrap .tip .sub-tip #delimiter:focus { border: 0px } /* vinc */
-         /* instant, pasteKeywords */
+         /* instant, saveWords */
          .textarea-wrap .tip .sub-tip input#instant,
-         .textarea-wrap .tip .sub-tip input#pasteKeywords {
+         .textarea-wrap .tip .sub-tip input#saveWords {
          width: 13px;
          height: 13px;
          padding: 0;
@@ -52,11 +52,11 @@
       </style>
    </head>
    <body>
-      <div class="container">
+      <div id="container">
          <div class="textarea-wrap">
             <div class="tip">
                <span class="main-tip">Multi Highlight</span>
-               <span class="sub-tip">&nbsp;<label id="instantLabel"><input type="checkbox" id="instant" name="instant">instant search | </label><label id="pasteKeywordsLabel"><input type="checkbox" id="pasteKeywords" name="pasteKeywords">paste keywords | </label>delimiter <input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;
+               <span class="sub-tip">&nbsp;<label id="instantLabel"><input type="checkbox" id="instant" name="instant">instant mode | </label><label id="saveWordsLabel"><input type="checkbox" id="saveWords" name="saveWords">save words | </label>delimiter <input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;
                </span>
             </div>
             <div class="highlight-words" id="highlight-words">

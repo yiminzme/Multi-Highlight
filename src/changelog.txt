@@ -1,8 +1,10 @@
-*This extension is open-source. Welcome to make any contribution or comment.
+20191028:
+- Customizable window size
+- Add 4 more colors (now contains 10 colors)
 
 20190707:
 - Add options page
-- Add "Add Keyword" and "Remove Keyword" into context menu
+- Add Right-click to remove/add keywords
 
 20190609:
 - Add "paste keywords to new pages" mode
@@ -22,3 +24,5 @@
 - Organize code
 - Change UI (based on Multi-Highlight)
 - Change extension icon
+
+*This extension is open-source.

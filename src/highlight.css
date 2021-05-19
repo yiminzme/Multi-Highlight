@@ -1,8 +1,8 @@
 .chrome-extension-FindManyStrings {
     font-style: normal;
     border-radius: 3px;
-    padding-left: 3px;
-    padding-right: 3px;
+    /* padding-left: 3px; */
+    /* padding-right: 3px; */
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     text-decoration: none;
 }
@@ -17,3 +17,14 @@
 .chrome-extension-FindManyStrings-style-7 { color: #fff; background: #F33F62; }
 .chrome-extension-FindManyStrings-style-8 { color: #000; background: #ddb397; }
 .chrome-extension-FindManyStrings-style-9 { color: #fff; background: #DD577A; }
+
+.chrome-extension-FindManyStrings-style-10 { color: #fff; background: #D2691E; }
+.chrome-extension-FindManyStrings-style-11 { color: #000; background: #FFC0CB; }
+.chrome-extension-FindManyStrings-style-12 { color: #fff; background: #BDB76B; }
+.chrome-extension-FindManyStrings-style-13 { color: #000; background: #00FFFF; }
+.chrome-extension-FindManyStrings-style-14 { color: #fff; background: #9ACD32; }
+.chrome-extension-FindManyStrings-style-15 { color: #000; background: #40E0D0; }
+.chrome-extension-FindManyStrings-style-16 { color: #fff; background: #00BFFF; }
+.chrome-extension-FindManyStrings-style-17 { color: #000; background: #E9967A; }
+.chrome-extension-FindManyStrings-style-18 { color: #fff; background: #FF69B4; }
+.chrome-extension-FindManyStrings-style-19 { color: #000; background: #FA8072; }

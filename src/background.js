@@ -2,24 +2,26 @@ chrome.runtime.onInstalled.addListener(function (details) {
     // initialize variables
     var settings = {
         // Pop-up window settings
-        popup_width: 340,
-        popup_height: 40,
+        popup_width: 400,
+        popup_height: 100,
 
         // CSS settings
-        CSS_COLORS_COUNT: 10, // number of available highlight colors
+        CSS_COLORS_COUNT: 20, // number of available highlight colors
         CSSprefix1: "chrome-extension-FindManyStrings",
         CSSprefix2: "chrome-extension-FindManyStrings-style-",
         CSSprefix3: "CE-FMS-",
 
         // search settings
         isInstant: true,
-        isSaveKws: true,
+        isSaveKws: false,
+        isAlwaysSearch: false,
+        isNewlineNewColor: false,
         delim: ' ',
         latest_keywords: [],
 
         // context menu settings
-        isItemAddKw: true,
-        isItemRemoveKw: true
+        enableAddKw: true,
+        enableRemoveKw: true
     }
 
     // add context menu item
@@ -47,8 +49,19 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
         tabinfo.isNewPage = true;
         tabinfo.keywords = [];
         chrome.storage.local.set({[tabkey]: tabinfo});
+
+        chrome.storage.local.get(['settings'], function (result) {
+            // init
+            var settings = result.settings;
+
+            // if "always search" mode is on, search all keywords immediately
+            if (settings.isAlwaysSearch){
+                hl_search(settings.latest_keywords, settings, tabinfo);
+            }
+        });
     }
 });
+
 
 // handle context menu item
 chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
@@ -58,8 +71,8 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
     if (info.menuItemId === "removeKw") {
         chrome.storage.local.get(["settings", tabkey], function (result) {
             // init
-            settings = result.settings;
-            tabinfo = result[tabkey];
+            var settings = result.settings;
+            var tabinfo = result[tabkey];
             // check existence
             var index = tabinfo.keywords.indexOf(kw);
             if (index !== -1) {

@@ -1,72 +1,173 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <title>PopUp</title>
-      <style>
-         body{ margin: 3px; }
-         #container { width: 340px; font-family: Arial, "微软雅黑"; }
-         .textarea-wrap { position: relative; }
-         /* Tip */
-         .textarea-wrap .tip { display: block; overflow: hidden; height: 16px; line-height: 16px; vertical-align: middle; padding-bottom: 3px; 
-            /* disable double clicking popup text */
-            -webkit-touch-callout: none; /* iOS Safari */
-            -webkit-user-select: none; /* Safari */
-            -khtml-user-select: none; /* Konqueror HTML */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-             user-select: none; /* Non-prefixed version, currently
-                                   supported by Chrome and Opera */
-         }
-         .textarea-wrap .tip .main-tip { font-size: 13px; color: #606060; font-weight: bold; }
-         .textarea-wrap .tip .sub-tip  { font-size: 11px; color: #484848; padding-top: 1px; font-style: }
-         .highlight-words { border: 1px dashed #aaa; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.1) inset; }
-         .highlight-words textarea { display: block; width: 100%; min-height: 40px; padding: 5px; box-sizing: border-box; outline: 0; border: 0; background: transparent;  resize:none }
-         .highlight-words,
-         .highlight-words textarea { line-height: 16px; font-size: 12px; color: #666;  }
-         /* delimiter */
-         .textarea-wrap .tip .sub-tip #delimiter { width: 1em; height: 70%; border: 0px; text-align: center; background-color: #c6e8ff; border-radius: 5px; color: #666; font-size: 14px; } /* vinc */
-         .textarea-wrap .tip .sub-tip #delimiter:focus { border: 0px } /* vinc */
-         /* instant, saveWords */
-         .textarea-wrap .tip .sub-tip input#instant,
-         .textarea-wrap .tip .sub-tip input#saveWords {
+
+<head>
+   <meta charset="UTF-8" />
+   <title>PopUp</title>
+   <style>
+      body {
+         margin: 0.5em;
+      }
+
+      #container {
+         font-family: Arial, "微软雅黑";
+      }
+
+      .textarea-wrap {
+         position: relative;
+      }
+
+      /* Tip */
+      .textarea-wrap .tip {
+         display: block;
+         overflow: hidden;
+         height: 16px;
+         line-height: 16px;
+         /* vertical-align: middle; */
+         padding: 0.2em 0 0.8em 0;
+         user-select: none;
+      }
+
+      .textarea-wrap .tip .main-tip {
+         font-size: 1.4em;
+         color: #606060;
+         font-weight: bold;
+      }
+
+      .textarea-wrap .sub-tip {
+         font-size: 1.3em;
+         color: #484848;
+         /* padding-top: 1px; */
+         padding: 0.8em 0 0.2em 0;
+         line-height: 1.5em;
+         user-select: none;
+      }
+
+      .highlight-words textarea {
+         display: block;
+         width: 100%;
+         padding: 5px;
+         box-sizing: border-box;
+         outline: 0;
+         /* border: 0; */
+         background: transparent;
+         resize: none;
+         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) inset;
+      }
+
+      .highlight-words,
+      .highlight-words textarea {
+         line-height: 16px;
+         font-size: 12px;
+         color: #666;
+      }
+
+      /* delimiter */
+      .textarea-wrap .sub-tip #delimiter {
+         width: 1em;
+         height: 70%;
+         border: 0px;
+         text-align: center;
+         background-color: #c6e8ff;
+         border-radius: 5px;
+         color: #666;
+         font-size: 14px;
+      }
+
+      /* vinc */
+      .textarea-wrap .sub-tip #delimiter:focus {
+         border: 0px;
+      }
+
+      /* vinc */
+      /* instant, saveWords */
+      .textarea-wrap .sub-tip input#instant,
+      .textarea-wrap .sub-tip input#saveWords {
          width: 13px;
          height: 13px;
          padding: 0;
-         margin:0;
-         vertical-align: bottom;
+         margin: 0;
+         /* vertical-align: bottom; */
          position: relative;
          top: -1px;
          *overflow: hidden;
-         }
-         /* Scroll bar */
-         .highlight-words textarea::-webkit-scrollbar { width: 11px; height:auto; }
-         .highlight-words textarea::-webkit-scrollbar-button{}
-         .highlight-words textarea::-webkit-scrollbar-button:start:decrement,
-         .highlight-words textarea::-webkit-scrollbar-button:end:increment{width:0;height:0;}
-         .highlight-words textarea::-webkit-scrollbar-track-piece{ background-clip:padding-box; background-color:#fff; border: 0; }
-         .highlight-words textarea::-webkit-scrollbar-thumb { border-radius: 7px; background-color: #888; background-clip:padding-box; border: 2px solid transparent; -webkit-transition: all 0.5s ease; }
-         .highlight-words textarea::-webkit-scrollbar-thumb:hover { background-color: #777; }
-         .highlight-words textarea::-webkit-scrollbar-thumb:vertical   { width: 7px; min-height:24px; }
-         .highlight-words textarea::-webkit-scrollbar-thumb:horizontal { height: 7px; min-width:24px; }
-      </style>
-   </head>
-   <body>
-      <div id="container">
-         <div class="textarea-wrap">
-            <div class="tip">
-               <span class="main-tip">Multi Highlight</span>
-               <span class="sub-tip">&nbsp;<label id="instantLabel"><input type="checkbox" id="instant" name="instant">instant mode | </label><label id="saveWordsLabel"><input type="checkbox" id="saveWords" name="saveWords">save words | </label>delimiter <input type="text" id="delimiter" name="delimiter" maxlength="1">&nbsp;
-               </span>
-            </div>
-            <div class="highlight-words" id="highlight-words">
-               <textarea id="highlightWords" spellcheck="false" autofocus></textarea>
-            </div>
+      }
+
+      /* Scroll bar */
+      .highlight-words textarea::-webkit-scrollbar {
+         width: 11px;
+         height: auto;
+      }
+
+      .highlight-words textarea::-webkit-scrollbar-button {}
+
+      .highlight-words textarea::-webkit-scrollbar-button:start:decrement,
+      .highlight-words textarea::-webkit-scrollbar-button:end:increment {
+         width: 0;
+         height: 0;
+      }
+
+      .highlight-words textarea::-webkit-scrollbar-track-piece {
+         background-clip: padding-box;
+         background-color: #fff;
+         border: 0;
+      }
+
+      .highlight-words textarea::-webkit-scrollbar-thumb {
+         border-radius: 7px;
+         background-color: #888;
+         background-clip: padding-box;
+         border: 2px solid transparent;
+         -webkit-transition: all 0.5s ease;
+      }
+
+      .highlight-words textarea::-webkit-scrollbar-thumb:hover {
+         background-color: #777;
+      }
+
+      .highlight-words textarea::-webkit-scrollbar-thumb:vertical {
+         width: 7px;
+         min-height: 24px;
+      }
+
+      .highlight-words textarea::-webkit-scrollbar-thumb:horizontal {
+         height: 7px;
+         min-width: 24px;
+      }
+
+      #options_icon {
+         width: 1.5em;
+         display: inline;
+         float: right;
+      }
+   </style>
+</head>
+
+<body>
+   <div id="container">
+      <div class="textarea-wrap">
+         <div class="tip">
+            <span class="main-tip"style="vertical-align: -webkit-baseline-middle;">Multi Highlight</span>
+            <img id="options_icon" src="./img/options_icon.svg">
+         </div>
+         <div class="highlight-words" id="highlight-words">
+            <textarea id="highlightWords" spellcheck="false" autofocus></textarea>
+         </div>
+         <div class="sub-tip">
+            &nbsp;<label id="saveWordsLabel" title="Save current words for future browsing"><input type="checkbox" id="saveWords"
+            name="saveWords" />Save typed words</label>
+            &nbsp;&nbsp;&nbsp;<label id="alwaysSearchLabel" title="Highlight saved words whenever a new page loaded"><input type="checkbox"
+            id="alwaysSearch" name="alwaysSearch" />Always highlight</label>
+            <br><label id="newlineNewColorLabel" title="On: change highlight color after newline&#10;Off: change highglight color after every words"><input type="checkbox" id="newlineNewColor" name="newlineNewColor" />Change color after newline</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;<label title="Symbol to split the words in your input">Delimiter:&nbsp;<input type="text" id="delimiter" name="delimiter" maxlength="1" /></label>
+            <br>&nbsp;<label id="instantLabel" title="Highlight words immediately"><input type="checkbox" id="instant" name="instant" />Highlight as you type </label>
          </div>
       </div>
-      <script src="jquery/jquery.js"></script>
-      <script src="jquery/jquery.highlight.js"></script>
-      <script src="lib.js"></script>
-      <script src="popup.js"></script>
-   </body>
+   </div>
+   <script src="jquery/jquery.js"></script>
+   <script src="jquery/jquery.highlight.js"></script>
+   <script src="lib.js"></script>
+   <script src="popup.js"></script>
+</body>
+
 </html>

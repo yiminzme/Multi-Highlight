@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
         saveWords.checked = settings.isSaveKws;
         popupHeight.value = settings.popup_height;
         popupWidth.value = settings.popup_width;
-        addKw.checked = settings.isItemAddKw;
-        removeKw.checked = settings.isItemRemoveKw;
+        addKw.checked = settings.enableAddKw;
+        removeKw.checked = settings.enableRemoveKw;
 
         // register listener
         $("#delimiter").on("input", function () {

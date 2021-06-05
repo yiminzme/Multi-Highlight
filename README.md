@@ -1,6 +1,9 @@
 # Multi-Highlight
 
-An efficient tool to highlight all words you want in webpages  
+
+An efficient tool to highlight all words you want in webpages
+快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞
+キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します
 
 * Support memorizing typed words
 * Support always highlighting mode
@@ -9,7 +12,6 @@ An efficient tool to highlight all words you want in webpages
 * Support highlight as you type
 
 * does not support PDF, iframe element
-
 
 
 Changelog:

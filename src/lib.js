@@ -256,9 +256,9 @@ function handle_popupSize_change(newHeight, newWidth) {
 chrome.runtime.onMessage.addListener(function(request, sender) {
 	if (request.action == "getVisibleText") {
 		visibleText = request.source;
-		$('#kw-list>.keywords').each((ind,elem)=>{
+		document.querySelectorAll('#kw-list>.keywords').forEach(elem=>{
 			if(-1 === visibleText.indexOf(elem.innerText)){
-				$(elem).addClass("notAvailable");
+				elem.classList.add("notAvailable");
 			}
 		});
 	}

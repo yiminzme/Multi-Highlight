@@ -140,6 +140,39 @@
          display: inline;
          float: right;
       }
+	  #kw-list{
+		  display: block;
+		  max-width: 100%;
+		  background-color: #eee;
+		  border: 1px solid #eee;
+		  box-shadow: 0 0px 10px #eee;
+		  padding: 0.3em;
+	  }
+	  .keywords{
+		  /* line-height: 1.2em; */
+		  margin: .2em .2em;
+		  text-align: center;
+		  border-radius: 0.3em;
+		  display: inline-block;
+		  min-width: 2em;
+		  padding: 0 .3em;
+		  /* min-width: 20%; */
+	  }
+	  .keywords:nth-of-type(2n){
+		  border: solid 2px #f37e63;
+	  }
+	  .keywords:nth-of-type(2n+1){
+		  border: solid 2px #379bb0;
+	  }
+	  .keywords.notAvailable{
+		  border: solid 2px #dddddd;
+	  }
+	  /* .keywords:nth-of-type(2n){ */
+		  /* background-color: #eeffff; */
+	  /* } */
+	  /* .keywords:nth-of-type(2n+1){ */
+		  /* background-color: #ffeeff; */
+	  /* } */
    </style>
 </head>
 
@@ -163,6 +196,8 @@
             <br>&nbsp;<label id="instantLabel" title="Highlight words immediately"><input type="checkbox" id="instant" name="instant" />Highlight as you type </label>
          </div>
       </div>
+	 <div id="kw-list">
+	</div>
    </div>
    <script src="jquery/jquery.js"></script>
    <script src="jquery/jquery.highlight.js"></script>

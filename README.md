@@ -15,6 +15,12 @@ An efficient tool to highlight all words you want in webpages
 
 
 Changelog:
+
+20211221
+* Add keywords display zone
+* Check wheter the page contains the keyword(s) or not, if not, gray it
+* `Ctrl+Click` to delete the correspond keyword
+
 20210519
 * Improve UI
 * Change Logo

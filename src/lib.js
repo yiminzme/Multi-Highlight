@@ -68,6 +68,16 @@ function hl_clearall(settings, tabinfo) {
 }
 
 
+function check_keywords_existence(){
+	chrome.tabs.executeScript(null, {
+		file: "getPagesSource.js"
+	}, function() {
+		// If you try and inject into an extensions page or the webstore/NTP you'll get an error
+		if (chrome.runtime.lastError) {
+			console.error( 'There was an error injecting script : \n' + chrome.runtime.lastError.message);
+		}
+	});
+}
 function handle_highlightWords_change(tabkey, callback=null) {
     inputStr = highlightWords.value.toLowerCase();
 
@@ -92,6 +102,9 @@ function handle_highlightWords_change(tabkey, callback=null) {
             }
             hl_clear(removedKws, settings, tabinfo);
             hl_search(addedKws, settings, tabinfo);
+			$('#kw-list>.keywords').remove();
+			$(inputKws.map(elem=>`<span class="keywords">${elem}</span>`).join("")).appendTo($('#kw-list'));
+			check_keywords_existence();
             tabinfo.keywords = inputKws;
             settings.latest_keywords = inputKws;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings});
@@ -106,6 +119,17 @@ function handle_highlightWords_change(tabkey, callback=null) {
             callback();
         }
     });
+}
+function handle_keyword_removal(event, tabkey){
+	console.log(event);
+	if(event.ctrlKey){
+		chrome.storage.local.get(['settings'], function (result) {
+			var settings = result.settings;
+			event.target.remove();
+			highlightWords.value = [...document.querySelectorAll('#kw-list>.keywords')].map(elem=>elem.innerText).join(settings.delim);
+			handle_highlightWords_change(tabkey); // update highlights
+		});
+	}
 }
 
 
@@ -227,3 +251,15 @@ function handle_popupSize_change(newHeight, newWidth) {
         }
     });
 }
+
+
+chrome.runtime.onMessage.addListener(function(request, sender) {
+	if (request.action == "getVisibleText") {
+		visibleText = request.source;
+		document.querySelectorAll('#kw-list>.keywords').forEach(elem=>{
+			if(-1 === visibleText.indexOf(elem.innerText)){
+				elem.classList.add("notAvailable");
+			}
+		});
+	}
+});

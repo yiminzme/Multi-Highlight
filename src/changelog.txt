@@ -1,3 +1,8 @@
+20211221
+- Add keywords display zone
+- Check wheter the page contains the keyword(s) or not, if not, gray it
+- `Ctrl+Click` to delete the correspond keyword
+
 20191028:
 - Customizable window size
 - Add 4 more colors (now contains 10 colors)

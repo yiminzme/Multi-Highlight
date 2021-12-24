@@ -1,5 +1,6 @@
 # Multi-Highlight
 
+
 An efficient tool to highlight all words you want in webpages
 快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞
 キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します
@@ -14,6 +15,12 @@ An efficient tool to highlight all words you want in webpages
 
 
 Changelog:
+
+20211221
+* Add keywords display zone
+* Check wheter the page contains the keyword(s) or not, if not, gray it
+* `Ctrl+Click` to delete the correspond keyword
+
 20210519
 * Improve UI
 * Change Logo
@@ -44,3 +51,13 @@ Changelog:
 * Organize code
 * Change UI (based on Multi-Highlight)
 * Change extension icon
+
+
+
+
+
+## User Interface  
+![UI1](./src/img/20210519_screenshot1.jpg)  
+
+## Demo  
+![demo1](./src/img/20210519_screenshot3.jpg)  

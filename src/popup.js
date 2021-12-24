@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 $("#highlightWords").on("input", function () {
                     handle_highlightWords_change(tabkey);
                 })
+                $("#kw-list").on("click", function (event) {
+                    handle_keyword_removal(event, tabkey);
+                })
                 $("#instant").on("input", function () {
                     handle_instant_mode_change(tabkey);
                 })
@@ -85,4 +88,5 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+	check_keywords_existence();
 });

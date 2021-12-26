@@ -16,6 +16,13 @@ An efficient tool to highlight all words you want in webpages
 
 Changelog:
 
+20211226
+* Add options: Whole words only, Casesensitive
+* Update the highlight lib from [npmjs](https://www.npmjs.com/package/jquery-highlight)
+* Modified: Handle the options change in one callback function.
+* Modified: Use 2D array to store the keywords in `NewColorNewLine` mode.
+* Bugfix: Keywords removal should not remove the container.
+
 20211221
 * Add keywords display zone
 * Check wheter the page contains the keyword(s) or not, if not, gray it

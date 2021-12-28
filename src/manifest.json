@@ -3,7 +3,7 @@
 
   "manifest_version": 2,
   "name": "Multi Highlight",
-  "version": "2.6",
+  "version": "2.7",
   "description": "Efficiently mark multiple words in a page.",
   "browser_action": {
     "default_logo": {
@@ -20,11 +20,11 @@
   },
   "content_scripts": [ {
       "matches": [ "<all_urls>" ],
-      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "popup.js", "getPagesSource.js"  ],
+      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "popup.js"],
       "css": [ "highlight.css" ]
    } ],
   "background": {
-    "scripts": [ "lib.js", "background.js" ],
+    "scripts": [ "lib.js", "background.js", "hot-reload.js" ],
     "persistent": false
   },
   "commands": {

@@ -2,6 +2,8 @@
 // Multi Highlight Library
 // ************************************************************************
 
+// global variables
+lastVisibleText = "";
 
 // ****** general functions
 function get_tabkey(tabId) {
@@ -16,49 +18,55 @@ function makeSafeForCSS(name) {
     });
 }
 
+const TrueOrFalse = (opt) => opt? "true" : "false";
+
+
 // ****** Multi Highlight functions
 function hl_search(addedKws, settings, tabinfo) {
-    for (var i = 0; i < addedKws.length; i++) {
-        if (settings.isNewlineNewColor && addedKws[i] == "\n"){ // if isNewLineNewColor mode on and addedKws[i] is newline
-            tabinfo.style_nbr += 1;
-            continue;
-        }
-        
-        chrome.tabs.executeScript(tabinfo.id,
-            {
-                code: "$(document.body).highlight('" + addedKws[i]
-                    + "', {className:'"
-                    + settings.CSSprefix1 + " "
-                    + (settings.CSSprefix2 + (tabinfo.style_nbr % settings.CSS_COLORS_COUNT)) + " "
-                    + (settings.CSSprefix3 + encodeURI(addedKws[i])) // escape special characters
-                    // + (settings.CSSprefix3 + makeSafeForCSS(addedKws[i])) // escape special characters
-                    + "'})"
-            }, _ => chrome.runtime.lastError);
-        if (!settings.isNewlineNewColor){
-            tabinfo.style_nbr += 1;
-        }
-    }
+	// console.log("addedKws: " + addedKws);
+	
+	isWholeWord     = TrueOrFalse(settings.isWholeWord);
+	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
+
+	if(settings.isNewlineNewColor){
+		for (var i = 0; i < addedKws.length; i++) {
+			className = settings.CSSprefix1 + " " + (settings.CSSprefix2 + (i % settings.CSS_COLORS_COUNT)) + " " + settings.CSSprefix3;
+			code = addedKws[i].filter(j=>j).map((kw) => {
+				if(kw.length < 1) return "";
+				cls  = className +  encodeURI(kw);
+				return "$(document.body).highlight(" + `'${kw}', `
+					+ `{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}  ` + "})";
+			}).join(";\n");
+			// console.log(code);
+			chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
+		}
+	}else{
+		clsPrefix = settings.CSSprefix1 + " " + settings.CSSprefix2 ;
+		code = addedKws.filter(i=>i).map((kw, ind)=>{
+			// if(kw.length < 1) return "";
+			cls = clsPrefix + ((tabinfo.style_nbr + ind) % settings.CSS_COLORS_COUNT) +  " "
+						+ (settings.CSSprefix3 + encodeURI(kw)); // escape special characters
+			return "$(document.body).highlight(" + `'${kw}', `
+				+ `{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}  ` + "})";
+
+		}).join(";\n");
+		// console.log(code);
+		chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
+		tabinfo.style_nbr += addedKws.length;
+	}
 }
 
 
 function hl_clear(removedKws, settings, tabinfo) {
-    // remove in reverse order to avoid removing nested-highlighted-words
-    for (var i = removedKws.length - 1; i >= 0; i--) {
-        if (settings.isNewlineNewColor && removedKws[i] == "\n"){ // if isNewLineNewColor mode on and removedKws[i] is newline
-            tabinfo.style_nbr -= 1;
-            continue;
-        }
-
-        // escape meta-characters, special characters
-        className = (settings.CSSprefix3 + encodeURI(removedKws[i])).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\\\$&");
-        // className = (settings.CSSprefix3 + makeSafeForCSS(removedKws[i]));
-        chrome.tabs.executeScript(tabinfo.id,
-            {code: "$(document.body).unhighlight({className:'" + className + "'})"}, _ => chrome.runtime.lastError);
-        if (!settings.isNewlineNewColor){
-            tabinfo.style_nbr -= 1;    
-        }
-        
-    }
+	code = removedKws.filter(i=>i).flatMap(kw=>{
+		// if(kw.length < 1) return "";
+		className = (settings.CSSprefix3 + encodeURI(kw)).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\\\$&");
+		return "$(document.body).unhighlight({className:'" + className + "'})";
+	}).join(";\n");
+	// console.log(`removedKws${removedKws.length}:` + removedKws);
+	// console.log("REMOVE: " + code);
+	chrome.tabs.executeScript(tabinfo.id, {code: code}, _ => chrome.runtime.lastError);
+	settings.isNewlineNewColor || (tabinfo.style_nbr -= removedKws.length);
 }
 
 
@@ -78,8 +86,10 @@ function check_keywords_existence(){
 		}
 	});
 }
-function handle_highlightWords_change(tabkey, callback=null) {
-    inputStr = highlightWords.value.toLowerCase();
+
+function handle_highlightWords_change(tabkey, option, callback=null) {
+    inputStr = highlightWords.value;
+		// .toLowerCase();
 
     chrome.storage.local.get(['settings', tabkey], function (result) {
         var settings = result.settings;
@@ -88,22 +98,39 @@ function handle_highlightWords_change(tabkey, callback=null) {
         // (instant search mode) or (last char of input is delimiter)
         if (settings.isInstant || inputStr.slice(-1) == settings.delim) {
             if (settings.isNewlineNewColor){
-                var inputKws = []
-                inputLines = inputStr.split(/(\n)/g); // split by newline, but keep newlines
-                for (var i=0; i < inputLines.length; i++){
-                    inputKws = inputKws.concat(inputLines[i].split(settings.delim).filter(i => i)); // split inputline by deliminator; filter() removes empty array elms
-                }
-                addedKws = $(inputKws).not($(tabinfo.keywords).not(["\n"]).get()).get(); // get tokens only occur in new input
-                removedKws = $(tabinfo.keywords).not($(inputKws).not(["\n"]).get()).get(); // get tokens only occur in old input
+				inputKws = inputStr.split(/\n/g).filter(i=>i).map(line=>line.split(settings.delim).filter(i=>i)); // 2d-array
+				ntypes = inputKws.length < tabinfo.keywords.length ? inputKws.length : tabinfo.keywords.length;
+				addedKws = [];
+				removedKws = [];
+				for(i = 0; i<ntypes; ++i){
+					addedKws.push($(inputKws[i]).not(tabinfo.keywords[i]).get());
+					removedKws.push($(tabinfo.keywords[i]).not(inputKws[i]).get());
+				}
+				for(i=ntypes; i < inputKws.length; ++i){
+					addedKws.push(inputKws[i]);
+				}
+				for(i=ntypes; i < tabinfo.keywords.length; ++i){
+					removedKws.push(tabinfo.keywords[i]);
+				}
             }else{
                 inputKws = inputStr.split(settings.delim).filter(i => i); // filter() removes empty array elms
                 addedKws = $(inputKws).not(tabinfo.keywords).get(); // get tokens only occur in new input
                 removedKws = $(tabinfo.keywords).not(inputKws).get(); // get tokens only occur in old input
             }
-            hl_clear(removedKws, settings, tabinfo);
-            hl_search(addedKws, settings, tabinfo);
+			if(option && option.refresh){
+				hl_clearall(settings, tabinfo);
+				// hl_clear(tabinfo.keywords, settings, tabinfo);
+				hl_search(inputKws, settings, tabinfo);
+			}else{
+				hl_clear(removedKws, settings, tabinfo);
+				hl_search(addedKws, settings, tabinfo);
+			}
+			html = settings.isNewlineNewColor 
+				?  inputKws.map(line=> line.map(elem=>`<span class="keywords">${elem}</span>`).join("")).join("")
+				: inputKws.map(elem=>`<span class="keywords">${elem}</span>`).join("");
+			// todo: don't delete all 
 			$('#kw-list>.keywords').remove();
-			$(inputKws.map(elem=>`<span class="keywords">${elem}</span>`).join("")).appendTo($('#kw-list'));
+			$(html).appendTo($('#kw-list'));
 			check_keywords_existence();
             tabinfo.keywords = inputKws;
             settings.latest_keywords = inputKws;
@@ -115,14 +142,12 @@ function handle_highlightWords_change(tabkey, callback=null) {
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings});
         }
 
-        if (callback){
-            callback();
-        }
+		callback && callback();
     });
 }
 function handle_keyword_removal(event, tabkey){
 	console.log(event);
-	if(event.ctrlKey){
+	if(event.ctrlKey && event.target.matches('.keywords')){ // bugfix: don't remove the container
 		chrome.storage.local.get(['settings'], function (result) {
 			var settings = result.settings;
 			event.target.remove();
@@ -133,34 +158,22 @@ function handle_keyword_removal(event, tabkey){
 }
 
 
-function handle_delimiter_change(tabkey) { // tabkey of popup window
-        chrome.storage.local.get(['settings'], function (result) {
-        var settings = result.settings;
-        settings.delim = delimiter.value;
-        chrome.storage.local.set({'settings': settings}, function () {
-            if (tabkey) {
-                // reset keywords
-                highlightWords.value = "";
-                handle_highlightWords_change(tabkey);
-            }
-        });
-    });
-}
+function handle_option_change(tabkey) { // tabkey of popup window
+	chrome.storage.local.get(['settings'], function (result) {
+		var settings = result.settings;
 
+		var forceRefresh = (settings.isWholeWord != wholeWord.checked) 
+			|| (settings.isCasesensitive != casesensitive.checked)
+			|| (settings.isNewlineNewColor != newlineNewColor.checked);
+		// update settings
+		settings.delim             = delimiter.value;
+		settings.isInstant         = instant.checked;
+		settings.isAlwaysSearch    = alwaysSearch.checked;
+		settings.isNewlineNewColor = newlineNewColor.checked;
+		settings.isCasesensitive   = casesensitive.checked;
+		settings.isWholeWord       = wholeWord.checked;
+		settings.isSaveKws         = saveWords.checked;
 
-function handle_instant_mode_change(tabkey) { // tabkey of popup window
-    chrome.storage.local.get(['settings'], function (result) {
-        var settings = result.settings;
-        settings.isInstant = $('#instant').is(':checked');
-        chrome.storage.local.set({'settings': settings});
-    });
-}
-
-
-function handle_saveWords_mode_change(tabkey) { // tabkey of popup window
-    chrome.storage.local.get(['settings'], function (result) {
-        var settings = result.settings;
-        settings.isSaveKws = $('#saveWords').is(':checked');
         if (settings.isSaveKws){
             $('#alwaysSearch').removeAttr('disabled'); // enable input
         }else{
@@ -168,33 +181,15 @@ function handle_saveWords_mode_change(tabkey) { // tabkey of popup window
             settings.isAlwaysSearch = false; // set alwaysSearch to false
             $('#alwaysSearch').attr('disabled', true); // disable alwaysSearch checkbox
         }
-        chrome.storage.local.set({'settings': settings});
-    });
+		
+		chrome.storage.local.set({'settings': settings}, function () {
+			if (tabkey) {
+				handle_highlightWords_change(tabkey, {refresh: forceRefresh});
+			}
+		});
+	});
 }
 
-
-function handle_alwaysSearch_mode_change(tabkey) {
-    chrome.storage.local.get(['settings'], function (result) {
-        var settings = result.settings;
-        settings.isAlwaysSearch = $('#alwaysSearch').is(':checked');
-        chrome.storage.local.set({'settings': settings});
-    });
-}
-
-
-function handle_newlineNewColor_mode_change(tabkey) {
-    chrome.storage.local.get(['settings'], function (result) {
-        var settings = result.settings;
-        if (tabkey) {
-            // reset keywords
-            highlightWords.value = "";
-            handle_highlightWords_change(tabkey, function() {
-                settings.isNewlineNewColor = $('#newlineNewColor').is(':checked');
-                chrome.storage.local.set({'settings': settings});
-            });
-        }
-    });
-}
 
 
 function handle_addKw_change(enableIt) {
@@ -256,10 +251,18 @@ function handle_popupSize_change(newHeight, newWidth) {
 chrome.runtime.onMessage.addListener(function(request, sender) {
 	if (request.action == "getVisibleText") {
 		visibleText = request.source;
-		document.querySelectorAll('#kw-list>.keywords').forEach(elem=>{
-			if(-1 === visibleText.indexOf(elem.innerText)){
-				elem.classList.add("notAvailable");
-			}
+		chrome.storage.local.get(['settings'], function (result) {
+			var settings = result.settings;
+			isCasesensitive = settings.isCasesensitive;
+			visibleText = isCasesensitive ? visibleText : visibleText.toLowerCase();
+			lastVisibleText = visibleText;
+			document.querySelectorAll('#kw-list>.keywords').forEach(elem=>{
+				if(-1 === visibleText.indexOf(isCasesensitive ? elem.innerText : elem.innerText.toLowerCase())){
+					elem.classList.add("notAvailable");
+				}else{
+					elem.classList.remove("notAvailable");
+				}
+			});
 		});
 	}
 });

@@ -1,8 +1,4 @@
-# Multi-Highlight
-
-
-An efficient tool to highlight all words you want in webpages
-快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞
+快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞  
 キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します
 
 * Support memorizing typed words
@@ -11,7 +7,11 @@ An efficient tool to highlight all words you want in webpages
 * Support customizable delimiter
 * Support highlight as you type
 
-* does not support PDF, iframe element
+Notes:
+* After installation, refresh tabs to work
+* Does not support PDF, iframe
+
+GitHub: https://github.com/yiminzme/Multi-Highlight
 
 
 Changelog:
@@ -28,13 +28,16 @@ Changelog:
 * Check wheter the page contains the keyword(s) or not, if not, gray it
 * `Ctrl+Click` to delete the correspond keyword
 
+20210826:
+* Fix user settings reset after browser update
+
 20210519
 * Improve UI
 * Change Logo
 * Add "Always highlight" feature
 * Add "Change color after newline" feature
 * Fix unstable typesetting issue when typing
-* Add 10 more highlight colors
+* Add 10 more highlight colors (now contains 20 colors)
 
 20191028
 * Customizable window size
@@ -58,13 +61,3 @@ Changelog:
 * Organize code
 * Change UI (based on Multi-Highlight)
 * Change extension icon
-
-
-
-
-
-## User Interface  
-![UI1](./src/img/20210519_screenshot1.jpg)  
-
-## Demo  
-![demo1](./src/img/20210519_screenshot3.jpg)  

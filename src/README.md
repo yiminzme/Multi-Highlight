@@ -18,7 +18,7 @@ Changelog:
 
 20220102:
 * Adjust interface
-* Fix bug (show existed keyword list right after popup; remove all highlights when all words are removed at once)
+* Fix bug (show current keyword list right after popup; properly remove highlights when NewLineNewColor mode is on)
 
 20211226
 * Add options: Whole words only, Casesensitive

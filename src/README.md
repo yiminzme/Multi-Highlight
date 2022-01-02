@@ -16,6 +16,10 @@ GitHub: https://github.com/yiminzme/Multi-Highlight
 
 Changelog:
 
+20220102:
+* Adjust interface
+* Fix bug (show existed keyword list right after popup; remove all highlights when all words are removed at once)
+
 20211226
 * Add options: Whole words only, Casesensitive
 * Update the highlight lib from [npmjs](https://www.npmjs.com/package/jquery-highlight)

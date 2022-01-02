@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				casesensitive.checked   = settings.isCasesensitive;
 				wholeWord.checked       = settings.isWholeWord;
 				saveWords.checked       = settings.isSaveKws;
-				// reconstruct highlightWords values
+				// reconstruct highlightWords values if user required
 				flag.is_change = settings.isSaveKws && tabinfo.isNewPage;
 				kws = flag.is_change ? settings.latest_keywords : tabinfo.keywords;
 				if (settings.isNewlineNewColor){
@@ -50,11 +50,10 @@ document.addEventListener('DOMContentLoaded', function () {
 					// append deliminator if there are words
 					highlightWords.value += highlightWords.value ? settings.delim : "";
 				}
+
 				tabinfo.isNewPage = false;
 				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
-					if (flag.is_change) {
-						handle_highlightWords_change(tabkey);
-					}
+						handle_highlightWords_change(tabkey, {skipHighlight: flag.is_change});
 				});
 				// register listener
 				$("#highlightWords").on("input", function () {

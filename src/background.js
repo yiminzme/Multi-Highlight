@@ -16,10 +16,12 @@ chrome.runtime.onInstalled.addListener(function (details) {
     
             // search settings
             isInstant: true,
-            isSaveKws: false,
-            isAlwaysSearch: false,
+            isSaveKws: true,
+            isAlwaysSearch: true,
             isNewlineNewColor: false,
-            delim: ' ',
+            isCasesensitive: false,
+            isWholeWord: false,
+            delim: ',',
             latest_keywords: [],
     
             // context menu settings

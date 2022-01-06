@@ -73,18 +73,23 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
             // init
             var settings = result.settings;
             var tabinfo = result[tabkey];
-            // check existence
-            var index = tabinfo.keywords.indexOf(kw);
-            if (index !== -1) {
-                length = tabinfo.keywords.length
-                // check if any keywords is a substring of kw
-                while (length--) {
-                    if (kw.indexOf(tabinfo.keywords[length]) != -1 && length != index) {
-                        return;
-                    }
-                }
+			//
+			if(settings.isNewlineNewColor){
+				var isFound = false;
+				for(var i = 0, len = tabinfo.keywords.length; i< len; ++i){
+					var index = tabinfo.keywords[i].indexOf(kw);
+					if(index >=0){
+						isFound = true;
+						tabinfo.keywords[i].splice(index,1);
+						break;
+					}
+				}
+				if(!isFound) return;
+			}else{
+				var index = tabinfo.keywords.indexOf(kw);
+				if(index < 0) return;
                 tabinfo.keywords.splice(index, 1);
-            }
+			}
             settings.latest_keywords = tabinfo.keywords;
             hl_clear([kw], settings, tabinfo);
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
@@ -95,9 +100,15 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
             // init
             settings = result.settings;
             tabinfo = result[tabkey];
-            tabinfo.keywords.push(kw);
+			if(settings.isNewlineNewColor){
+				kwsArr = tabinfo.keywords;
+				kwsArr[0].push(kw); // push to the first row of the 2D keyword-list
+				hl_search([[kw]], settings, tabinfo);
+			}else{
+				tabinfo.keywords.push(kw);
+				hl_search([kw], settings, tabinfo);
+			}
             settings.latest_keywords = tabinfo.keywords;
-            hl_search([kw], settings, tabinfo);
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
             });
         });

@@ -41,10 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				// reconstruct highlightWords values
 				flag.is_change = settings.isSaveKws && tabinfo.isNewPage;
 				kws = flag.is_change ? settings.latest_keywords : tabinfo.keywords;
-				if (settings.isNewlineNewColor){
-					// reconstruct_isNewLineNewColor_mode(kws, settings.delim);
+				if(kws.length && (kws[0] instanceof Array)){
 					highlightWords.value = kws.map(line=>line.join(settings.delim)).join("\n");
-
 				}else{
 					highlightWords.value = kws.join(settings.delim);
 					// append deliminator if there are words

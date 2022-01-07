@@ -14,6 +14,9 @@ An efficient tool to highlight all words you want in webpages
 * does not support PDF, iframe element
 
 
+
+
+
 Changelog:
 
 20211221
@@ -51,13 +54,3 @@ Changelog:
 * Organize code
 * Change UI (based on Multi-Highlight)
 * Change extension icon
-
-
-
-
-
-## User Interface  
-![UI1](./src/img/20210519_screenshot1.jpg)  
-
-## Demo  
-![demo1](./src/img/20210519_screenshot3.jpg)  

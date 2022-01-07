@@ -67,6 +67,7 @@ function hl_search(addedKws, settings, tabinfo) {
 
 
 function hl_clear(removedKws, settings, tabinfo) {
+	removedKws = [].concat.apply([], removedKws) // convert 2d array to 1d (for isNewlineNewColor)
 	code = removedKws.filter(i=>i).flatMap(kw=>{
 		// if(kw.length < 1) return "";
 		className = (settings.CSSprefix3 + encodeURI(kw)).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\\\$&");
@@ -107,38 +108,43 @@ function handle_highlightWords_change(tabkey, option, callback=null) {
         // (instant search mode) or (last char of input is delimiter)
         if (settings.isInstant || inputStr.slice(-1) == settings.delim) {
             if (settings.isNewlineNewColor){
-				inputKws = inputStr.split(/\n/g).filter(i=>i).map(line=>line.split(settings.delim).filter(i=>i)); // 2d-array
-				// in the case of toggle newline-new-color mode, previouse keyword-list is 1D array,
-				// So re-construct it into 2D array
-				savedKws = (tabinfo.keywords.length && (tabinfo.keywords[0] instanceof Array) ) 
-					? tabinfo.keywords
-					: (tabinfo.keywords.join(settings.delim) || "").split(/\n/g).filter(i=>i).map(line=>line.split(settings.delim).filter(i=>i)); // 2d-array
-				ntypes = inputKws.length < tabinfo.keywords.length ? inputKws.length : tabinfo.keywords.length;
-				addedKws = [];
-				removedKws = [];
-				for(i = 0; i<ntypes; ++i){
-					addedKws.push(SetMinus(inputKws[i], savedKws[i]));
-					removedKws.push(SetMinus(savedKws[i], inputKws[i]));
-				}
-				for(i=ntypes; i < inputKws.length; ++i){
-					addedKws.push(inputKws[i]);
-				}
-				for(i=ntypes; i < savedKws.length; ++i){
-					removedKws.push(savedKws[i]);
-				}
+							inputKws = inputStr.split(/\n/g).filter(i=>i).map(line=>line.split(settings.delim).filter(i=>i)); // 2d-array
+							// in the case of toggle newline-new-color mode, previouse keyword-list is 1D array,
+							// So re-construct it into 2D array
+							savedKws = (tabinfo.keywords.length && (tabinfo.keywords[0] instanceof Array) ) 
+								? tabinfo.keywords
+								: (tabinfo.keywords.join(settings.delim) || "").split(/\n/g).filter(i=>i).map(line=>line.split(settings.delim).filter(i=>i)); // 2d-array
+							ntypes = inputKws.length < tabinfo.keywords.length ? inputKws.length : tabinfo.keywords.length;
+							addedKws = [];
+							removedKws = [];
+							for(i = 0; i<ntypes; ++i){
+								addedKws.push(SetMinus(inputKws[i], savedKws[i]));
+								removedKws.push(SetMinus(savedKws[i], inputKws[i]));
+							}
+							for(i=ntypes; i < inputKws.length; ++i){
+								addedKws.push(inputKws[i]);
+							}
+							for(i=ntypes; i < savedKws.length; ++i){
+								removedKws.push(savedKws[i]);
+							}
             }else{
                 inputKws = inputStr.split(settings.delim).filter(i => i); // filter() removes empty array elms
                 addedKws   = SetMinus(inputKws, tabinfo.keywords); // get tokens only occur in new input
                 removedKws = SetMinus(tabinfo.keywords, inputKws); // get tokens only occur in old input
             }
+
 			if(option && option.refresh){
 				hl_clearall(settings, tabinfo);
 				// hl_clear(tabinfo.keywords, settings, tabinfo);
 				hl_search(inputKws, settings, tabinfo);
-			}else{
+			}else if(option && option.skipHighlight){
+				// skip highlight if required
+			}
+			else{
 				hl_clear(removedKws, settings, tabinfo);
 				hl_search(addedKws, settings, tabinfo);
 			}
+
 			html = settings.isNewlineNewColor 
 				?  inputKws.map(line=> line.map(elem=>`<span class="keywords">${elem}</span>`).join("")).join("")
 				: inputKws.map(elem=>`<span class="keywords">${elem}</span>`).join("");

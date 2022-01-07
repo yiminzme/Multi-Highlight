@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Multi Highlight",
-  "version": "2.7.1",
-  "description": "Efficiently mark multiple words in a page.",
+  "name": "Multi Highlight: Search, Find",
+  "version": "2.5",
+  "description": "An efficient open source tool to highlight all words you want in webpages",
   "browser_action": {
     "default_logo": {
       "19": "img/logo19.png",
@@ -18,11 +18,11 @@
   },
   "content_scripts": [ {
       "matches": [ "<all_urls>" ],
-      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "popup.js"],
+      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "popup.js" ],
       "css": [ "highlight.css" ]
    } ],
   "background": {
-    "scripts": [ "lib.js", "background.js", "hot-reload.js" ],
+    "scripts": [ "lib.js", "background.js" ],
     "persistent": false
   },
   "commands": {

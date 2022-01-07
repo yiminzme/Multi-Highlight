@@ -1,42 +1,49 @@
 chrome.runtime.onInstalled.addListener(function (details) {
-    // initialize variables
-    var settings = {
-        // Pop-up window settings
-        popup_width: 400,
-        popup_height: 100,
 
-        // CSS settings
-        CSS_COLORS_COUNT: 20, // number of available highlight colors
-        CSSprefix1: "chrome-extension-FindManyStrings",
-        CSSprefix2: "chrome-extension-FindManyStrings-style-",
-        CSSprefix3: "CE-FMS-",
+    if (details.reason === chrome.runtime.OnInstalledReason.INSTALL){
 
-        // search settings
-        isInstant: true,
-        isSaveKws: false,
-        isAlwaysSearch: false,
-        isNewlineNewColor: false,
-        delim: ' ',
-        latest_keywords: [],
+        // initialize variables
+        var settings = {
+            // Pop-up window settings
+            popup_width: 400,
+            popup_height: 100,
+    
+            // CSS settings
+            CSS_COLORS_COUNT: 20, // number of available highlight colors
+            CSSprefix1: "chrome-extension-FindManyStrings",
+            CSSprefix2: "chrome-extension-FindManyStrings-style-",
+            CSSprefix3: "CE-FMS-",
+    
+            // search settings
+            isInstant: true,
+            isSaveKws: true,
+            isAlwaysSearch: true,
+            isNewlineNewColor: false,
+            isCasesensitive: false,
+            isWholeWord: false,
+            delim: ',',
+            latest_keywords: [],
+    
+            // context menu settings
+            enableAddKw: true,
+            enableRemoveKw: true
+        }
+    
+        // add context menu item
+        chrome.contextMenus.create({
+            title: 'Remove Keyword',
+            id: 'removeKw', // you'll use this in the handler function to identify this context menu item
+            contexts: ['selection'],
+        });
+        chrome.contextMenus.create({
+            title: 'Add Keyword',
+            id: 'addKw', // you'll use this in the handler function to identify this context menu item
+            contexts: ['selection'],
+        });
+    
+        chrome.storage.local.set({'settings': settings});
 
-        // context menu settings
-        enableAddKw: true,
-        enableRemoveKw: true
     }
-
-    // add context menu item
-    chrome.contextMenus.create({
-        title: 'Remove Keyword',
-        id: 'removeKw', // you'll use this in the handler function to identify this context menu item
-        contexts: ['selection'],
-    });
-    chrome.contextMenus.create({
-        title: 'Add Keyword',
-        id: 'addKw', // you'll use this in the handler function to identify this context menu item
-        contexts: ['selection'],
-    });
-
-    chrome.storage.local.set({'settings': settings});
 });
 
 // handle new page opened

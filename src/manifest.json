@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Multi Highlight",
-  "version": "2.7",
-  "description": "Efficiently mark multiple words in a page",
+  "version": "2.7.1",
+  "description": "Efficiently mark multiple words in a page.",
   "browser_action": {
     "default_logo": {
       "19": "img/logo19.png",

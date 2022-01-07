@@ -5,6 +5,7 @@
 // global variables
 lastVisibleText = "";
 
+
 // ****** general functions
 function get_tabkey(tabId) {
     return "multi-highlight_" + tabId;
@@ -18,8 +19,16 @@ function makeSafeForCSS(name) {
     });
 }
 
+// What is the fastest or most elegant way to compute a set difference using Javascript arrays? - Stack Overflow: https://stackoverflow.com/questions/1723168/what-is-the-fastest-or-most-elegant-way-to-compute-a-set-difference-using-javasc
+function SetMinus(A, B){
+	return A.filter(x => !B.includes(x) );
+}
+
 const TrueOrFalse = (opt) => opt? "true" : "false";
 
+function KeywordEscape(kw){
+	return kw.replace(/\n/sgi, '\\n');
+}
 
 // ****** Multi Highlight functions
 function hl_search(addedKws, settings, tabinfo) {
@@ -34,10 +43,10 @@ function hl_search(addedKws, settings, tabinfo) {
 			code = addedKws[i].filter(j=>j).map((kw) => {
 				if(kw.length < 1) return "";
 				cls  = className +  encodeURI(kw);
-				return "$(document.body).highlight(" + `'${kw}', `
+				return "$(document.body).highlight(" + `'${KeywordEscape(kw)}', `
 					+ `{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}  ` + "})";
 			}).join(";\n");
-			// console.log(code);
+			console.log(code);
 			chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
 		}
 	}else{
@@ -46,11 +55,11 @@ function hl_search(addedKws, settings, tabinfo) {
 			// if(kw.length < 1) return "";
 			cls = clsPrefix + ((tabinfo.style_nbr + ind) % settings.CSS_COLORS_COUNT) +  " "
 						+ (settings.CSSprefix3 + encodeURI(kw)); // escape special characters
-			return "$(document.body).highlight(" + `'${kw}', `
+			return "$(document.body).highlight(" + `'${KeywordEscape(kw)}', `
 				+ `{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}  ` + "})";
 
 		}).join(";\n");
-		// console.log(code);
+		console.log(code);
 		chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
 		tabinfo.style_nbr += addedKws.length;
 	}
@@ -99,25 +108,29 @@ function handle_highlightWords_change(tabkey, option, callback=null) {
         // (instant search mode) or (last char of input is delimiter)
         if (settings.isInstant || inputStr.slice(-1) == settings.delim) {
             if (settings.isNewlineNewColor){
-				inputKws = inputStr.split(/\n/g).filter(i => i).map(line=>line.split(settings.delim).filter(i => i)); // 2d-array; filter() removes empty array elms
-				// ntypes = inputKws.length < tabinfo.keywords.length ? inputKws.length : tabinfo.keywords.length;
-				ntypes = Math.max(inputKws.length, tabinfo.keywords.length); // number of newline
-				addedKws = []; // get tokens only occur in new input
-				removedKws = []; // get tokens only occur in old input
-				for(i = 0; i<ntypes; ++i){
-					addedKws.push($(inputKws[i]).not(tabinfo.keywords[i]).get());
-					removedKws.push($(tabinfo.keywords[i]).not(inputKws[i]).get());
-				}
-				// for(i=ntypes; i < inputKws.length; ++i){
-				// 	addedKws.push(inputKws[i]);
-				// }
-				// for(i=ntypes; i < tabinfo.keywords.length; ++i){
-				// 	removedKws.push(tabinfo.keywords[i]);
-				// }
+							inputKws = inputStr.split(/\n/g).filter(i=>i).map(line=>line.split(settings.delim).filter(i=>i)); // 2d-array
+							// in the case of toggle newline-new-color mode, previouse keyword-list is 1D array,
+							// So re-construct it into 2D array
+							savedKws = (tabinfo.keywords.length && (tabinfo.keywords[0] instanceof Array) ) 
+								? tabinfo.keywords
+								: (tabinfo.keywords.join(settings.delim) || "").split(/\n/g).filter(i=>i).map(line=>line.split(settings.delim).filter(i=>i)); // 2d-array
+							ntypes = inputKws.length < tabinfo.keywords.length ? inputKws.length : tabinfo.keywords.length;
+							addedKws = [];
+							removedKws = [];
+							for(i = 0; i<ntypes; ++i){
+								addedKws.push(SetMinus(inputKws[i], savedKws[i]));
+								removedKws.push(SetMinus(savedKws[i], inputKws[i]));
+							}
+							for(i=ntypes; i < inputKws.length; ++i){
+								addedKws.push(inputKws[i]);
+							}
+							for(i=ntypes; i < savedKws.length; ++i){
+								removedKws.push(savedKws[i]);
+							}
             }else{
                 inputKws = inputStr.split(settings.delim).filter(i => i); // filter() removes empty array elms
-                addedKws = $(inputKws).not(tabinfo.keywords).get(); // get tokens only occur in new input
-                removedKws = $(tabinfo.keywords).not(inputKws).get(); // get tokens only occur in old input
+                addedKws   = SetMinus(inputKws, tabinfo.keywords); // get tokens only occur in new input
+                removedKws = SetMinus(tabinfo.keywords, inputKws); // get tokens only occur in old input
             }
 
 			if(option && option.refresh){

@@ -142,33 +142,33 @@
     }
   });
 
-  jQuery.fn.unhighlight = function(options) {
-    var settings = {
-      className: 'highlight',
-      element: 'span'
-    };
+  // jQuery.fn.unhighlight = function(options) {
+  //   var settings = {
+  //     className: 'highlight',
+  //     element: 'span'
+  //   };
 
-    jQuery.extend(settings, options);
-
-    return this.find(settings.element + '.' + settings.className)
-      .each(function() {
-        var parent = this.parentNode;
-        parent.replaceChild(this.firstChild, this);
-        parent.normalize();
-      })
-      .end();
-  };
-
-  // jQuery.fn.unhighlight = function (options) {
-  //   var settings = { className: 'highlight', element: 'span' };
   //   jQuery.extend(settings, options);
 
-  //   return $(this.find(settings.element + "." + settings.className).get().reverse()).each(function () { // .get().reverse() is used for removing in proper order, remove carefully
+  //   return this.find(settings.element + '.' + settings.className)
+  //     .each(function() {
   //       var parent = this.parentNode;
   //       parent.replaceChild(this.firstChild, this);
   //       parent.normalize();
-  //   }).end();
+  //     })
+  //     .end();
   // };
+
+  jQuery.fn.unhighlight = function (options) {
+    var settings = { className: 'highlight', element: 'span' };
+    jQuery.extend(settings, options);
+
+    return $(this.find(settings.element + "." + settings.className).get().reverse()).each(function () { // .get().reverse() is used for removing in proper order, remove carefully
+        var parent = this.parentNode;
+        parent.replaceChild(this.firstChild, this);
+        parent.normalize();
+    }).end();
+  };
 
   jQuery.fn.highlight = function(words, options, callback) {
     var settings = {

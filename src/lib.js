@@ -37,6 +37,8 @@ function hl_search(addedKws, settings, tabinfo) {
 	isWholeWord     = TrueOrFalse(settings.isWholeWord);
 	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
 
+	addedKws = remove_duplicate_Kws(addedKws, isCasesensitive); // remove duplicate keywords of 1d array
+
 	if(settings.isNewlineNewColor){
 		for (var i = 0; i < addedKws.length; i++) {
 			className = settings.CSSprefix1 + " " + (settings.CSSprefix2 + (i % settings.CSS_COLORS_COUNT)) + " " + settings.CSSprefix3;
@@ -51,7 +53,7 @@ function hl_search(addedKws, settings, tabinfo) {
 		}
 	}else{
 		clsPrefix = settings.CSSprefix1 + " " + settings.CSSprefix2 ;
-		code = addedKws.filter(i=>i).map((kw, ind)=>{
+		code = addedKws.filter(i=>i).map((kw, ind)=>{ // filter() removes empty array elms
 			// if(kw.length < 1) return "";
 			cls = clsPrefix + ((tabinfo.style_nbr + ind) % settings.CSS_COLORS_COUNT) +  " "
 						+ (settings.CSSprefix3 + encodeURI(kw)); // escape special characters
@@ -67,8 +69,13 @@ function hl_search(addedKws, settings, tabinfo) {
 
 
 function hl_clear(removedKws, settings, tabinfo) {
-	removedKws = [].concat.apply([], removedKws) // convert 2d array to 1d (for isNewlineNewColor)
-	code = removedKws.filter(i=>i).flatMap(kw=>{
+
+	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
+
+	removedKws = [].concat.apply([], removedKws); // convert 2d array to 1d (for isNewlineNewColor)
+	removedKws = remove_duplicate_Kws(removedKws, isCasesensitive); // remove duplicate keywords of 1d array
+
+	code = removedKws.filter(i=>i).flatMap(kw=>{ // filter() removes empty array elms
 		// if(kw.length < 1) return "";
 		className = (settings.CSSprefix3 + encodeURI(kw)).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\\\$&");
 		return "$(document.body).unhighlight({className:'" + className + "'})";
@@ -83,6 +90,25 @@ function hl_clear(removedKws, settings, tabinfo) {
 function hl_clearall(settings, tabinfo) {
     chrome.tabs.executeScript(tabinfo.id,
         {code: "$(document.body).unhighlight({className:'" + settings.CSSprefix1 + "'})"}, _ => chrome.runtime.lastError);
+}
+
+function remove_duplicate_Kws(Kws, isCasesensitive){
+	var uniq = [];
+
+	if (isCasesensitive){
+		uniq = [...new Set(Kws)];
+	} else {
+		var uniq_lowercase = [];
+
+		Kws.forEach( Kw => {
+			if ( !(uniq.includes(Kw) || uniq_lowercase.includes(Kw.toLowerCase())) ){
+				uniq.push(Kw);
+				uniq_lowercase.push(Kw.toLowerCase());
+			}
+		})
+	}
+
+	return uniq
 }
 
 

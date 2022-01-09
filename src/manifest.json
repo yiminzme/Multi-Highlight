@@ -23,6 +23,7 @@
    } ],
   "background": {
     "scripts": [ "lib.js", "background.js", "hot-reload.js" ],
+    // "scripts": [ "lib.js", "background.js"],
     "persistent": false
   },
   "commands": {

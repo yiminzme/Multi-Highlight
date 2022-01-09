@@ -57,13 +57,15 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
         tabinfo.keywords = [];
         chrome.storage.local.set({[tabkey]: tabinfo});
 
-        chrome.storage.local.get(['settings'], function (result) {
+        chrome.storage.local.get(['settings', tabkey], function (result) {
             // init
             var settings = result.settings;
+            var tabinfo = result[tabkey];
 
             // if "always search" mode is on, search all keywords immediately
             if (settings.isAlwaysSearch){
                 hl_search(settings.latest_keywords, settings, tabinfo);
+                chrome.storage.local.set({[tabkey]: tabinfo}); // since tabinfo.style_nbr is updated, update storage.local
             }
         });
     }

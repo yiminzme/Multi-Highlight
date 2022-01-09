@@ -38,6 +38,7 @@ function hl_search(addedKws, settings, tabinfo) {
 	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
 
 	addedKws = remove_duplicate_Kws(addedKws, isCasesensitive); // remove duplicate keywords of 1d array
+	addedKws = sort_Kws_by_length(addedKws, false); // sort addedKws by length, from longest to shortest
 
 	if(settings.isNewlineNewColor){
 		for (var i = 0; i < addedKws.length; i++) {
@@ -72,8 +73,10 @@ function hl_clear(removedKws, settings, tabinfo) {
 
 	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
 
+	
 	removedKws = [].concat.apply([], removedKws); // convert 2d array to 1d (for isNewlineNewColor)
 	removedKws = remove_duplicate_Kws(removedKws, isCasesensitive); // remove duplicate keywords of 1d array
+	removedKws = sort_Kws_by_length(removedKws); // sort addedKws by length, from shortest to longest
 
 	code = removedKws.filter(i=>i).flatMap(kw=>{ // filter() removes empty array elms
 		// if(kw.length < 1) return "";
@@ -92,6 +95,16 @@ function hl_clearall(settings, tabinfo) {
         {code: "$(document.body).unhighlight({className:'" + settings.CSSprefix1 + "'})"}, _ => chrome.runtime.lastError);
 }
 
+function sort_Kws_by_length(Kws, start_from_shortest = true){
+	Kws.sort(function(a, b){
+		return a.length - b.length;
+	});
+
+	if (!start_from_shortest){
+		Kws.reverse()
+	}
+	return Kws
+}
 function remove_duplicate_Kws(Kws, isCasesensitive){
 	var uniq = [];
 

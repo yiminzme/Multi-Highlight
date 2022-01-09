@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Multi Highlight",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "Efficiently mark multiple words in a page.",
   "browser_action": {
     "default_logo": {
@@ -23,7 +23,6 @@
    } ],
   "background": {
     "scripts": [ "lib.js", "background.js", "hot-reload.js" ],
-    // "scripts": [ "lib.js", "background.js"],
     "persistent": false
   },
   "commands": {

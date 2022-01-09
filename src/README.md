@@ -1,13 +1,13 @@
 快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞  
 キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します
 
-✔️ Highlight on-the-fly
-✔️ Auto-highlight
-✔️ Savable word list
-✔️ Flexible delimiter
-✔️ Case sensitivity
-✔️ Whole word search
-✔️ Group words by colors
+✔️ Highlight on-the-fly  
+✔️ Auto-highlight  
+✔️ Savable word list  
+✔️ Flexible delimiter  
+✔️ Case sensitivity  
+✔️ Whole word search  
+✔️ Group words by colors  
 
 
 Notes:

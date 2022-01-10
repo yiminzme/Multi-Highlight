@@ -73,3 +73,22 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 	check_keywords_existence();
 });
+
+chrome.runtime.onMessage.addListener(function(request, sender) {
+	if (request.action == "getVisibleText") {
+		visibleText = request.source;
+		chrome.storage.local.get(['settings'], function (result) {
+			var settings = result.settings;
+			isCasesensitive = settings.isCasesensitive;
+			visibleText = isCasesensitive ? visibleText : visibleText.toLowerCase();
+			lastVisibleText = visibleText;
+			document.querySelectorAll('#kw-list>.keywords').forEach(elem=>{
+				if(-1 === visibleText.indexOf(isCasesensitive ? elem.innerText : elem.innerText.toLowerCase())){
+					elem.classList.add("notAvailable");
+				}else{
+					elem.classList.remove("notAvailable");
+				}
+			});
+		});
+	}
+});

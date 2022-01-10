@@ -31,17 +31,18 @@ function KeywordEscape(kw){
 }
 
 // ****** Multi Highlight functions
-function hl_search(addedKws, settings, tabinfo) {
+function hl_search(addedKws, settings, tabinfo) { // isNewLineNewColor expects 2d array, otherwise 1d
 	// console.log("addedKws: " + addedKws);
 	
 	isWholeWord     = TrueOrFalse(settings.isWholeWord);
 	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
 
-	addedKws = remove_duplicate_Kws(addedKws, isCasesensitive); // remove duplicate keywords of 1d array
-	addedKws = sort_Kws_by_length(addedKws, false); // sort addedKws by length, from longest to shortest
 
 	if(settings.isNewlineNewColor){
 		for (var i = 0; i < addedKws.length; i++) {
+			addedKws[i] = remove_duplicate_Kws(addedKws[i], isCasesensitive); // remove duplicate keywords of 1d array
+			addedKws[i] = sort_Kws_by_length(addedKws[i], false); // sort addedKws by length, from longest to shortest
+
 			className = settings.CSSprefix1 + " " + (settings.CSSprefix2 + (i % settings.CSS_COLORS_COUNT)) + " " + settings.CSSprefix3;
 			code = addedKws[i].filter(j=>j).map((kw) => {
 				if(kw.length < 1) return "";
@@ -53,6 +54,9 @@ function hl_search(addedKws, settings, tabinfo) {
 			chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
 		}
 	}else{
+		addedKws = remove_duplicate_Kws(addedKws, isCasesensitive); // remove duplicate keywords of 1d array
+		addedKws = sort_Kws_by_length(addedKws, false); // sort addedKws by length, from longest to shortest
+
 		clsPrefix = settings.CSSprefix1 + " " + settings.CSSprefix2 ;
 		code = addedKws.filter(i=>i).map((kw, ind)=>{ // filter() removes empty array elms
 			// if(kw.length < 1) return "";
@@ -69,7 +73,7 @@ function hl_search(addedKws, settings, tabinfo) {
 }
 
 
-function hl_clear(removedKws, settings, tabinfo) {
+function hl_clear(removedKws, settings, tabinfo) { // isNewLineNewColor expects 2d array, otherwise 1d
 
 	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
 

@@ -46,21 +46,22 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
 });
 
-// handle new page opened
-chrome.tabs.onUpdated.addListener(function (tabId, info) {
-    if (info.status === 'complete') {
+// handle new page loaded
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+
+    console.log(changeInfo)
+    if (changeInfo.status === 'complete' || changeInfo.title || changeInfo.url) {
+        console.log(changeInfo.status)
         var tabkey = get_tabkey(tabId);
         var tabinfo = {};
         tabinfo.id = tabId;
         tabinfo.style_nbr = 0;
         tabinfo.isNewPage = true;
         tabinfo.keywords = [];
-        chrome.storage.local.set({[tabkey]: tabinfo});
 
-        chrome.storage.local.get(['settings', tabkey], function (result) {
+        chrome.storage.local.get(['settings'], function (result) {
             // init
             var settings = result.settings;
-            var tabinfo = result[tabkey];
 
             // if "always search" mode is on, search all keywords immediately
             if (settings.isAlwaysSearch){
@@ -68,6 +69,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
                 chrome.storage.local.set({[tabkey]: tabinfo}); // since tabinfo.style_nbr is updated, update storage.local
             }
         });
+
+        // });
     }
 });
 

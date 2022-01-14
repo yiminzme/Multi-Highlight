@@ -97,6 +97,7 @@ function _hl_clear(removedKws, settings, tabinfo) { // isNewLineNewColor expects
 function _hl_clearall(settings, tabinfo) {
     chrome.tabs.executeScript(tabinfo.id,
         {code: "$(document.body).unhighlight({className:'" + settings.CSSprefix1 + "'})"}, _ => chrome.runtime.lastError);
+		tabinfo.style_nbr = 0;
 }
 
 function sort_Kws_by_length(Kws, start_from_shortest = true){

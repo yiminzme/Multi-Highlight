@@ -50,6 +50,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
 
     console.log(changeInfo)
+    // if (changeInfo.status === 'complete') {
     if (changeInfo.status === 'complete' || changeInfo.title || changeInfo.url) {
         console.log(changeInfo.status)
         var tabkey = get_tabkey(tabId);
@@ -58,19 +59,19 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
         tabinfo.style_nbr = 0;
         tabinfo.isNewPage = true;
         tabinfo.keywords = [];
+        chrome.storage.local.set({[tabkey]: tabinfo}, function(){ // update storage.local in time for usage, e.g. tabinfo.isNewPage
+            chrome.storage.local.get(['settings'], function (result) {
+                // init
+                var settings = result.settings;
 
-        chrome.storage.local.get(['settings'], function (result) {
-            // init
-            var settings = result.settings;
+                // if "always search" mode is on, search all keywords immediately
+                if (settings.isAlwaysSearch){
+                    _hl_search(settings.latest_keywords, settings, tabinfo);
+                    chrome.storage.local.set({[tabkey]: tabinfo}); // since tabinfo.style_nbr is updated, update storage.local
+                }
+            });
+        }); 
 
-            // if "always search" mode is on, search all keywords immediately
-            if (settings.isAlwaysSearch){
-                hl_search(settings.latest_keywords, settings, tabinfo);
-                chrome.storage.local.set({[tabkey]: tabinfo}); // since tabinfo.style_nbr is updated, update storage.local
-            }
-        });
-
-        // });
     }
 });
 
@@ -103,7 +104,7 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
                 tabinfo.keywords.splice(index, 1);
 			}
             settings.latest_keywords = tabinfo.keywords;
-            hl_clear([kw], settings, tabinfo);
+            _hl_clear([kw], settings, tabinfo);
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
             });
         });
@@ -115,10 +116,10 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
 			if(settings.isNewlineNewColor){
 				kwsArr = tabinfo.keywords;
 				kwsArr[0].push(kw); // push to the first row of the 2D keyword-list
-				hl_search([[kw]], settings, tabinfo);
+				_hl_search([[kw]], settings, tabinfo);
 			}else{
 				tabinfo.keywords.push(kw);
-				hl_search([kw], settings, tabinfo);
+				_hl_search([kw], settings, tabinfo);
 			}
             settings.latest_keywords = tabinfo.keywords;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {

@@ -31,7 +31,7 @@ function KeywordEscape(kw){
 }
 
 // ****** Multi Highlight functions
-function hl_search(addedKws, settings, tabinfo) { // isNewLineNewColor expects 2d array, otherwise 1d
+function _hl_search(addedKws, settings, tabinfo) { // isNewLineNewColor expects 2d array, otherwise 1d
 	// console.log("addedKws: " + addedKws);
 	
 	isWholeWord     = TrueOrFalse(settings.isWholeWord);
@@ -50,7 +50,7 @@ function hl_search(addedKws, settings, tabinfo) { // isNewLineNewColor expects 2
 				return "$(document.body).highlight(" + `'${KeywordEscape(kw)}', `
 					+ `{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}  ` + "})";
 			}).join(";\n");
-			console.log(code);
+			// console.log(code);
 			chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
 		}
 	}else{
@@ -66,14 +66,14 @@ function hl_search(addedKws, settings, tabinfo) { // isNewLineNewColor expects 2
 				+ `{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}  ` + "})";
 
 		}).join(";\n");
-		console.log(code);
+		// console.log(code);
 		chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
 		tabinfo.style_nbr += addedKws.length;
 	}
 }
 
 
-function hl_clear(removedKws, settings, tabinfo) { // isNewLineNewColor expects 2d array, otherwise 1d
+function _hl_clear(removedKws, settings, tabinfo) { // isNewLineNewColor expects 2d array, otherwise 1d
 
 	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
 
@@ -94,7 +94,7 @@ function hl_clear(removedKws, settings, tabinfo) { // isNewLineNewColor expects 
 }
 
 
-function hl_clearall(settings, tabinfo) {
+function _hl_clearall(settings, tabinfo) {
     chrome.tabs.executeScript(tabinfo.id,
         {code: "$(document.body).unhighlight({className:'" + settings.CSSprefix1 + "'})"}, _ => chrome.runtime.lastError);
 }
@@ -177,15 +177,14 @@ function handle_highlightWords_change(tabkey, option, callback=null) {
             }
 
 			if(option && option.refresh){
-				hl_clearall(settings, tabinfo);
-				// hl_clear(tabinfo.keywords, settings, tabinfo);
-				hl_search(inputKws, settings, tabinfo);
+				_hl_clearall(settings, tabinfo);
+				// _hl_clear(tabinfo.keywords, settings, tabinfo);
+				_hl_search(inputKws, settings, tabinfo);
 			}else if(option && option.skipHighlight){
-				// skip highlight if required
-			}
-			else{
-				hl_clear(removedKws, settings, tabinfo);
-				hl_search(addedKws, settings, tabinfo);
+				// don't highlight
+			}else{
+				_hl_clear(removedKws, settings, tabinfo);
+				_hl_search(addedKws, settings, tabinfo);
 			}
 
 			html = settings.isNewlineNewColor 
@@ -199,7 +198,7 @@ function handle_highlightWords_change(tabkey, option, callback=null) {
             settings.latest_keywords = inputKws;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings});
         } else if (!inputStr) { // (empty string)
-            hl_clearall(settings, tabinfo)
+            _hl_clearall(settings, tabinfo)
             tabinfo.keywords = [];
             settings.latest_keywords = "";
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings});

@@ -16,6 +16,12 @@ An efficient tool to highlight all words you want in webpages
 
 Changelog:
 
+20220115
+* Support nested highlight
+* Bug fix: innerHTML deleted unintentionally
+* Bug fix: Word boundary not working for keyword-list
+* <tag>DEV</tag> Change keyword data structure and update the version to "2.8.0" due to 
+
 20211221
 * Add keywords display zone
 * Check wheter the page contains the keyword(s) or not, if not, gray it

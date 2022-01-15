@@ -141,7 +141,17 @@
         .replace(/[\u00fd]/g, 'y');
     }
   });
+	jQuery.fn.flatten = function(){
+		this.each(function() {
+			var parent = this.parentNode;
+			jQuery(this).replaceWith(this.childNodes);
+			parent.normalize(); 
+		});
+	}
+	
 
+	// patch: for nested highlighed elements, flatten() instead of replaced
+	// with the firstchild should be used
   jQuery.fn.unhighlight = function(options) {
     var settings = {
       className: 'highlight',
@@ -150,13 +160,14 @@
 
     jQuery.extend(settings, options);
 
-    return this.find(settings.element + '.' + settings.className)
-      .each(function() {
-        var parent = this.parentNode;
-        parent.replaceChild(this.firstChild, this);
-        parent.normalize();
-      })
-      .end();
+	jQuery(settings.element + '.' + settings.className, document.body || document).flatten();
+    // return this.find(settings.element + '.' + settings.className)
+    //   .each(function() {
+    //     var parent = this.parentNode;
+    //     parent.replaceChild(this.firstChild, this);
+    //     parent.normalize();
+    //   })
+    //   .end();
   };
 
   jQuery.fn.highlight = function(words, options, callback) {

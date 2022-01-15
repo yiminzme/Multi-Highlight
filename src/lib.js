@@ -114,6 +114,12 @@ function KeywordsMinus(kwListA, kwListB){
 	return kwListA.filter(x=>!KwListContain(kwListB, x));
 
 }
+function build_keywords_list(inputKws){
+	var html = inputKws.map(kw=>`<span class="keywords">${kw.kwStr}</span>`).join("");
+	$('#kw-list>.keywords').remove();
+	$(html).appendTo($('#kw-list'));
+	check_keywords_existence();
+}
 function handle_highlightWords_change(tabkey, option, callback=null) {
     inputStr = highlightWords.value;
 		// .toLowerCase();
@@ -121,6 +127,11 @@ function handle_highlightWords_change(tabkey, option, callback=null) {
     chrome.storage.local.get(['settings', tabkey], function (result) {
         var settings = result.settings;
         var tabinfo = result[tabkey];
+
+		if(!settings.isOn){
+			hl_clearall(settings, tabinfo);
+			return;
+		}
 
         // (instant search mode) or (last char of input is delimiter)
         if (settings.isInstant || inputStr.slice(-1) == settings.delim) {
@@ -142,11 +153,8 @@ function handle_highlightWords_change(tabkey, option, callback=null) {
 				hl_clear(removedKws, settings, tabinfo);
 				hl_search(addedKws, settings, tabinfo);
 			}
-			html = inputKws.map(kw=>`<span class="keywords">${kw.kwStr}</span>`).join("");
-			$('#kw-list>.keywords').remove();
-			$(html).appendTo($('#kw-list'));
-			check_keywords_existence();
             tabinfo.keywords = inputKws;
+			build_keywords_list(inputKws);
             settings.latest_keywords = inputKws;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings});
         } else if (!inputStr) { // (empty string)
@@ -172,14 +180,16 @@ function handle_keyword_removal(event, tabkey){
 }
 
 
-function handle_option_change(tabkey) { // tabkey of popup window
+function handle_option_change(tabkey, event) { // tabkey of popup window
 	chrome.storage.local.get(['settings'], function (result) {
 		var settings = result.settings;
 
 		var forceRefresh = (settings.isWholeWord != wholeWord.checked)
 			|| (settings.isCasesensitive != casesensitive.checked)
-			|| (settings.isNewlineNewColor != newlineNewColor.checked);
+			|| (settings.isNewlineNewColor != newlineNewColor.checked)
+			|| event.currentTarget === toggleMHL;
 		// update settings
+		settings.isOn              = toggleMHL.checked;
 		settings.delim             = delimiter.value;
 		settings.isInstant         = instant.checked;
 		settings.isAlwaysSearch    = alwaysSearch.checked;

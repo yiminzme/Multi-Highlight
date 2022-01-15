@@ -21,6 +21,9 @@ Changelog:
 * Bug fix: innerHTML deleted unintentionally
 * Bug fix: Word boundary not working for keyword-list
 * <tag>DEV</tag> Change keyword data structure and update the version to "2.8.0" due to 
+* <tag>Feature</tag> Re-highlighting.
+* <tag>Feature</tag> Toggle highlighting.
+
 
 20211221
 * Add keywords display zone
@@ -67,3 +70,13 @@ Changelog:
 
 ## Demo  
 ![demo1](./src/img/20210519_screenshot3.jpg)  
+
+
+<style>
+tag{
+	color: #eee;
+	background-color: #d33;
+	padding: 0 .3em;
+	border-radius: .2em;
+}
+</style>

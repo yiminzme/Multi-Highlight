@@ -4,6 +4,7 @@
 defaultSettings = {
 	delim: " ",
 	isAlwaysSearch: false,
+	isOn: true,
 	isCasesensitive: true,
 	isInstant: true,
 	isNewlineNewColor: false,
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				// init popup values
 				delimiter.value         = settings.delim;
 				instant.checked         = settings.isInstant;
+				toggleMHL.checked       = settings.isOn;
 				alwaysSearch.checked    = settings.isAlwaysSearch;
 				newlineNewColor.checked = settings.isNewlineNewColor;
 				casesensitive.checked   = settings.isCasesensitive;
@@ -63,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						handle_highlightWords_change(tabkey);
 					}
 				});
+				build_keywords_list(kws);
 				// register listener
 				$("#highlightWords").on("input", function () {
 					handle_highlightWords_change(tabkey);
@@ -70,9 +73,12 @@ document.addEventListener('DOMContentLoaded', function () {
 				$("#kw-list").on("click", function (event) {
 					handle_keyword_removal(event, tabkey);
 				})
-				$("#casesensitive, #wholeWord, #delimiter, #instant,"
-					+ " #saveWords,#alwaysSearch,#newlineNewColor").on("input", function () {
-					handle_option_change(tabkey);
+				$("#toggleMHL,#casesensitive, #wholeWord, #delimiter, #instant,"
+					+ " #saveWords,#alwaysSearch,#newlineNewColor").on("input", function(event) {
+					handle_option_change(tabkey, event);
+				});
+				$('#forceRefresh').on("click", function(){
+					handle_highlightWords_change(tabkey, {refresh: true});
 				})
 				$("#options_icon").click(function(){
 					// console.log("asdf");

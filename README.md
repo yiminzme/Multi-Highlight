@@ -23,6 +23,14 @@ GitHub: https://github.com/yiminzme/Multi-Highlight
 
 Changelog:
 
+20220115
+* Support nested highlight
+* Bug fix: innerHTML deleted unintentionally
+* Bug fix: Word boundary not working for keyword-list
+* <tag>DEV</tag> Change keyword data structure and update the version to "2.8.0" due to 
+* <tag>Feature</tag> Re-highlighting.
+* <tag>Feature</tag> Toggle highlighting.
+
 20220110:  
 * Improve stability
 
@@ -75,3 +83,14 @@ Changelog:
 * Organize code
 * Change UI (based on Multi-Highlight)
 * Change extension icon
+
+
+
+<style>
+tag{
+	color: #eee;
+	background-color: #d33;
+	padding: 0 .3em;
+	border-radius: .2em;
+}
+</style>

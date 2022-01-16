@@ -86,41 +86,36 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
             // init
             var settings = result.settings;
             var tabinfo = result[tabkey];
-			//
-			if(settings.isNewlineNewColor){
-				var isFound = false;
-				for(var i = 0, len = tabinfo.keywords.length; i< len; ++i){
-					var index = tabinfo.keywords[i].indexOf(kw);
-					if(index >=0){
-						isFound = true;
-						tabinfo.keywords[i].splice(index,1);
-						break;
-					}
-				}
-				if(!isFound) return;
-			}else{
-				var index = tabinfo.keywords.indexOf(kw);
-				if(index < 0) return;
-                tabinfo.keywords.splice(index, 1);
-			}
+            var kws = tabinfo.keywords;
+
+            var pos = -1;
+            for(var i = 0, len = kws.length; i < len; ++i){
+                if(kws[i].kwStr === kw){
+                    pos = i;
+                    break;
+                }
+            }
+            if(pos < 0) return;
+            hl_clear([kws[pos]], settings, tabinfo);
+            tabinfo.keywords.splice(pos, 1);
             settings.latest_keywords = tabinfo.keywords;
-            _hl_clear([kw], settings, tabinfo);
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
             });
         });
     } else if (info.menuItemId === "addKw") {
         chrome.storage.local.get(["settings", tabkey], function (result) {
-            // init
             settings = result.settings;
             tabinfo = result[tabkey];
-			if(settings.isNewlineNewColor){
-				kwsArr = tabinfo.keywords;
-				kwsArr[0].push(kw); // push to the first row of the 2D keyword-list
-				_hl_search([[kw]], settings, tabinfo);
-			}else{
-				tabinfo.keywords.push(kw);
-				_hl_search([kw], settings, tabinfo);
-			}
+
+            if(settings.isNewlineNewColor){
+                addedKw = {kwGrp: 0 , kwStr: kw};
+                tabinfo.keywords.unshift(addedKw);
+            }else{
+                addedKw = {kwGrp:  (tabinfo.keywords.length % 20), kwStr: kw};
+                tabinfo.keywords.push(addedKw);
+            }
+            hl_search([addedKw], settings, tabinfo);
+
             settings.latest_keywords = tabinfo.keywords;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
             });

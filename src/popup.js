@@ -15,7 +15,6 @@ defaultSettings = {
 	popup_width: 400
 };
 
-
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
 		var currTab = tabs[0];
@@ -23,11 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			var tabkey = get_tabkey(currTab.id);
 			chrome.storage.local.get(['settings', tabkey], function (result) {
 				// fetch general settings
-				console.log(defaultSettings);
-				console.log(result.settings);
 				var settings = Object.assign(defaultSettings, result.settings);
 				var tabinfo = result[tabkey];
-				var flag = {"is_change": false};
+				var flag = {
+					"reconstruct_str": false, // indicate whether we should use saved word list
+					"skip_highlight": false, // if true, saved words should have been highlighted since page loaded, but not stored in tabinfo.
+					"force_refresh": false, // whether to re-highlighting
+				};
 				// init popup interface
 				container.style.width = settings.popup_width + "px";
 				highlightWords.style.minHeight = settings.popup_height + "px";
@@ -59,11 +60,10 @@ document.addEventListener('DOMContentLoaded', function () {
 					// append deliminator if there are words
 					highlightWords.value += highlightWords.value ? settings.delim : "";
 				}
+
 				tabinfo.isNewPage = false;
 				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
-					if (flag.is_change) {
-						handle_highlightWords_change(tabkey);
-					}
+					handle_highlightWords_change(tabkey, {refresh: flag.force_refresh, skipHighlight: flag.skip_highlight});
 				});
 				build_keywords_list(kws);
 				// register listener
@@ -81,11 +81,29 @@ document.addEventListener('DOMContentLoaded', function () {
 					handle_highlightWords_change(tabkey, {refresh: true});
 				})
 				$("#options_icon").click(function(){
-					// console.log("asdf");
 					chrome.runtime.openOptionsPage();
 				})
 			});
 		}
 	});
 	check_keywords_existence();
+});
+
+chrome.runtime.onMessage.addListener(function(request, sender) {
+	if (request.action == "getVisibleText") {
+		visibleText = request.source;
+		chrome.storage.local.get(['settings'], function (result) {
+			var settings = result.settings;
+			isCasesensitive = settings.isCasesensitive;
+			visibleText = isCasesensitive ? visibleText : visibleText.toLowerCase();
+			lastVisibleText = visibleText;
+			document.querySelectorAll('#kw-list>.keywords').forEach(elem=>{
+				if(-1 === visibleText.indexOf(isCasesensitive ? elem.innerText : elem.innerText.toLowerCase())){
+					elem.classList.add("notAvailable");
+				}else{
+					elem.classList.remove("notAvailable");
+				}
+			});
+		});
+	}
 });

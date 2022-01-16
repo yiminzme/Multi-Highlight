@@ -150,15 +150,16 @@ function handle_highlightWords_change(tabkey, option, callback=null) {
 				// make a copy to avoid affection from sorting the hl_search
 				hl_search([...inputKws], settings, tabinfo);
 			}else{
-				hl_clear(removedKws, settings, tabinfo);
-				hl_search(addedKws, settings, tabinfo);
+				_hl_clear(removedKws, settings, tabinfo);
+				_hl_search(addedKws, settings, tabinfo);
 			}
+          
             tabinfo.keywords = inputKws;
 			build_keywords_list(inputKws);
             settings.latest_keywords = inputKws;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings});
         } else if (!inputStr) { // (empty string)
-            hl_clearall(settings, tabinfo)
+            _hl_clearall(settings, tabinfo)
             tabinfo.keywords = [];
             settings.latest_keywords = "";
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings});
@@ -287,4 +288,73 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
 			});
 		});
 	}
-});
+}
+
+
+function _hl_clear(removedKws, settings, tabinfo) { // isNewLineNewColor expects 2d array, otherwise 1d
+
+	isCasesensitive = TrueOrFalse(settings.isCasesensitive);
+
+	
+	removedKws = [].concat.apply([], removedKws); // convert 2d array to 1d (for isNewlineNewColor)
+	removedKws = remove_duplicate_Kws(removedKws, isCasesensitive); // remove duplicate keywords of 1d array
+	removedKws = sort_Kws_by_length(removedKws); // sort addedKws by length, from shortest to longest
+
+	code = removedKws.filter(i=>i).flatMap(kw=>{ // filter() removes empty array elms
+		// if(kw.length < 1) return "";
+		className = (settings.CSSprefix3 + encodeURI(kw)).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\\\$&");
+		return "$(document.body).unhighlight({className:'" + className + "'})";
+	}).join(";\n");
+	// console.log(`removedKws${removedKws.length}:` + removedKws);
+	// console.log("REMOVE: " + code);
+	chrome.tabs.executeScript(tabinfo.id, {code: code}, _ => chrome.runtime.lastError);
+	settings.isNewlineNewColor || (tabinfo.style_nbr -= removedKws.length);
+}
+
+
+function _hl_clearall(settings, tabinfo) {
+    chrome.tabs.executeScript(tabinfo.id,
+        {code: "$(document.body).unhighlight({className:'" + settings.CSSprefix1 + "'})"}, _ => chrome.runtime.lastError);
+		tabinfo.style_nbr = 0;
+}
+
+function sort_Kws_by_length(Kws, start_from_shortest = true){
+	Kws.sort(function(a, b){
+		return a.length - b.length;
+	});
+
+	if (!start_from_shortest){
+		Kws.reverse()
+	}
+	return Kws
+}
+function remove_duplicate_Kws(Kws, isCasesensitive){
+	var uniq = [];
+
+	if (isCasesensitive){
+		uniq = [...new Set(Kws)];
+	} else {
+		var uniq_lowercase = [];
+
+		Kws.forEach( Kw => {
+			if ( !(uniq.includes(Kw) || uniq_lowercase.includes(Kw.toLowerCase())) ){
+				uniq.push(Kw);
+				uniq_lowercase.push(Kw.toLowerCase());
+			}
+		})
+	}
+
+	return uniq
+}
+
+
+function check_keywords_existence(){
+	chrome.tabs.executeScript(null, {
+		file: "getPagesSource.js"
+	}, function() {
+		// If you try and inject into an extensions page or the webstore/NTP you'll get an error
+		if (chrome.runtime.lastError) {
+			console.error( 'There was an error injecting script : \n' + chrome.runtime.lastError.message);
+		}
+	});
+}

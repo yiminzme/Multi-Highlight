@@ -1,17 +1,24 @@
 # Multi-Highlight
 
 
-An efficient tool to highlight all words you want in webpages
-快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞
-キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します
+An efficient tool to highlight all words you want in webpages  
+快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞  
+キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します  
 
-* Support memorizing typed words
-* Support always highlighting mode
-* Support grouping words by colors
-* Support customizable delimiter
-* Support highlight as you type
+✔️ Highlight on-the-fly  
+✔️ Auto-highlight  
+✔️ Savable word list  
+✔️ Flexible delimiter  
+✔️ Case sensitivity  
+✔️ Whole word search  
+✔️ Group words by colors  
 
-* does not support PDF, iframe element
+
+Notes:
+* After installation, refresh tabs to work
+* Does not support PDF, iframe
+
+GitHub: https://github.com/yiminzme/Multi-Highlight
 
 
 Changelog:
@@ -24,11 +31,27 @@ Changelog:
 * <tag>Feature</tag> Re-highlighting.
 * <tag>Feature</tag> Toggle highlighting.
 
+20220110:  
+* Improve stability
+
+20220102:
+* Adjust interface
+* Fix bug (show current keyword list right after popup; properly remove highlights when NewLineNewColor mode is on)
+
+20211226
+* Add options: Whole words only, Casesensitive
+* Update the highlight lib from [npmjs](https://www.npmjs.com/package/jquery-highlight)
+* Modified: Handle the options change in one callback function.
+* Modified: Use 2D array to store the keywords in `NewColorNewLine` mode.
+* Bugfix: Keywords removal should not remove the container.
 
 20211221
 * Add keywords display zone
 * Check wheter the page contains the keyword(s) or not, if not, gray it
 * `Ctrl+Click` to delete the correspond keyword
+
+20210826:
+* Fix user settings reset after browser update
 
 20210519
 * Improve UI
@@ -36,7 +59,7 @@ Changelog:
 * Add "Always highlight" feature
 * Add "Change color after newline" feature
 * Fix unstable typesetting issue when typing
-* Add 10 more highlight colors
+* Add 10 more highlight colors (now contains 20 colors)
 
 20191028
 * Customizable window size
@@ -61,15 +84,6 @@ Changelog:
 * Change UI (based on Multi-Highlight)
 * Change extension icon
 
-
-
-
-
-## User Interface  
-![UI1](./src/img/20210519_screenshot1.jpg)  
-
-## Demo  
-![demo1](./src/img/20210519_screenshot3.jpg)  
 
 
 <style>

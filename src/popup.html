@@ -138,106 +138,128 @@
       #options_icon {
          width: 1.5em;
          display: inline;
+         margin-left: .5em;
+         margin-right: .2em;
+      }
+
+      #kw-list {
+         display: block;
+         max-width: 100%;
+         background-color: #eee;
+         border: 1px solid #eee;
+         box-shadow: 0 0px 10px #eee;
+         padding: 0.3em;
+      }
+
+      .keywords {
+         /* line-height: 1.2em; */
+         margin: .2em .2em;
+         text-align: center;
+         border-radius: 0.3em;
+         display: inline-block;
+         min-width: 2em;
+         padding: 0 .3em;
+         /* min-width: 20%; */
+      }
+
+      .keywords:nth-of-type(2n) {
+         border: solid 2px #f37e63;
+      }
+
+      .keywords:nth-of-type(2n+1) {
+         border: solid 2px #379bb0;
+      }
+
+      .keywords.notAvailable {
+         border: solid 2px #dddddd;
+      }
+
+
+      #settings1 {
          float: right;
       }
-	  #kw-list{
-		  display: block;
-		  max-width: 100%;
-		  background-color: #eee;
-		  border: 1px solid #eee;
-		  box-shadow: 0 0px 10px #eee;
-		  padding: 0.3em;
-	  }
-	  .keywords{
-		  /* line-height: 1.2em; */
-		  margin: .2em .2em;
-		  text-align: center;
-		  border-radius: 0.3em;
-		  display: inline-block;
-		  min-width: 2em;
-		  padding: 0 .3em;
-		  /* min-width: 20%; */
-	  }
-	  .keywords:nth-of-type(2n){
-		  border: solid 2px #f37e63;
-	  }
-	  .keywords:nth-of-type(2n+1){
-		  border: solid 2px #379bb0;
-	  }
-	  .keywords.notAvailable{
-		  border: solid 2px #dddddd;
-	  }
 
+      /* https://www.w3schools.com/howto/howto_css_switch.asp*/
+      /* The switch - the box around the slider */
+      .switch {
+         position: relative;
+         display: inline-block;
+         /* margin of switch */
+         margin: .2em .5em;
+         top: -0.25em;
+         /* size of button */
+         width: 2em;
+         height: 1.2em;
+      }
 
-	  #forceRefresh,
-	  .switch {
-		  float: right;
-		  margin-right: .5em;
-		  margin-left: .5em;
-	  }
-	  /* https://www.w3schools.com/howto/howto_css_switch.asp*/
-	  /* The switch - the box around the slider */
-	  .switch {
-		  position: relative;
-		  display: inline-block;
-		  width: 2.7em;
-		  height: 1.5em;
-	  }
+      /* style of refresh button */
+      #forceRefresh {
+         padding: 0em;
+         /* margin of refresh button */
+         position: relative;
+         margin: 0em .5em;
+         /* margin-right: .5em; */
+         top: -.3em;
+         width: 1.5em;
+         height: 1.5em;
+      }
 
-	  /* Hide default HTML checkbox */
-	  .switch input {
-		  opacity: 0;
-		  width: 0;
-		  height: 0;
-	  }
+      /* Hide default HTML checkbox */
+      .switch input {
+         opacity: 0;
+         width: 0;
+         height: 0;
+      }
 
-	  /* The slider */
-	  .slider {
-		  position: absolute;
-		  cursor: pointer;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: #ccc;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-	  }
+      /* The slider */
+      .slider {
+         position: absolute;
+         cursor: pointer;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background-color: #ccc;
+         -webkit-transition: .4s;
+         transition: .4s;
+      }
 
-	  .slider:before {
-		  position: absolute;
-		  content: "";
-		  height: 1.5em;
-		  width: 1.5em;
-		  left: .2em;
-		  bottom: 0px;
-		  background-color: white;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-	  }
+      .slider:before {
+         position: absolute;
+         content: "";
+         /* size of button */
+         height: 0.8em;
+         width: 0.8em;
+         /* position of button */
+         left: .2em;
+         bottom: .2em;
+         background-color: white;
+         -webkit-transition: .3s;
+         transition: .3s;
+      }
 
-	  input:checked + .slider {
-		  background-color: #2196F3;
-	  }
+      input:checked+.slider {
+         background-color: #2196F3;
+      }
 
-	  input:focus + .slider {
-		  box-shadow: 0 0 1px #2196F3;
-	  }
+      input:focus+.slider {
+         box-shadow: 0 0 1px #2196F3;
+      }
 
-	  input:checked + .slider:before {
-		  -webkit-transform: translateX(0.9em);
-		  -ms-transform: translateX(0.9em);
-		  transform: translateX(0.9em);
-	  }
+      input:checked+.slider:before {
+         -webkit-transform: translateX(0.9em);
+         -ms-transform: translateX(0.9em);
+         transform: translateX(0.9em);
+      }
 
-	  /* Rounded sliders */
-	  .slider.round {
-		  border-radius: 1em;
-	  }
+      /* Rounded sliders */
+      .slider.round {
+         border-radius: 1em;
+      }
 
-	  .slider.round:before {
-		  border-radius: 50%;
-	  }
+      .slider.round:before {
+         border-radius: 100%;
+      }
    </style>
 </head>
 
@@ -245,32 +267,34 @@
    <div id="container">
       <div class="textarea-wrap">
          <div class="tip">
-			 <span class="main-tip"style="vertical-align: -webkit-baseline-middle;">Multi Highlight</span>
-			 <button id="forceRefresh">&#8635;</button>
-			 <label class="switch"> <input type="checkbox" id="toggleMHL"> <span class="slider round"></span> </label>
-			 <img id="options_icon" src="./img/options_icon.svg">
+            <span class="main-tip" style="vertical-align: -webkit-baseline-middle;">Multi Highlight</span>
+            <span id="settings1">
+               <label class="switch" title="Button to enable/disable highlight"> <input type="checkbox" id="toggleMHL">
+                  <span class="slider round"></span> </label>
+               <button id="forceRefresh" title="Reset Highlighting">&#8635;</button>
+               <img id="options_icon" src="./img/options_icon.svg">
+            </span>
          </div>
-		 <p>
-		 </p>
          <div class="highlight-words" id="highlight-words">
             <textarea id="highlightWords" spellcheck="false" autofocus></textarea>
          </div>
          <div class="sub-tip">
-            &nbsp;<label title="Symbol to split the words in your input">Delimiter:&nbsp;<input type="text"
+            &nbsp;<label title="A symbol to split your words, such as comma or space">Delimiter:&nbsp;<input type="text"
                   id="delimiter" name="delimiter" maxlength="1" /></label>
-            <br>&nbsp;<label
-               id="instantLabel" title="Highlight words immediately"><input type="checkbox" id="instant"
+            <br>&nbsp;<label id="instantLabel" title="Highlight words immediately"><input type="checkbox" id="instant"
                   name="instant" /> Instant Search </label>
             <br>&nbsp;<label id="saveWordsLabel" title="Save current words for future browsing"><input type="checkbox"
-                  id="saveWords" name="saveWords" /> Keep existing words in new tab </label>&nbsp;&nbsp;&nbsp;&nbsp;<label id="alwaysSearchLabel" title="Highlight automatically in new tab, or when extension is clicked"><input type="checkbox"
-                     id="alwaysSearch" name="alwaysSearch" />Auto-highlight</label>
+                  id="saveWords" name="saveWords" /> Keep existing words in new tab
+            </label>&nbsp;&nbsp;&nbsp;&nbsp;<label id="alwaysSearchLabel"
+               title="Automatically highlight kept words in new tab"><input type="checkbox" id="alwaysSearch"
+                  name="alwaysSearch" />Auto-highlight</label>
             <br><label id="wholeWordLabel" title="Highlight whole words only"><input type="checkbox" id="wholeWord"
                   name="wholeWord" />Only highlight whole words </label>
-            <label id="casesensitiveLabel" title="Case sensitive">&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"
-                  id="casesensitive" name="casesensitive" />Case sensitive </label>
+            <label id="casesensitiveLabel" title="Search words with case-sensitivity">&nbsp;&nbsp;&nbsp;&nbsp;<input
+                  type="checkbox" id="casesensitive" name="casesensitive" />Case sensitive </label>
             <br><label id="newlineNewColorLabel"
-               title="On: change highlight color after newline&#10;Off: change highglight color after every words"><input
-                  type="checkbox" id="newlineNewColor" name="newlineNewColor" />Only change color on newline</label>
+               title="On: change highlight color after newline&#10;Off: change highlight color after every word"><input
+                  type="checkbox" id="newlineNewColor" name="newlineNewColor" />Change color on newline only</label>
          </div>
       </div>
       <div id="kw-list">

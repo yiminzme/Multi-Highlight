@@ -2,7 +2,7 @@
 // Multi Highlight popup js
 // ************************************************************************
 defaultSettings = {
-	delim: " ",
+	delim: ",",
 	isAlwaysSearch: false,
 	isOn: true,
 	isCasesensitive: true,

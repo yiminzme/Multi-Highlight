@@ -15,13 +15,14 @@ chrome.runtime.onInstalled.addListener(function (details) {
             CSSprefix3: "CE-FMS-",
     
             // search settings
-            isInstant: true,
-            isSaveKws: true,
-            isAlwaysSearch: true,
-            isNewlineNewColor: false,
-            isCasesensitive: false,
-            isWholeWord: false,
             delim: ',',
+            isAlwaysSearch: true,
+            isOn: true,
+            isCasesensitive: false,
+            isInstant: true,
+            isNewlineNewColor: false,
+            isSaveKws: true,
+            isWholeWord: false,
             latest_keywords: [],
     
             // context menu settings
@@ -64,8 +65,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
                 // init
                 var settings = result.settings;
 
-                // if "always search" mode is on, search all keywords immediately
-                if (settings.isAlwaysSearch){
+                // if isOn and "always search" mode are true, search all keywords immediately
+                if (settings.isAlwaysSearch && settings.isOn){
                     _hl_search(settings.latest_keywords, settings, tabinfo);
                     chrome.storage.local.set({[tabkey]: tabinfo}); // since tabinfo.style_nbr is updated, update storage.local
                 }

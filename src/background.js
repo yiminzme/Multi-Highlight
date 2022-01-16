@@ -96,7 +96,7 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
                 }
             }
             if(pos < 0) return;
-            hl_clear([kws[pos]], settings, tabinfo);
+            _hl_clear([kws[pos]], settings, tabinfo);
             tabinfo.keywords.splice(pos, 1);
             settings.latest_keywords = tabinfo.keywords;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
@@ -114,7 +114,7 @@ chrome.contextMenus.onClicked.addListener(function getword(info, tab) {
                 addedKw = {kwGrp:  (tabinfo.keywords.length % 20), kwStr: kw};
                 tabinfo.keywords.push(addedKw);
             }
-            hl_search([addedKw], settings, tabinfo);
+            _hl_search([addedKw], settings, tabinfo);
 
             settings.latest_keywords = tabinfo.keywords;
             chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {

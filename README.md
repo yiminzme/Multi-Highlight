@@ -15,6 +15,7 @@ An efficient tool to highlight all words you want in webpages
 
 
 Notes:
+* After installation, refresh tabs to work
 * Does not support PDF, iframe
 
 

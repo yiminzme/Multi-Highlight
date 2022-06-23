@@ -17,8 +17,8 @@
     "350": "img/logo350.png"
   },
   "content_scripts": [ {
-      "matches": [ "<all_urls>" ],
-      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "popup.js"],
+      "matches": [ "<all_urls>", "file://*/*" ],
+      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "lib.js", "content-action.js"],
       "css": [ "highlight.css" ]
    } ],
   "background": {

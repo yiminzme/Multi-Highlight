@@ -1,23 +1,23 @@
-# Multi-Highlight
+# ![extension-logo](src/img/logo38.png) Multi-Highlight
 
 
-An efficient tool to highlight all words you want in webpages  
+An essential tool to highlight all words you want in webpages  
 快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞  
 キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します  
 
 ✔️ Highlight on-the-fly  
 ✔️ Auto-highlight  
-✔️ Savable word list  
 ✔️ Flexible delimiter  
-✔️ Case sensitivity  
+✔️ Savable words list  
 ✔️ Whole word search  
+✔️ Case sensitivity  
 ✔️ Group words by colors  
 
 
-Notes:
-* After installation, refresh tabs to work
-* Does not support PDF, iframe
+![screenshot-2](doc/2_screenshot_github.png)
 
+Notes:
+* Does not support PDF, cross-domain iframe
 
 
 Changelog:

@@ -1,31 +1,19 @@
 # ![extension-logo](src/img/logo38.png) Multi-Highlight
 
-
 An essential tool to highlight all words you want in webpages  
 快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞  
-キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します  
 
-✔️ Highlight on-the-fly  
-✔️ Auto-highlight  
-✔️ Flexible delimiter  
-✔️ Savable words list  
-✔️ Whole word search  
-✔️ Case sensitivity  
-✔️ Group words by colors  
+✔️ Highlight on-the-fly  ✔️ Auto-highlight  ✔️ Flexible delimiter  ✔️ Savable words list  ✔️ Whole word search  ✔️ Case sensitivity  ✔️ Group words by colors  
 
 
 ![screenshot-2](doc/2_screenshot_github.png)
 
-Notes:
-* Does not support PDF, cross-domain iframe
+## Updates 
 
-
-Changelog:
-
-20220624:
+20220624  
 * Improve adaptability -- add support to highlight asynchronous text (e.g. AJAX content)
 
-20220115:
+20220115  
 * Support nested highlight
 * Bug fix: innerHTML deleted unintentionally
 * Bug fix: Word boundary not working for keyword-list
@@ -33,10 +21,10 @@ Changelog:
 * Feature Re-highlighting.
 * Feature Toggle highlighting.
 
-20220110:  
+20220110  
 * Improve stability
 
-20220102:
+20220102
 * Adjust interface
 * Fix bug (show current keyword list right after popup; properly remove highlights when NewLineNewColor mode is on)
 
@@ -52,7 +40,7 @@ Changelog:
 * Check wheter the page contains the keyword(s) or not, if not, gray it
 * `Ctrl+Click` to delete the correspond keyword
 
-20210826:
+20210826
 * Fix user settings reset after browser update
 
 20210519

@@ -44,3 +44,59 @@ document.addEventListener('DOMContentLoaded', function () {
         })
     });
 });
+
+
+function handle_addKw_change(enableIt) {
+    chrome.storage.local.get(['settings'], function (result) {
+        if (enableIt) {
+            chrome.contextMenus.create({
+                title: 'Add Keyword',
+                id: 'addKw', // you'll use this in the handler function to identify this context menu item
+                contexts: ['selection'],
+            });
+            result.settings.enableAddKw = true;
+        } else {
+            chrome.contextMenus.remove("addKw");
+            result.settings.enableAddKw = false;
+        }
+
+        chrome.storage.local.set({'settings': result.settings});
+    });
+}
+
+
+function handle_removeKw_change(enableIt) {
+    chrome.storage.local.get(['settings'], function (result) {
+        if (enableIt) {
+            chrome.contextMenus.create({
+                title: 'Remove Keyword',
+                id: 'removeKw', // you'll use this in the handler function to identify this context menu item
+                contexts: ['selection'],
+            });
+            result.settings.enableRemoveKw = true;
+        } else {
+            chrome.contextMenus.remove("removeKw");
+            result.settings.enableRemoveKw = false;
+        }
+
+        chrome.storage.local.set({'settings': result.settings});
+    });
+}
+
+
+function handle_popupSize_change(newHeight, newWidth) {
+    chrome.storage.local.get(['settings'], function (result) {
+        is_changed = false;
+        if (newHeight){
+            result.settings.popup_height = newHeight;
+            is_changed = true;
+        }
+        if (newWidth){
+            result.settings.popup_width = newWidth;
+            is_changed = true;
+        }
+        if(is_changed){
+            chrome.storage.local.set({'settings': result.settings});
+        }
+    });
+}

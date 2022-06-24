@@ -22,7 +22,10 @@ Notes:
 
 Changelog:
 
-20220115
+20220624:
+* Improve adaptability -- add support to highlight asynchronous text (e.g. AJAX content)
+
+20220115:
 * Support nested highlight
 * Bug fix: innerHTML deleted unintentionally
 * Bug fix: Word boundary not working for keyword-list

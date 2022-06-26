@@ -1,7 +1,7 @@
 // ************************************************************************
 // Multi Highlight popup js
 // ************************************************************************
-debugger;
+// debugger;
 defaultSettings = {
 	delim: ",",
 	isAlwaysSearch: false,
@@ -188,7 +188,7 @@ function handle_highlightWords_change(tabkey, option={}, callback=null) {
 					action: "_hl_clear",
 					removedKws: removedKws,
 				}, function(response){
-					settings.isNewlineNewColor || (tabinfo.style_nbr -= removedKws.length); // !! always keep this after _hl_clear function !!
+					// settings.isNewlineNewColor || (tabinfo.style_nbr -= removedKws.length); // !! always keep this after _hl_clear function !!
 					chrome.tabs.sendMessage(tabId, {
 						action: "_hl_search",
 						addedKws: addedKws,

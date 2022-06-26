@@ -10,40 +10,35 @@ An essential tool to highlight all words you want in webpages
 
 ## Updates 
 
-20220624  
+2022 June  
 * Improve adaptability -- add support to highlight asynchronous text (e.g. AJAX content)
+* Fix option page's saving issue
 
-20220115  
+2022 January  
 * Support nested highlight
 * Bug fix: innerHTML deleted unintentionally
 * Bug fix: Word boundary not working for keyword-list
 * DEV Change keyword data structure and update the version to "2.8.0" due to 
 * Feature Re-highlighting.
 * Feature Toggle highlighting.
-
-20220110  
 * Improve stability
-
-20220102
 * Adjust interface
 * Fix bug (show current keyword list right after popup; properly remove highlights when NewLineNewColor mode is on)
 
-20211226
+2021 December
 * Add options: Whole words only, Casesensitive
 * Update the highlight lib from [npmjs](https://www.npmjs.com/package/jquery-highlight)
 * Modified: Handle the options change in one callback function.
 * Modified: Use 2D array to store the keywords in `NewColorNewLine` mode.
 * Bugfix: Keywords removal should not remove the container.
-
-20211221
 * Add keywords display zone
 * Check wheter the page contains the keyword(s) or not, if not, gray it
 * `Ctrl+Click` to delete the correspond keyword
 
-20210826
+2021 August
 * Fix user settings reset after browser update
 
-20210519
+2021 May
 * Improve UI
 * Change Logo
 * Add "Always highlight" feature
@@ -51,17 +46,17 @@ An essential tool to highlight all words you want in webpages
 * Fix unstable typesetting issue when typing
 * Add 10 more highlight colors (now contains 20 colors)
 
-20191028
+2019 October
 * Customizable window size
 * Add 4 more colors (now contains 10 colors)
 
-20190609
+2019 June
 * Add "paste keywords to new pages" mode
 
-20190503
+2019 May
 * Minimize extension size
 
-20190110
+2019 January
 * Highlight any strings (not just full word)
 * Add Instant Search (highlight on-the-fly)
 * Add customizable delimiter
@@ -69,7 +64,7 @@ An essential tool to highlight all words you want in webpages
 * UI changes
 * Add Ctrl+Shift+F as default shortcut
 
-20181231
+2018 December
 * Organize code
 * Change UI (based on Multi-Highlight)
 * Change extension icon

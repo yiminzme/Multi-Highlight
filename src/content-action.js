@@ -62,7 +62,7 @@ chrome.runtime.sendMessage(
 			}
 		});
 
-		function hl_refresh(Kws, settings, tabinfo) {
+		function hl_refresh(Kws, settings, tabinfo) { // remove all highlights, and rehighlight input Kws
 			hl_clearall(settings, tabinfo);
 			_hl_search(Kws, settings, tabinfo);
 		}

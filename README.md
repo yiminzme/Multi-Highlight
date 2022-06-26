@@ -8,7 +8,7 @@ An essential tool to highlight all words you want in webpages
 
 ![screenshot-2](doc/2_screenshot_github.png)
 
-## Updates 
+## Updates: 
 
 2022 June  
 * Improve adaptability -- add support to highlight asynchronous text (e.g. AJAX content)

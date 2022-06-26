@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Multi Highlight",
-  "version": "2.8.0",
-  "description": "Efficiently mark multiple words in a page.",
+  "version": "2.9.0",
+  "description": "An essential tool to highlight all words you want in webpages.",
   "browser_action": {
     "default_logo": {
       "19": "img/logo19.png",

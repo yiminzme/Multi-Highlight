@@ -20,7 +20,7 @@ chrome.runtime.sendMessage(
 			chrome.storage.local.get(["settings", tabkey], function (result) {
 				var settings = result.settings;
 				var tabinfo = result[tabkey];
-				console.log("vinc: " + tabinfo.keywords);
+				// console.log("vinc: " + tabinfo.keywords);
 				hl_refresh(tabinfo.keywords, settings, tabinfo);
 			});
 		});
@@ -94,7 +94,7 @@ chrome.runtime.sendMessage(
 					);
 				})
 				.join("\n");
-			console.log(code);
+			// console.log(code);
 			observer.disconnect();
 			eval(code);
 			observer.observe(document.body, MutationObserverConfig);

@@ -5,6 +5,7 @@ chrome.runtime.sendMessage(
 		action: "getTabId",
 	},
 	function (response) {
+		// new page initialization 
 		tabId = response.tabId;
 		tabkey = get_tabkey(tabId);
 
@@ -21,7 +22,9 @@ chrome.runtime.sendMessage(
 				var settings = result.settings;
 				var tabinfo = result[tabkey];
 				// console.log("vinc: " + tabinfo.keywords);
-				hl_refresh(tabinfo.keywords, settings, tabinfo);
+				if (settings.isOn){ // refresh if extension is on
+					hl_refresh(tabinfo.keywords, settings, tabinfo);
+				}
 			});
 		});
 		observer.observe(document.body, MutationObserverConfig);

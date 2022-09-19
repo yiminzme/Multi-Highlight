@@ -25,6 +25,7 @@ chrome.runtime.onInstalled.addListener(function (details) { // when first instal
             isSaveKws: true,
             isWholeWord: false,
             latest_keywords: [],
+            element: 'mh',
     
             // context menu settings
             enableAddKw: true,

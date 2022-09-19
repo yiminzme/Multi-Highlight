@@ -92,7 +92,7 @@ chrome.runtime.sendMessage(
 					return (
 						"$(document.body).highlight(" +
 						`'${KeywordEscape(kw.kwStr)}', ` +
-						`{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}  ` +
+						`{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}, element: '${settings.element}'  ` +
 						"});"
 					);
 				})
@@ -117,7 +117,7 @@ chrome.runtime.sendMessage(
 						"\\\\$&"
 					);
 					return (
-						"$(document.body).unhighlight({className:'" + className + "'})"
+						`$(document.body).unhighlight({className:'${className}', element: '${settings.element}'})`
 					);
 				})
 				.join(";\n");
@@ -138,7 +138,7 @@ chrome.runtime.sendMessage(
 			var code =
 				"$(document.body).unhighlight({className:'" +
 				settings.CSSprefix1 +
-				"'})";
+				`', element: '${settings.element}'})`;
 			observer.disconnect();
 			eval(code);
 			observer.observe(document.body, MutationObserverConfig);

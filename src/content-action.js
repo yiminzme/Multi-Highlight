@@ -22,7 +22,7 @@ chrome.runtime.sendMessage(
 				var settings = result.settings;
 				var tabinfo = result[tabkey];
 				// console.log("vinc: " + tabinfo.keywords);
-				if (settings.isOn){ // refresh if extension is on
+				if (settings.isOn && settings.isAlwaysSearch){ // refresh if extension is on
 					hl_refresh(tabinfo.keywords, settings, tabinfo);
 				}
 			});

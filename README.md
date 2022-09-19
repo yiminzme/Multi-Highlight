@@ -1,14 +1,18 @@
 # ![extension-logo](src/img/logo38.png) Multi-Highlight
 
-An essential tool to highlight all words you want in webpages  
-快速標記網頁關鍵詞，自動高亮標記所有你想要的字詞  
-
-✔️ Highlight on-the-fly  ✔️ Auto-highlight  ✔️ Flexible delimiter  ✔️ Savable words list  ✔️ Whole word search  ✔️ Case sensitivity  ✔️ Group words by colors  
+快速标记网页关键词，自动高亮标记所有你想要的字词    
+キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します  
+✔️ Highlight on-the-fly  ✔️ Auto-Rehighlight  ✔️ Flexible delimiter  ✔️ Savable words list  ✔️ Whole word search  ✔️ Case sensitivity  ✔️ Group words by colors  
 
 
 ![screenshot-2](doc/2_screenshot_github.png)
 
 ## Updates: 
+
+2022 September
+* Feature Auto-Rehighlight
+* Bug fix: rehighlight words when extension is softly disabled
+* Bug fix: webpage broke if website customize <span> element
 
 2022 June  
 * Improve adaptability -- add support to highlight asynchronous text (e.g. AJAX content)

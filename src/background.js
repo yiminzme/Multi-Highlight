@@ -59,21 +59,61 @@ chrome.runtime.onInstalled.addListener(function (details) { // when first instal
 
 });
 
-// handle new page loaded
+// handle tab update
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
 
-    // if (changeInfo.status === 'complete') {
     if (changeInfo.status === 'complete' || changeInfo.title || changeInfo.url) {
-
         chrome.storage.local.get(['settings'], function(result){
             var settings = result.settings;
             var tabkey = get_tabkey(tabId);
             tabinfo = init_tabinfo(tabId, settings);
             chrome.storage.local.set({[tabkey]: tabinfo});
+            set_badge('normal');
         });
-
     }
 });
+function init_tabinfo(tabId, settings){
+	var tabinfo = {};
+	tabinfo.id = tabId;
+	// tabinfo.style_nbr = 0;
+	tabinfo.keywords = settings.isSaveKws ? settings.latest_keywords : [];
+	console.log("init_tabinfo: initialized settings for " + tabId + "(tabId)");
+	return tabinfo;
+}
+
+// handle activate tab switch in a window
+chrome.tabs.onActivated.addListener(function(activeInfo) {
+    chrome.storage.local.get(['settings'], function(result){
+        var tabkey = get_tabkey(activeInfo.tabId);
+        chrome.storage.local.get([tabkey], function(result){
+            var tabinfo = result[tabkey];
+            console.log(tabinfo)
+            if(tabinfo){
+                set_badge('normal');
+            }else{
+                set_badge('error');
+            }
+        });
+    });
+  });
+  function set_badge(status){
+    if (status === 'error'){
+        chrome.browserAction.setBadgeBackgroundColor({
+            color: '#FF0000'
+        });
+        chrome.browserAction.setBadgeText({
+            text: 'X'
+        });
+    }else if (status === 'normal'){
+        chrome.browserAction.setBadgeBackgroundColor({
+            color: 'white'
+        });
+        chrome.browserAction.setBadgeText({
+            text: ''
+        });
+    };
+  }
+  
 
 
 // handle context menu item

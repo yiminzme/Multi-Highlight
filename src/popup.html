@@ -11,6 +11,7 @@
 
       #container {
          font-family: Arial, "微软雅黑";
+         width: 400px;
       }
 
       .textarea-wrap {
@@ -74,12 +75,10 @@
          font-size: 14px;
       }
 
-      /* vinc */
       .textarea-wrap .sub-tip #delimiter:focus {
          border: 0px;
       }
 
-      /* vinc */
       /* instant, saveWords */
       .textarea-wrap .sub-tip input#instant,
       .textarea-wrap .sub-tip input#saveWords {
@@ -98,8 +97,6 @@
          width: 11px;
          height: auto;
       }
-
-      .highlight-words textarea::-webkit-scrollbar-button {}
 
       .highlight-words textarea::-webkit-scrollbar-button:start:decrement,
       .highlight-words textarea::-webkit-scrollbar-button:end:increment {
@@ -133,6 +130,17 @@
       .highlight-words textarea::-webkit-scrollbar-thumb:horizontal {
          height: 7px;
          min-width: 24px;
+      }
+
+      .highlight-words textarea::placeholder {
+         color: red;
+         font-size: 1.2em;
+         font-style: italic;
+         text-align: center;
+         vertical-align: middle;
+      }
+      #highlightWords{
+         min-height: 100px;
       }
 
       #options_icon {

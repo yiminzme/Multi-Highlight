@@ -12,35 +12,39 @@ defaultSettings = {
 	isSaveKws: false,
 	isWholeWord: false,
 	latest_keywords: [],
-	popup_height: 100,
-	popup_width: 400
 };
+defaultPopupConfig = {
+	popup_height: 100,
+	popup_width: 400,
+}
 
-document.addEventListener('DOMContentLoaded', function () {
+// document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function() {
 	chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
 		var currTab = tabs[0];
 		if (currTab) { // Sanity check
 			tabId = currTab.id;
 			var tabkey = get_tabkey(tabId);
-			chrome.storage.local.get(['settings', tabkey], function (result) {
+			chrome.storage.local.get(['settings', 'popupConfig', tabkey], function (result) {
 				// init general settings
 				var settings = Object.assign(defaultSettings, result.settings);
-				var tabinfo = result[tabkey];
-				if (typeof tabinfo === 'undefined') {
-					tabinfo = init_tabinfo(tabId, settings);
-					chrome.storage.local.set({[tabkey]: tabinfo});
-				}
-				kws = tabinfo.keywords;
-
-				highlightWords.value = keywordsToStr(kws, settings)
-				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
-					handle_highlightWords_change(tabkey, {fromBackground: true});
-				});
-
+				var popupConfig = Object.assign(defaultPopupConfig, result.popupConfig);
 				// init popup interface
-				container.style.width = settings.popup_width + "px";
-				highlightWords.style.minHeight = settings.popup_height + "px";
+				container.style.width = popupConfig.popup_width + "px";
+				highlightWords.style.minHeight = popupConfig.popup_height + "px";
+
 				// init popup values
+				var tabinfo = result[tabkey];
+				if (typeof tabinfo === "undefined") {
+					highlightWords.disabled = true;
+					highlightWords.style.backgroundColor = '#E4E5E7';
+					highlightWords.placeholder = 'Error: webpage reload needed.';
+					return;
+				}else{
+					highlightWords.disabled = false;
+					highlightWords.style.backgroundColor = 'transparent';
+					highlightWords.value = keywordsToStr(tabinfo.keywords, settings);
+				}
 				delimiter.value         = settings.delim;
 				instant.checked         = settings.isInstant;
 				toggleMHL.checked       = settings.isOn;
@@ -50,24 +54,28 @@ document.addEventListener('DOMContentLoaded', function () {
 				wholeWord.checked       = settings.isWholeWord;
 				saveWords.checked       = settings.isSaveKws;
 				// build interactable keywords list
-				build_keywords_list(kws);
+				build_keywords_list(tabinfo.keywords);
 				// register listener
 				$("#highlightWords").on("input", function () {
-					handle_highlightWords_change(tabkey, {fromBackground: true});
+					handle_highlightWords_change(tabkey, {fromBgOrPopup: true});
 				})
 				$("#kw-list").on("click", function (event) {
-					handle_keyword_removal(event, tabkey, {fromBackground: true});
+					handle_keyword_removal(event, tabkey, {fromBgOrPopup: true});
 				})
 				$("#toggleMHL,#casesensitive, #wholeWord, #delimiter, #instant,"
 					+ " #saveWords,#alwaysSearch,#newlineNewColor").on("input", function(event) {
 					handle_option_change(tabkey, event);
 				});
 				$('#forceRefresh').on("click", function(){
-					handle_highlightWords_change(tabkey, {refresh: true, fromBackground: true});
+					handle_highlightWords_change(tabkey, {refresh: true, fromBgOrPopup: true});
 				})
 				$("#options_icon").click(function(){
 					chrome.runtime.openOptionsPage();
 				})
+				// refresh highlights
+				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
+					handle_highlightWords_change(tabkey, {fromBgOrPopup: true});
+				});
 			});
 		}
 	});
@@ -127,7 +135,7 @@ function handle_keyword_removal(event, tabkey, option={}){
 // ****** Multi Highlight functions
 // option.refresh -- when true, rehighlight webpage content
 // option.useSavedKws -- when true, use saved kws instead of highlightWords.value as inputStr
-// option.fromBackground -- if you run this function from popup or background, remember to set it to true. Otherwise, we expect the call is from content script
+// option.fromBgOrPopup -- if you run this function from popup or background, remember to set it to true. Otherwise, we expect the call is from content script
 function handle_highlightWords_change(tabkey, option={}, callback=null) {
     chrome.storage.local.get(['settings', tabkey], function (result) {
         var settings = result.settings;
@@ -176,7 +184,7 @@ function handle_highlightWords_change(tabkey, option={}, callback=null) {
 			}
           
             tabinfo.keywords = inputKws;
-			if (option.fromBackground){
+			if (option.fromBgOrPopup){
 				build_keywords_list(inputKws);
 			}
             settings.latest_keywords = inputKws;
@@ -223,7 +231,7 @@ function handle_option_change(tabkey, event) { // tabkey of popup window
 
 		chrome.storage.local.set({'settings': settings}, function () {
 			if (tabkey) {
-				handle_highlightWords_change(tabkey, {refresh: forceRefresh, fromBackground: true});
+				handle_highlightWords_change(tabkey, {refresh: forceRefresh, fromBgOrPopup: true});
 			}
 		});
 	});

@@ -102,7 +102,7 @@ chrome.runtime.sendMessage(
 			observer.disconnect();
 			eval(code);
 			observer.observe(document.body, MutationObserverConfig);
-			// if(option.fromBackground){
+			// if(option.fromBgOrPopup){
 			// 	chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
 			// }else{
 			// 	eval(code);
@@ -127,7 +127,7 @@ chrome.runtime.sendMessage(
 			observer.disconnect();
 			eval(code);
 			observer.observe(document.body, MutationObserverConfig);
-			// if(option.fromBackground){
+			// if(option.fromBgOrPopup){
 			// 	chrome.tabs.executeScript(tabinfo.id, {code: code}, _ => chrome.runtime.lastError);
 			// }else{
 			// 	eval(code);
@@ -144,7 +144,7 @@ chrome.runtime.sendMessage(
 			eval(code);
 			observer.observe(document.body, MutationObserverConfig);
 			// console.log("REMOVE: " + code);
-			// if(option.fromBackground){
+			// if(option.fromBgOrPopup){
 			// 	chrome.tabs.executeScript(tabinfo.id, {code: code }, _ => chrome.runtime.lastError);
 			// }else{
 			// 	eval(code);

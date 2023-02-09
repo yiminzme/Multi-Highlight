@@ -25,31 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				// init general settings
 				var settings = Object.assign(defaultSettings, result.settings);
 				var tabinfo = result[tabkey];
-				// reconstruct highlightWords values
-				// flag = {}
-				// flag.is_change = settings.isSaveKws && tabinfo.isNewPage;
-				// kws = flag.is_change ? settings.latest_keywords : tabinfo.keywords;
 				kws = tabinfo.keywords;
 
 				highlightWords.value = keywordsToStr(kws, settings)
-				// if(settings.isNewlineNewColor){
-				// 	// highlightWords.value = kws.map(line=>line.join(settings.delim)).join("\n");
-				// 	// add newline character to where the kwGrp changes, otherwise, add delimeter
-				// 	var res = "";
-				// 	for(var i = 0, len = kws.length - 1; i < len; ++ i){
-				// 		res += kws[i].kwStr + ((kws[i].kwGrp != kws[i+1].kwGrp) ? "\n": settings.delim);
-				// 	}
-				// 	// and the last one
-				// 	kws.length && (res += kws[kws.length-1].kwStr);
-				// 	console.log(res);
-				// 	highlightWords.value = res;
-				// }else{
-				// 	highlightWords.value = kws.map(kw=>kw.kwStr).join(settings.delim);
-				// 	// append deliminator if there are words
-				// 	highlightWords.value += highlightWords.value ? settings.delim : "";
-				// }
-
-				// tabinfo.isNewPage = false;
 				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
 					handle_highlightWords_change(tabkey, {fromBackground: true});
 				});
@@ -170,13 +148,9 @@ function handle_highlightWords_change(tabkey, option={}, callback=null) {
 			console.log(inputStr)
 			inputKws = keywordsFromStr(inputStr, settings);
 			savedKws = tabinfo.keywords;
-			// console.log(`inputKws: ${inputKws.length}: `);
-			// console.log(inputKws);
 			// differ it
 			addedKws = KeywordsMinus(inputKws, savedKws);
 			removedKws = KeywordsMinus(savedKws, inputKws);
-			// console.log(addedKws);
-			// console.log(removedKws);
 
 			if(option.refresh){
 				chrome.tabs.sendMessage(tabId, {

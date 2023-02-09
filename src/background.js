@@ -5,10 +5,6 @@ chrome.runtime.onInstalled.addListener(function (details) { // when first instal
 
         // initialize variables
         var settings = {
-            // Pop-up window settings
-            popup_width: 400,
-            popup_height: 100,
-    
             // CSS settings
             CSS_COLORS_COUNT: 20, // number of available highlight colors
             CSSprefix1: "chrome-extension-FindManyStrings",
@@ -31,6 +27,11 @@ chrome.runtime.onInstalled.addListener(function (details) { // when first instal
             enableAddKw: true,
             enableRemoveKw: true
         }
+        var popupConfig = {
+            // Pop-up window settings
+            popup_width: 400,
+            popup_height: 100,
+        }
     
         // add context menu item
         chrome.contextMenus.create({
@@ -44,16 +45,17 @@ chrome.runtime.onInstalled.addListener(function (details) { // when first instal
             contexts: ['selection'],
         });
     
-        chrome.storage.local.set({'settings': settings});
+        chrome.storage.local.set({'settings': settings, 'popupConfig': popupConfig});
 
     }else{
 
-        chrome.storage.local.get(['settings'], function(result){
+        chrome.storage.local.get(['settings', 'popupConfig'], function(result){
             var settings = result.settings;
+            var popupConfig = result.popupConfig;
 
             handle_addKw_change(settings.enableAddKw);
             handle_removeKw_change(settings.enableRemoveKw);
-            handle_popupSize_change(settings.popup_height, settings.popup_width);
+            handle_popupSize_change(popupConfig.popup_height, popupConfig.popup_width);
         });
     }
 
@@ -214,18 +216,18 @@ function handle_removeKw_change(enableIt) { // option page
 
 
 function handle_popupSize_change(newHeight, newWidth) { // option page
-    chrome.storage.local.get(['settings'], function (result) {
+    chrome.storage.local.get(['popupConfig'], function (result) {
         is_changed = false;
         if (newHeight){
-            result.settings.popup_height = newHeight;
+            result.popupConfig.popup_height = newHeight;
             is_changed = true;
         }
         if (newWidth){
-            result.settings.popup_width = newWidth;
+            result.popupConfig.popup_width = newWidth;
             is_changed = true;
         }
         if(is_changed){
-            chrome.storage.local.set({'settings': result.settings});
+            chrome.storage.local.set({'popupConfig': result.popupConfig});
         }
     });
 }

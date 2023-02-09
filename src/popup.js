@@ -73,7 +73,7 @@ window.addEventListener('load', function() {
 					chrome.runtime.openOptionsPage();
 				})
 				// refresh highlights
-				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings}, function () {
+				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings, "popupConfig": popupConfig}, function () {
 					handle_highlightWords_change(tabkey, {fromBgOrPopup: true});
 				});
 			});

@@ -4,28 +4,20 @@
 debugger;
 document.addEventListener('DOMContentLoaded', function () {
 
-    chrome.storage.local.get(['settings'], function (result) {
+    chrome.storage.local.get(['settings', 'popupConfig'], function (result) {
         // init
         var settings = result.settings;
+        var popupConfig = result.popupConfig;
         // set html
         // delimiter.value = settings.delim;
         // instant.checked = settings.isInstant;
         // saveWords.checked = settings.isSaveKws;
-        popupHeight.value = settings.popup_height;
-        popupWidth.value = settings.popup_width;
+        popupHeight.value = popupConfig.popup_height;
+        popupWidth.value = popupConfig.popup_width;
         addKw.checked = settings.enableAddKw;
         removeKw.checked = settings.enableRemoveKw;
 
         // register listener
-        // $("#delimiter").on("input", function () {
-        //     handle_delimiter_change(null, settings);
-        // })
-        // $("#instant").on("input", function () {
-        //     handle_instant_mode_change(settings);
-        // })
-        // $("#saveWords").on("input", function () {
-        //     handle_saveWords_mode_change(settings);
-        // })
         $("#popupHeight").on("input", function () {
             chrome.runtime.sendMessage(
                 { // message

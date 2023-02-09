@@ -68,17 +68,11 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
         chrome.storage.local.get(['settings'], function(result){
             var settings = result.settings;
             var tabkey = get_tabkey(tabId);
-            console.log("[" + tabkey + "] onUpdated " + changeInfo.status);
-            var tabinfo = {};
-            tabinfo.id = tabId;
-            // tabinfo.style_nbr = 0;
-            tabinfo.keywords = settings.isSaveKws ? settings.latest_keywords : [];
+            tabinfo = init_tabinfo(tabId, settings);
             chrome.storage.local.set({[tabkey]: tabinfo});
         });
-        
 
     }
-
 });
 
 

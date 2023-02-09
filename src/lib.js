@@ -79,3 +79,11 @@ function KeywordsMinus(kwListA, kwListB){
 
 }
 
+function init_tabinfo(tabId, settings){
+	var tabinfo = {};
+	tabinfo.id = tabId;
+	// tabinfo.style_nbr = 0;
+	tabinfo.keywords = settings.isSaveKws ? settings.latest_keywords : [];
+	console.log("init_tabinfo: initialized settings for " + tabId + "(tabId)");
+	return tabinfo;
+}

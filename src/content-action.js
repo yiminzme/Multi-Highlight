@@ -66,12 +66,13 @@ chrome.runtime.sendMessage(
 		});
 
 		function hl_refresh(Kws, settings, tabinfo) { // remove all highlights, and rehighlight input Kws
+			console.log("hl_refresh: " + Kws);
 			hl_clearall(settings, tabinfo);
 			_hl_search(Kws, settings, tabinfo);
 		}
 
 		function _hl_search(addedKws, settings, tabinfo) {
-			// console.log("addedKws: " + addedKws);
+			console.log("_hl_search: " + addedKws);
 
 			isWholeWord = TrueOrFalse(settings.isWholeWord);
 			isCasesensitive = TrueOrFalse(settings.isCasesensitive);
@@ -121,8 +122,8 @@ chrome.runtime.sendMessage(
 					);
 				})
 				.join(";\n");
-			// console.log(`removedKws${removedKws.length}:` + removedKws );
-			// console.log("REMOVE: " + code);
+			console.log(`_hl_clear: ${removedKws.length}` + removedKws );
+			console.log("REMOVE: " + code);
 			observer.disconnect();
 			eval(code);
 			observer.observe(document.body, MutationObserverConfig);

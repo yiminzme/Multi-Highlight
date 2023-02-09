@@ -20,11 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
 	chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
 		var currTab = tabs[0];
 		if (currTab) { // Sanity check
-			var tabkey = get_tabkey(currTab.id);
+			tabId = currTab.id;
+			var tabkey = get_tabkey(tabId);
 			chrome.storage.local.get(['settings', tabkey], function (result) {
 				// init general settings
 				var settings = Object.assign(defaultSettings, result.settings);
 				var tabinfo = result[tabkey];
+				if (typeof tabinfo === 'undefined') {
+					tabinfo = init_tabinfo(tabId, settings);
+					chrome.storage.local.set({[tabkey]: tabinfo});
+				}
 				kws = tabinfo.keywords;
 
 				highlightWords.value = keywordsToStr(kws, settings)

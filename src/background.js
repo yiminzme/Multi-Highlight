@@ -1,4 +1,5 @@
 // debugger;
+// handle extension installation event
 chrome.runtime.onInstalled.addListener(function (details) { // when first installed, extension updated, browser updated
 
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL){
@@ -60,6 +61,7 @@ chrome.runtime.onInstalled.addListener(function (details) { // when first instal
     }
 
 });
+
 
 // handle tab update
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {

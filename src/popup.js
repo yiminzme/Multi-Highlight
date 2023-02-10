@@ -33,12 +33,12 @@ window.addEventListener('load', function() {
 				container.style.width = popupConfig.popup_width + "px";
 				highlightWords.style.minHeight = popupConfig.popup_height + "px";
 
-				// init popup values
+				// init popup UI
 				var tabinfo = result[tabkey];
 				if (typeof tabinfo === "undefined") {
 					highlightWords.disabled = true;
 					highlightWords.style.backgroundColor = '#E4E5E7';
-					highlightWords.placeholder = 'Error: webpage reload needed.';
+					highlightWords.placeholder = '[ Disabled ]\n\nWebpage reload needed';
 					return;
 				}else{
 					highlightWords.disabled = false;
@@ -55,6 +55,11 @@ window.addEventListener('load', function() {
 				saveWords.checked       = settings.isSaveKws;
 				// build interactable keywords list
 				build_keywords_list(tabinfo.keywords);
+
+				// refresh highlights
+				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings, "popupConfig": popupConfig}, function () {
+					handle_highlightWords_change(tabkey, {refresh: true, fromBgOrPopup: true});
+				});
 				// register listener
 				$("#highlightWords").on("input", function () {
 					handle_highlightWords_change(tabkey, {fromBgOrPopup: true});
@@ -72,10 +77,6 @@ window.addEventListener('load', function() {
 				$("#options_icon").click(function(){
 					chrome.runtime.openOptionsPage();
 				})
-				// refresh highlights
-				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings, "popupConfig": popupConfig}, function () {
-					handle_highlightWords_change(tabkey, {fromBgOrPopup: true});
-				});
 			});
 		}
 	});
@@ -98,6 +99,17 @@ function check_keywords_existence(){
 		// If you try and inject into an extensions page or the webstore/NTP you'll get an error
 		if (chrome.runtime.lastError) {
 			console.error( 'There was an error injecting script : \n' + chrome.runtime.lastError.message);
+			
+			highlightWords.disabled = true;
+			highlightWords.style.backgroundColor = '#E4E5E7';
+			highlightWords.placeholder = '[ Disabled ]\n\nExtension does not work in this page';
+
+			chrome.browserAction.setBadgeBackgroundColor({
+				color: '#FF0000'
+			});
+			chrome.browserAction.setBadgeText({
+				text: 'X'
+			});
 		}
 	});
 }

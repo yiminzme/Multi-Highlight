@@ -23,6 +23,7 @@ chrome.runtime.sendMessage(
 				var tabinfo = result[tabkey];
 				// console.log("vinc: " + tabinfo.keywords);
 				if (settings.isOn && settings.isAlwaysSearch){ // refresh if extension is on
+					console.log("[Multi-Highlight] MutationObserver")
 					hl_refresh(tabinfo.keywords, settings, tabinfo);
 				}
 			});
@@ -66,13 +67,13 @@ chrome.runtime.sendMessage(
 		});
 
 		function hl_refresh(Kws, settings, tabinfo) { // remove all highlights, and rehighlight input Kws
-			console.log("hl_refresh: " + Kws);
+			console.log("[Multi-Highlight] hl_refresh: " + Kws);
 			hl_clearall(settings, tabinfo);
 			_hl_search(Kws, settings, tabinfo);
 		}
 
 		function _hl_search(addedKws, settings, tabinfo) {
-			console.log("_hl_search: " + addedKws);
+			console.log("[Multi-Highlight] _hl_search: " + addedKws);
 
 			isWholeWord = TrueOrFalse(settings.isWholeWord);
 			isCasesensitive = TrueOrFalse(settings.isCasesensitive);
@@ -122,8 +123,8 @@ chrome.runtime.sendMessage(
 					);
 				})
 				.join(";\n");
-			console.log(`_hl_clear: ${removedKws.length}` + removedKws );
-			console.log("REMOVE: " + code);
+			console.log(`[Multi-Highlight] _hl_clear: ${removedKws.length}` + removedKws );
+			console.log("[Multi-Highlight] REMOVE: " + code);
 			observer.disconnect();
 			eval(code);
 			observer.observe(document.body, MutationObserverConfig);

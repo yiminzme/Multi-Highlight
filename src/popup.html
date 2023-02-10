@@ -37,11 +37,20 @@
 
       .textarea-wrap .sub-tip {
          font-size: 1.3em;
-         color: #484848;
+         /* color: #484848; */
          /* padding-top: 1px; */
          padding: 0.8em 0 0.2em 0;
          line-height: 1.7em;
          user-select: none;
+
+         display: flex;
+         width: 100%;
+      }
+
+      .textarea-wrap .sub-tip .toolColumn {
+         float: left;
+         width: 50%;
+         text-align: left;
       }
 
       .highlight-words textarea {
@@ -66,7 +75,7 @@
       /* delimiter */
       .textarea-wrap .sub-tip #delimiter {
          width: 1em;
-         height: 70%;
+         /* height: 70%; */
          border: 0px;
          text-align: center;
          background-color: #c6e8ff;
@@ -286,8 +295,37 @@
             <textarea id="highlightWords" spellcheck="false" autofocus></textarea>
          </div>
          <div class="sub-tip">
-            &nbsp;<label title="A symbol to split your words, such as comma or space">Delimiter:&nbsp;<input type="text"
+            <div class="toolColumn">
+               <label title="The symbol to split your words, such as comma or space">Delimiter <input type="text"
                   id="delimiter" name="delimiter" maxlength="1" /></label>
+                  <br>
+                  <label id="instantLabel" title="Highlight words immediately"><input type="checkbox" id="instant"
+                     name="instant" /> Instant Search</label>
+                     <br>
+               <label id="saveWordsLabel" title="Save current words for future browsing"><input type="checkbox"
+                  id="saveWords" name="saveWords" /> Keep Words</label>
+            </div>
+            <div class="toolColumn">
+               <label id="alwaysSearchLabel"
+               title="Help rehighlight upon tab content changes and new tab loading"><input type="checkbox" id="alwaysSearch"
+                  name="alwaysSearch" />Auto-Rehighligh</label>
+                  <button id="forceRefresh" title="ReHighligh">&#8635;</button>
+                  <br>
+               <label id="newlineNewColorLabel"
+                  title="On: change highlight color after newline&#10;Off: change highlight color after every word"><input
+                     type="checkbox" id="newlineNewColor" name="newlineNewColor" />Newline New color</label>
+                     <br>
+            <label id="wholeWordLabel" title="Highlight whole words only"><input type="checkbox" id="wholeWord"
+               name="wholeWord" />Match Whole Word</label>
+               <br>
+            <label id="casesensitiveLabel" title="Search words with case-sensitivity"><input
+               type="checkbox" id="casesensitive" name="casesensitive" />Match Case</label>
+            </div>
+
+            <!-- &nbsp;<label title="A symbol to split your words, such as comma or space">Delimiter:&nbsp;<input type="text"
+                  id="delimiter" name="delimiter" maxlength="1" /></label>&nbsp;&nbsp;&nbsp;&nbsp;<label id="newlineNewColorLabel"
+                  title="On: change highlight color after newline&#10;Off: change highlight color after every word"><input
+                     type="checkbox" id="newlineNewColor" name="newlineNewColor" />Newline New color</label>
             <br>&nbsp;<label id="instantLabel" title="Highlight words immediately"><input type="checkbox" id="instant"
                   name="instant" /> Instant Search </label>&nbsp;&nbsp;&nbsp;&nbsp;<button id="forceRefresh" title="ReHighligh">&#8635;</button><label id="alwaysSearchLabel"
                   title="Help rehighlight upon tab content changes and new tab loading"><input type="checkbox" id="alwaysSearch"
@@ -298,10 +336,7 @@
             <br><label id="wholeWordLabel" title="Highlight whole words only"><input type="checkbox" id="wholeWord"
                   name="wholeWord" />Search whole words </label>
             <label id="casesensitiveLabel" title="Search words with case-sensitivity">&nbsp;&nbsp;&nbsp;&nbsp;<input
-                  type="checkbox" id="casesensitive" name="casesensitive" />Case sensitive </label>
-            <br><label id="newlineNewColorLabel"
-               title="On: change highlight color after newline&#10;Off: change highlight color after every word"><input
-                  type="checkbox" id="newlineNewColor" name="newlineNewColor" />Newline New color</label>
+                  type="checkbox" id="casesensitive" name="casesensitive" />Case sensitive </label> -->
          </div>
       </div>
       <div id="kw-list">

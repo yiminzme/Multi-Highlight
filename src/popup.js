@@ -36,7 +36,8 @@ window.addEventListener('load', function() {
 				// init popup UI
 				var tabinfo = result[tabkey];
 				if (typeof tabinfo === "undefined") {
-					highlightWords.disabled = true;
+				highlightWords.value = "";
+				highlightWords.disabled = true;
 					highlightWords.style.backgroundColor = '#E4E5E7';
 					highlightWords.placeholder = '[ Disabled ]\n\nWebpage reload needed';
 					return;
@@ -100,6 +101,7 @@ function check_keywords_existence(){
 		if (chrome.runtime.lastError) {
 			console.error( 'There was an error injecting script : \n' + chrome.runtime.lastError.message);
 			
+			highlightWords.value = "";
 			highlightWords.disabled = true;
 			highlightWords.style.backgroundColor = '#E4E5E7';
 			highlightWords.placeholder = '[ Disabled ]\n\nExtension does not work in this page';

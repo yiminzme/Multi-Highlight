@@ -87,6 +87,9 @@ window.addEventListener('load', function() {
 
 
 function build_keywords_list(inputKws){
+	if (!Array.isArray(inputKws)) {
+		return
+	}
 	var html = inputKws.map(kw=>`<span class="keywords">${kw.kwStr}</span>`).join("");
 	$('#kw-list>.keywords').remove();
 	$(html).appendTo($('#kw-list'));

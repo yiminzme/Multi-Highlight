@@ -59,6 +59,9 @@ function keywordsToStr(kws, settings){
 		// and the last one
 		kws.length && (str += kws[kws.length-1].kwStr);
 	}else{
+		if (!Array.isArray(kws)) {
+			return str
+		}
 		str = kws.map(kw=>kw.kwStr).join(settings.delim);
 		// append deliminator if there are words
 		str += str ? settings.delim : "";

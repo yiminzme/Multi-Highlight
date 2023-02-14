@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Multi Highlight",
   "version": "2.10.0",
   "description": "An essential tool to highlight all words you want in webpages.",
-  "browser_action": {
+  "action": {
     "default_logo": {
       "19": "img/logo19.png",
       "38": "img/logo38.png"
@@ -18,13 +18,13 @@
   },
   "content_scripts": [ {
       "matches": [ "<all_urls>", "file://*/*" ],
-      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "lib.js", "content-action.js"],
+      "js": [ "jquery/jquery.js", "jquery/jquery.highlight.js", "content-action.js"],
       "css": [ "highlight.css" ],
       "run_at": "document_end"
    } ],
-  "background": {
-    "scripts": [ "lib.js", "background.js", "hot-reload.js" ],
-    "persistent": false
+  "background":{
+    "service_worker": "background.js",
+    "type": "module"
   },
   "commands": {
     "_execute_browser_action": {
@@ -39,6 +39,13 @@
   },
   "options_page": "options/options.html",
   "permissions": [
-  "activeTab", "http://*/*", "https://*/*", "storage", "contextMenus"
+  "activeTab", 
+  "storage", 
+  "contextMenus",
+  "scripting"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
   ]
 }

@@ -1,5 +1,8 @@
+// debugger;
+
 var tabId = null;
 var tabkey = null;
+
 chrome.runtime.sendMessage(
 	{
 		action: "getTabId",
@@ -67,89 +70,110 @@ chrome.runtime.sendMessage(
 		});
 
 		function hl_refresh(Kws, settings, tabinfo) { // remove all highlights, and rehighlight input Kws
-			console.log("[Multi-Highlight] hl_refresh: " + Kws);
+			// log all entries in kws
+			Object.entries(Kws).forEach(([key, value]) => {
+				console.log(`hl_refresh: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
+			});
 			hl_clearall(settings, tabinfo);
 			_hl_search(Kws, settings, tabinfo);
 		}
 
 		function _hl_search(addedKws, settings, tabinfo) {
-			console.log("[Multi-Highlight] _hl_search: " + addedKws);
 
-			isWholeWord = TrueOrFalse(settings.isWholeWord);
-			isCasesensitive = TrueOrFalse(settings.isCasesensitive);
+			isWholeWord = settings.isWholeWord;
+			isCasesensitive = settings.isCasesensitive;
 			clsPrefix = settings.CSSprefix1 + " " + settings.CSSprefix2;
 
 			addedKws.sort((firstElem, secondElem) => {
 				return secondElem.kwStr.length - firstElem.kwStr.length;
 			});
-			// console.log(addedKws);
-			var code = addedKws
-				.map((kw) => {
-					var cls =
-						clsPrefix +
-						kw.kwGrp +
-						" " +
-						settings.CSSprefix3 +
-						encodeURI(kw.kwStr);
-					return (
-						"$(document.body).highlight(" +
-						`'${KeywordEscape(kw.kwStr)}', ` +
-						`{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}, element: '${settings.element}'  ` +
-						"});"
-					);
-				})
-				.join("\n");
+			// log all entriesi n addedKws
+			Object.entries(addedKws).forEach(([key, value]) => {
+				console.log(`_hl_search: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
+			});
+
+			function KeywordEscape(kw){
+				return kw.replace(/\n/sgi, '\\n');
+			}
+
+			// var code = addedKws
+			// 	.map((kw) => {
+			// 		var cls =
+			// 			clsPrefix +
+			// 			kw.kwGrp +
+			// 			" " +
+			// 			settings.CSSprefix3 +
+			// 			encodeURI(kw.kwStr);
+			// 		return (
+			// 			"$(document.body).highlight(" +
+			// 			`'${KeywordEscape(kw.kwStr)}', ` +
+			// 			`{className: '${cls}', wordsOnly: ${isWholeWord}, caseSensitive: ${isCasesensitive}, element: '${settings.element}'  ` +
+			// 			"});"
+			// 		);
+			// 	})
+			// 	.join("\n");
 			// console.log(code);
 			observer.disconnect();
-			eval(code);
+			for (var i = 0; i < addedKws.length; i++) {
+				kw = addedKws[i];
+				var hl_param1 = KeywordEscape(kw.kwStr);
+				var hl_param2 = clsPrefix + kw.kwGrp + " " + settings.CSSprefix3 + encodeURI(kw.kwStr);
+				var hl_param2 = {className: hl_param2, wordsOnly: isWholeWord, caseSensitive: isCasesensitive, element: settings.element}
+				// console.log("[Multi-Highlight] _hl_search: " + hl_param1 + " " + hl_param2)
+				$(document.body).highlight(hl_param1, hl_param2);
+			}
 			observer.observe(document.body, MutationObserverConfig);
-			// if(option.fromBgOrPopup){
-			// 	chrome.tabs.executeScript(tabinfo.id, { code: code }, _ => chrome.runtime.lastError);
-			// }else{
-			// 	eval(code);
-			// }
 		}
 
 		function _hl_clear(removedKws, settings, tabinfo) {
-			code = removedKws
-				.flatMap((kw) => {
-					// if(kw.length < 1) return "";
-					className = (settings.CSSprefix3 + encodeURI(kw.kwStr)).replace(
-						/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g,
-						"\\\\$&"
-					);
-					return (
-						`$(document.body).unhighlight({className:'${className}', element: '${settings.element}'})`
-					);
-				})
-				.join(";\n");
-			console.log(`[Multi-Highlight] _hl_clear: ${removedKws.length}` + removedKws );
-			console.log("[Multi-Highlight] REMOVE: " + code);
+			// code = removedKws
+			// 	.flatMap((kw) => {
+			// 		// if(kw.length < 1) return "";
+			// 		className = (settings.CSSprefix3 + encodeURI(kw.kwStr)).replace(
+			// 			/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g,
+			// 			"\\\\$&"
+			// 		);
+			// 		return (
+			// 			`$(document.body).unhighlight({className:'${className}', element: '${settings.element}'})`
+			// 		);
+			// 	})
+			// 	.join(";\n");
+			// console.log(`[Multi-Highlight] _hl_clear: ${removedKws.length}` + removedKws );
+			// console.log("[Multi-Highlight] REMOVE: " + code);
 			observer.disconnect();
-			eval(code);
+			removedKws_flatten = removedKws.flat();
+			for (var i = 0; i < removedKws_flatten.length; i++) {
+				kw = removedKws_flatten[i];
+				className = (settings.CSSprefix3 + encodeURI(kw.kwStr)).replace(
+					/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g,
+					"\\$&"
+				);
+				// log all entries in removedKws
+				Object.entries(removedKws).forEach(([key, value]) => {
+					console.log(`_hl_clear: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
+				});
+				// console.log("[Multi-Highlight] _hl_clear: " + className + " " + settings.element);
+				$(document.body).unhighlight({className: className, element: settings.element});
+			}
 			observer.observe(document.body, MutationObserverConfig);
-			// if(option.fromBgOrPopup){
-			// 	chrome.tabs.executeScript(tabinfo.id, {code: code}, _ => chrome.runtime.lastError);
-			// }else{
-			// 	eval(code);
-			// }
-			// settings.isNewlineNewColor || (tabinfo.style_nbr -= removedKws.length);
 		}
 
 		function hl_clearall(settings, tabinfo) {
-			var code =
-				"$(document.body).unhighlight({className:'" +
-				settings.CSSprefix1 +
-				`', element: '${settings.element}'})`;
+			// var code =
+			// 	"$(document.body).unhighlight({className:'" +
+			// 	settings.CSSprefix1 +
+			// 	`', element: '${settings.element}'})`;
 			observer.disconnect();
-			eval(code);
+			$(document.body).unhighlight({className: settings.CSSprefix1, element: settings.element});
 			observer.observe(document.body, MutationObserverConfig);
-			// console.log("REMOVE: " + code);
-			// if(option.fromBgOrPopup){
-			// 	chrome.tabs.executeScript(tabinfo.id, {code: code }, _ => chrome.runtime.lastError);
-			// }else{
-			// 	eval(code);
-			// }
 		}
 	}
 );
+
+// convertion between tabkey and tabId
+function get_tabkey(tabId) {
+    return "multi-highlight_" + tabId;
+}
+function get_tabId(tabkey){
+	return parseInt(tabkey.substring(16))
+}

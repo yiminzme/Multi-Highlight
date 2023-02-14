@@ -1,4 +1,5 @@
 // debugger;
+
 // handle extension installation event
 chrome.runtime.onInstalled.addListener(function (details) { // when first installed, extension updated, browser updated
 
@@ -70,7 +71,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
         chrome.storage.local.get(['settings'], function(result){
             var settings = result.settings;
             var tabkey = get_tabkey(tabId);
-            tabinfo = init_tabinfo(tabId, settings);
+            var tabinfo = init_tabinfo(tabId, settings);
             chrome.storage.local.set({[tabkey]: tabinfo});
             set_badge('normal');
         });
@@ -102,17 +103,17 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
   });
   function set_badge(status){
     if (status === 'error'){
-        chrome.browserAction.setBadgeBackgroundColor({
+        chrome.action.setBadgeBackgroundColor({
             color: '#FF0000'
         });
-        chrome.browserAction.setBadgeText({
+        chrome.action.setBadgeText({
             text: 'X'
         });
     }else if (status === 'normal'){
-        chrome.browserAction.setBadgeBackgroundColor({
+        chrome.action.setBadgeBackgroundColor({
             color: 'white'
         });
-        chrome.browserAction.setBadgeText({
+        chrome.action.setBadgeText({
             text: ''
         });
     };
@@ -247,3 +248,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         handle_popupSize_change(request.newHeight, request.newWidth);
     }
 });
+
+// convertion between tabkey and tabId
+function get_tabkey(tabId) {
+    return "multi-highlight_" + tabId;
+}
+function get_tabId(tabkey){
+	return parseInt(tabkey.substring(16))
+}

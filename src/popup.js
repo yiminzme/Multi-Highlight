@@ -2,6 +2,7 @@
 // Multi Highlight popup js
 // ************************************************************************
 // debugger;
+
 defaultSettings = {
 	delim: ",",
 	isAlwaysSearch: false,
@@ -57,31 +58,32 @@ window.addEventListener('load', function() {
 				// build interactable keywords list
 				build_keywords_list(tabinfo.keywords);
 
-				// refresh highlights
+				// refresh upon popup open
 				chrome.storage.local.set({[tabkey]: tabinfo, "settings": settings, "popupConfig": popupConfig}, function () {
 					handle_highlightWords_change(tabkey, {refresh: true, fromBgOrPopup: true});
 				});
 				// register listener
 				$("#highlightWords").on("input", function () {
 					handle_highlightWords_change(tabkey, {fromBgOrPopup: true});
-				})
+				});
 				$("#kw-list").on("click", function (event) {
 					handle_keyword_removal(event, tabkey, {fromBgOrPopup: true});
-				})
+				});
 				$("#toggleMHL,#casesensitive, #wholeWord, #delimiter, #instant,"
 					+ " #saveWords,#alwaysSearch,#newlineNewColor").on("input", function(event) {
 					handle_option_change(tabkey, event);
 				});
 				$('#forceRefresh').on("click", function(){
 					handle_highlightWords_change(tabkey, {refresh: true, fromBgOrPopup: true});
-				})
+				});
 				$("#options_icon").click(function(){
 					chrome.runtime.openOptionsPage();
-				})
+				});
 			});
+
+			check_keywords_existence(tabId);
 		}
 	});
-	check_keywords_existence();
 });
 
 
@@ -90,12 +92,13 @@ function build_keywords_list(inputKws){
 	var html = inputKws.map(kw=>`<span class="keywords">${kw.kwStr}</span>`).join("");
 	$('#kw-list>.keywords').remove();
 	$(html).appendTo($('#kw-list'));
-	check_keywords_existence();
+	check_keywords_existence(tabId);
 }
 
-function check_keywords_existence(){
-	chrome.tabs.executeScript(null, {
-		file: "getPagesSource.js"
+function check_keywords_existence(tabId){
+	chrome.scripting.executeScript({
+		target: {tabId: tabId},
+		files: ["getPagesSource.js"]
 	}, function() {
 		// If you try and inject into an extensions page or the webstore/NTP you'll get an error
 		if (chrome.runtime.lastError) {
@@ -106,10 +109,10 @@ function check_keywords_existence(){
 			highlightWords.style.backgroundColor = '#E4E5E7';
 			highlightWords.placeholder = '[ Disabled ]\n\nExtension does not work in this page';
 
-			chrome.browserAction.setBadgeBackgroundColor({
+			chrome.action.setBadgeBackgroundColor({
 				color: '#FF0000'
 			});
-			chrome.browserAction.setBadgeText({
+			chrome.action.setBadgeText({
 				text: 'X'
 			});
 		}
@@ -249,4 +252,63 @@ function handle_option_change(tabkey, event) { // tabkey of popup window
 			}
 		});
 	});
+}
+
+
+// return an array of keyword object:
+// [{kwGrp: kwGrpNum, kwStr: keywordString}, {kwGrp: ..., kwStr: ...}, ...]
+// The kwGrp is defined in two ways, if in the NewColorNewLine mode, the kwGrp
+// is the same for keywords on the same line; otherwise, the kwGrp increases
+// every keywords
+function keywordsFromStr(inputStr, settings){
+	if(settings.isNewlineNewColor){
+		return inputStr.split(/\n/g).filter(i=>i).reduce((arr, line, lineCnt)=>{
+			arr = arr.concat(line.split(settings.delim).filter(i=>i).map(kws=>{
+				return {kwGrp: (lineCnt % 20), kwStr: kws};
+			}));
+			console.log(arr);
+			return arr;
+		}, []);
+	}else{
+		return inputStr.split(settings.delim).filter(i=>i).map((kws,cnt)=>{
+			return {kwGrp: (cnt % 20), kwStr: kws};
+		});
+	}
+}
+function keywordsToStr(kws, settings){
+	var str = "";
+	if(settings.isNewlineNewColor){
+		for(var i = 0, len = kws.length - 1; i < len; ++ i){
+			str += kws[i].kwStr + ((kws[i].kwGrp != kws[i+1].kwGrp) ? "\n": settings.delim);
+		}
+		// and the last one
+		kws.length && (str += kws[kws.length-1].kwStr);
+	}else{
+		str = kws.map(kw=>kw.kwStr).join(settings.delim);
+		// append deliminator if there are words
+		str += str ? settings.delim : "";
+	}
+	return str
+}
+function KeywordsMinus(kwListA, kwListB){
+	function KwListContain(kwList, kwA){
+		for(const kw of kwList)	{
+			if(kw.kwStr === kwA.kwStr && kw.kwGrp === kwA.kwGrp ){
+				return true;
+			}
+		}
+		return false;
+	}
+	// console.log(kwListA.map(x=>KwListContain(kwListB, x)));
+	return kwListA.filter(x=>!KwListContain(kwListB, x));
+
+}
+
+
+// convertion between tabkey and tabId
+function get_tabkey(tabId) {
+    return "multi-highlight_" + tabId;
+}
+function get_tabId(tabkey){
+	return parseInt(tabkey.substring(16))
 }

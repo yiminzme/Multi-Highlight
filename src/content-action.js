@@ -52,6 +52,14 @@ chrome.runtime.sendMessage(
 					hl_refresh(request.inputKws, settings, tabinfo);
 				});
 				sendResponse({ action: "null"});
+			} else if (request.action == "hl_refresh_existing") {
+				chrome.storage.local.get(["settings", tabkey], function (result) {
+					console.log("[Multi-Highlight] hl_refresh_existing");
+					var settings = result.settings;
+					var tabinfo = result[tabkey];
+					hl_refresh(tabinfo.keywords, settings, tabinfo);
+				});
+				sendResponse({ action: "null"});
 			} else if (request.action == "_hl_search") {
 				chrome.storage.local.get(["settings", tabkey], function (result) {
 					var settings = result.settings;
@@ -70,10 +78,10 @@ chrome.runtime.sendMessage(
 		});
 
 		function hl_refresh(Kws, settings, tabinfo) { // remove all highlights, and rehighlight input Kws
-			// log all entries in kws
-			Object.entries(Kws).forEach(([key, value]) => {
-				console.log(`hl_refresh: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
-			});
+			// // log all entries in kws
+			// Object.entries(Kws).forEach(([key, value]) => {
+			// 	console.log(`hl_refresh: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
+			// });
 			hl_clearall(settings, tabinfo);
 			_hl_search(Kws, settings, tabinfo);
 		}
@@ -163,12 +171,14 @@ chrome.runtime.sendMessage(
 			// 	"$(document.body).unhighlight({className:'" +
 			// 	settings.CSSprefix1 +
 			// 	`', element: '${settings.element}'})`;
+			console.log("hl_clearall");
 			observer.disconnect();
 			$(document.body).unhighlight({className: settings.CSSprefix1, element: settings.element});
 			observer.observe(document.body, MutationObserverConfig);
 		}
 	}
 );
+
 
 // convertion between tabkey and tabId
 function get_tabkey(tabId) {

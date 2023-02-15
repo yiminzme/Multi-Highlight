@@ -37,8 +37,8 @@ window.addEventListener('load', function() {
 				// init popup UI
 				var tabinfo = result[tabkey];
 				if (typeof tabinfo === "undefined") {
-				highlightWords.value = "";
-				highlightWords.disabled = true;
+					highlightWords.value = "";
+					highlightWords.disabled = true;
 					highlightWords.style.backgroundColor = '#E4E5E7';
 					highlightWords.placeholder = '[ Disabled ]\n\nWebpage reload needed';
 					return;
@@ -66,6 +66,11 @@ window.addEventListener('load', function() {
 				$("#highlightWords").on("input", function () {
 					handle_highlightWords_change(tabkey, {fromBgOrPopup: true});
 				});
+				$("#highlightWords").inactivity({timeout: 300, mouse: false, keyboard: true, touch: false});
+				$("#highlightWords").on("inactivity", function () {
+					console.log("inactivity");
+					handle_highlightWords_change(tabkey, {refresh: true, fromBgOrPopup: true});
+				});
 				$("#kw-list").on("click", function (event) {
 					handle_keyword_removal(event, tabkey, {fromBgOrPopup: true});
 				});
@@ -79,6 +84,7 @@ window.addEventListener('load', function() {
 				$("#options_icon").click(function(){
 					chrome.runtime.openOptionsPage();
 				});
+				chrome.runtime.connect({name: "popup_"+tabId});
 			});
 
 			check_keywords_existence(tabId);
@@ -175,7 +181,7 @@ function handle_highlightWords_change(tabkey, option={}, callback=null) {
 
         // (instant search mode) or (last char of input is delimiter)
         if (settings.isInstant || inputStr.slice(-1) == settings.delim) {
-			console.log(inputStr)
+			// console.log("handle_highlightWords_change:" + inputStr);
 			inputKws = keywordsFromStr(inputStr, settings);
 			savedKws = tabinfo.keywords;
 			// differ it

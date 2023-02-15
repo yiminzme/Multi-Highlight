@@ -220,7 +220,7 @@ function handle_removeKw_change(enableIt) { // option page
 
 function handle_popupSize_change(newHeight, newWidth) { // option page
     chrome.storage.local.get(['popupConfig'], function (result) {
-        is_changed = false;
+        var is_changed = false;
         if (newHeight){
             result.popupConfig.popup_height = newHeight;
             is_changed = true;

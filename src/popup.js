@@ -40,7 +40,7 @@ window.addEventListener('load', function() {
 					highlightWords.value = "";
 					highlightWords.disabled = true;
 					highlightWords.style.backgroundColor = '#E4E5E7';
-					highlightWords.placeholder = '[ Disabled ]\n\nWebpage reload needed';
+					highlightWords.placeholder = '[ Disabled ]\n\nPlease refresh the webpage for the extension to take effect';
 					return;
 				}else{
 					highlightWords.disabled = false;
@@ -113,7 +113,7 @@ function check_keywords_existence(tabId){
 			highlightWords.value = "";
 			highlightWords.disabled = true;
 			highlightWords.style.backgroundColor = '#E4E5E7';
-			highlightWords.placeholder = '[ Disabled ]\n\nExtension does not work in this page';
+			highlightWords.placeholder = '[ Disabled ]\n\nSorry, this extension cannot be used in this page';
 
 			chrome.action.setBadgeBackgroundColor({
 				color: '#FF0000'

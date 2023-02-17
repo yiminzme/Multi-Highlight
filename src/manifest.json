@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Multi Highlight",
-  "version": "2.10.0",
-  "description": "An essential tool to highlight all words you want in webpages.",
+  "name": "Multi Highlight (preview)",
+  "version": "2.11.0",
+  "description": "Efficiently and flexibly highlight and organize your online reading..",
   "action": {
     "default_logo": {
       "19": "img/logo19.png",

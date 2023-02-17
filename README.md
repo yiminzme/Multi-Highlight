@@ -1,13 +1,23 @@
 # ![extension-logo](src/img/logo38.png) Multi-Highlight
 
-快速标记网页关键词，自动高亮标记所有你想要的字词    
-キーワードをすばやくマークし、必要なすべての単語を自動的に強調表示します  
-✔️ Highlight on-the-fly  ✔️ Auto-Rehighlight  ✔️ Flexible delimiter  ✔️ Savable words list  ✔️ Whole word search  ✔️ Case sensitivity  ✔️ Group words by colors  
+Are you tired of losing track of important information in your online reading? Multi Highlight is here to help! With this powerful and efficient chrome extension, you can easily highlight all your user-specified words in webpages with beautiful colors.
+
+Multi Highlight can do real-time highlighting as you type, automatically re-highlight your word list when the webpage content changes or when the page is loaded, and it accepts custom word separators. You can save your user-specified word list, do whole word and case-sensitive searches, and even group words by colors.
+
+With Multi Highlight, you can stay focused and efficient while reading online. It's perfect for students and professionals who regularly read online content for studying or work. Try Multi Highlight today and take your online reading to the next level!
+
+✔️ Features: Real-time Highlight | Auto-ReHighlight | Customizable word separator | Whole word, Case-sensitivity Search | Group words by colors  
 
 
 ![screenshot-2](doc/2_screenshot_github.png)
 
 ## Updates: 
+
+2023 February
+* Adapt to manifest V3
+* Refresh words (1) when textbox is focused but inactive for short a period (2) when popup is closed
+* Fix style broke in browser's built-in page and in pages that loaded before extension installation. In these pages, disable textbox and show notification
+* Update UI
 
 2022 September
 * Feature Auto-Rehighlight

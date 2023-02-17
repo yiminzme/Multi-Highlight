@@ -9,7 +9,7 @@ Multi Highlight can do real-time highlighting as you type, automatically re-high
 With Multi Highlight, you can stay focused and efficient while reading online. It's perfect for students and professionals who regularly read online content for studying or work. Try Multi Highlight today and take your online reading to the next level!
 
 Features:   
-✔️ Real-time Highlight  
+✔️ Real-time Highlight as you type  
 ✔️ Auto-ReHighlight  
 ✔️ Customizable word separator  
 ✔️ Whole word, Case-sensitivity Search  

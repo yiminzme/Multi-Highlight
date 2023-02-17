@@ -107,7 +107,7 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
             color: '#FF0000'
         });
         chrome.action.setBadgeText({
-            text: 'X'
+            text: '!'
         });
     }else if (status === 'normal'){
         chrome.action.setBadgeBackgroundColor({
@@ -258,7 +258,6 @@ chrome.runtime.onConnect.addListener(function(port) {
             var tabkey = get_tabkey(tabId);
             chrome.storage.local.get(['settings', tabkey], function (result) {
                 var settings = result.settings;
-                console.log("test" + settings.isOn);
                 if (settings.isOn) {
                     chrome.tabs.sendMessage(tabId, {
                         action: "hl_refresh_existing",

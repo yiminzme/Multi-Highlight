@@ -24,9 +24,8 @@ chrome.runtime.sendMessage(
 			chrome.storage.local.get(["settings", tabkey], function (result) {
 				var settings = result.settings;
 				var tabinfo = result[tabkey];
-				// console.log("vinc: " + tabinfo.keywords);
 				if (settings.isOn && settings.isAlwaysSearch){ // refresh if extension is on
-					console.log("[Multi-Highlight] MutationObserver")
+					// console.log("[Multi-Highlight] MutationObserver")
 					hl_refresh(tabinfo.keywords, settings, tabinfo);
 				}
 			});
@@ -54,7 +53,7 @@ chrome.runtime.sendMessage(
 				sendResponse({ action: "null"});
 			} else if (request.action == "hl_refresh_existing") {
 				chrome.storage.local.get(["settings", tabkey], function (result) {
-					console.log("[Multi-Highlight] hl_refresh_existing");
+					// console.log("[Multi-Highlight] hl_refresh_existing");
 					var settings = result.settings;
 					var tabinfo = result[tabkey];
 					hl_refresh(tabinfo.keywords, settings, tabinfo);
@@ -97,7 +96,7 @@ chrome.runtime.sendMessage(
 			});
 			// log all entriesi n addedKws
 			Object.entries(addedKws).forEach(([key, value]) => {
-				console.log(`_hl_search: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
+				// console.log(`_hl_search: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
 			});
 
 			function KeywordEscape(kw){
@@ -158,7 +157,7 @@ chrome.runtime.sendMessage(
 				);
 				// log all entries in removedKws
 				Object.entries(removedKws).forEach(([key, value]) => {
-					console.log(`_hl_clear: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
+					// console.log(`_hl_clear: [${key}, ${value.kwGrp}, ${value.kwStr}]`);
 				});
 				// console.log("[Multi-Highlight] _hl_clear: " + className + " " + settings.element);
 				$(document.body).unhighlight({className: className, element: settings.element});
@@ -171,7 +170,7 @@ chrome.runtime.sendMessage(
 			// 	"$(document.body).unhighlight({className:'" +
 			// 	settings.CSSprefix1 +
 			// 	`', element: '${settings.element}'})`;
-			console.log("hl_clearall");
+			// console.log("hl_clearall");
 			observer.disconnect();
 			$(document.body).unhighlight({className: settings.CSSprefix1, element: settings.element});
 			observer.observe(document.body, MutationObserverConfig);

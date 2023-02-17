@@ -119,7 +119,7 @@ function check_keywords_existence(tabId){
 				color: '#FF0000'
 			});
 			chrome.action.setBadgeText({
-				text: 'X'
+				text: '!'
 			});
 		}
 	});

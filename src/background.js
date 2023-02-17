@@ -252,16 +252,24 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 // handle popup close
 chrome.runtime.onConnect.addListener(function(port) {
-    // if (port.name == "popup") {
     if (port.name.startsWith("popup_")) {
-        var tabId = parseInt(port.name.substring(6));
-        port.onDisconnect.addListener(function() {
-            chrome.tabs.sendMessage(tabId, {
-                action: "hl_refresh_existing",
-            })
+        port.onDisconnect.addListener(function(port) {
+            var tabId = parseInt(port.name.substring(6));
+            var tabkey = get_tabkey(tabId);
+            chrome.storage.local.get(['settings', tabkey], function (result) {
+                var settings = result.settings;
+                console.log("test" + settings.isOn);
+                if (settings.isOn) {
+                    chrome.tabs.sendMessage(tabId, {
+                        action: "hl_refresh_existing",
+                    });
+                }
+            });
         });
     }
 });
+
+
 
 // convertion between tabkey and tabId
 function get_tabkey(tabId) {

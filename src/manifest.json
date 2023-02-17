@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Multi Highlight (preview)",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "description": "Efficiently and flexibly highlight your online reading.",
   "action": {
     "default_logo": {

@@ -9,7 +9,7 @@ With Multi Highlight, you can stay focused and efficient while reading online. I
 ✔️ Features: Real-time Highlight | Auto-ReHighlight | Customizable word separator | Whole word, Case-sensitivity Search | Group words by colors  
 
 
-![screenshot-2](doc/2_screenshot_github.png)
+![screenshot-2](doc/2_screenshot_github.jpg)
 
 ## Updates: 
 

@@ -78,6 +78,8 @@ function KeywordsMinus(kwListA, kwListB){
 		return false;
 	}
 	// console.log(kwListA.map(x=>KwListContain(kwListB, x)));
-	return kwListA.filter(x=>!KwListContain(kwListB, x));
-
+	if (Array.isArray(kwListA)) {
+		return kwListA.filter(x=>!KwListContain(kwListB, x));
+	}
+	return [] //empty array
 }

@@ -207,7 +207,6 @@ function isBlacklisted(settings) {
 
     let currentUrl = window.location.host;
     return settings.blacklist.some(blacklistedUrl => {
-        console.dir(blacklistedUrl)
         return currentUrl.toLowerCase().includes(blacklistedUrl.toLowerCase());
     });
 }

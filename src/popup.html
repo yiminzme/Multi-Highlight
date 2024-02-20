@@ -2,333 +2,348 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8" />
-   <title>PopUp</title>
-   <style>
-      body {
-         margin: 0.5em;
-      }
+    <meta charset="UTF-8"/>
+    <title>PopUp</title>
+    <style>
+        body {
+            margin: 0.5em;
+        }
 
-      #container {
-         font-family: Arial, "微软雅黑";
-         width: 400px;
-      }
+        #container {
+            font-family: Arial, "微软雅黑";
+            width: 400px;
+        }
 
-      .textarea-wrap {
-         position: relative;
-      }
+        .textarea-wrap {
+            position: relative;
+        }
 
-      /* Tip */
-      .textarea-wrap .tip {
-         display: block;
-         overflow: hidden;
-         height: 16px;
-         line-height: 16px;
-         /* vertical-align: middle; */
-         padding: 0.2em 0 1.2em 0;
-         user-select: none;
-      }
+        /* Tip */
+        .textarea-wrap .tip {
+            display: block;
+            overflow: hidden;
+            height: 16px;
+            line-height: 16px;
+            /* vertical-align: middle; */
+            padding: 0.2em 0 1.2em 0;
+            user-select: none;
+        }
 
-      .textarea-wrap .tip .main-tip {
-         font-size: 1.4em;
-         color: #606060;
-         font-weight: bold;
-      }
+        .textarea-wrap .tip .main-tip {
+            font-size: 1.4em;
+            color: #606060;
+            font-weight: bold;
+        }
 
-      .textarea-wrap .sub-tip {
-         font-size: 1.3em;
-         /* color: #484848; */
-         /* padding-top: 1px; */
-         padding: 0.8em 0.5em 0.8em 0.5em;
-         line-height: 1.7em;
-         user-select: none;
+        .textarea-wrap .sub-tip {
+            font-size: 1.3em;
+            /* color: #484848; */
+            /* padding-top: 1px; */
+            padding: 0.8em 0.5em 0.8em 0.5em;
+            line-height: 1.7em;
+            user-select: none;
 
-         display: flex;
-      }
+            display: flex;
+        }
 
-      .textarea-wrap .sub-tip .toolColumn {
-         float: left;
-         width: 50%;
-         text-align: left;
-      }
+        .textarea-wrap .sub-tip .toolColumn {
+            float: left;
+            width: 50%;
+            text-align: left;
+        }
 
-      .highlight-words textarea {
-         display: block;
-         width: 100%;
-         padding: 5px;
-         box-sizing: border-box;
-         outline: 0;
-         /* border: 0; */
-         background: transparent;
-         resize: none;
-         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) inset;
-      }
+        .highlight-words textarea {
+            display: block;
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            outline: 0;
+            /* border: 0; */
+            background: transparent;
+            resize: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) inset;
+        }
 
-      .highlight-words,
-      .highlight-words textarea {
-         line-height: 16px;
-         font-size: 12px;
-         color: #666;
-      }
+        .highlight-words,
+        .highlight-words textarea {
+            line-height: 16px;
+            font-size: 12px;
+            color: #666;
+        }
 
-      /* delimiter */
-      .textarea-wrap .sub-tip #delimiter {
-         width: 1em;
-         /* height: 70%; */
-         border: 0px;
-         text-align: center;
-         background-color: #c6e8ff;
-         border-radius: 5px;
-         color: #666;
-         font-size: 14px;
-      }
+        /* delimiter */
+        .textarea-wrap .sub-tip #delimiter {
+            width: 1em;
+            /* height: 70%; */
+            border: 0px;
+            text-align: center;
+            background-color: #c6e8ff;
+            border-radius: 5px;
+            color: #666;
+            font-size: 14px;
+        }
 
-      .textarea-wrap .sub-tip #delimiter:focus {
-         border: 0px;
-      }
+        .textarea-wrap .sub-tip #delimiter:focus {
+            border: 0px;
+        }
 
-      /* checkbox */
-      .textarea-wrap .sub-tip input[type='checkbox'] {
-         width: 13px;
-         height: 13px;
-         padding: 0;
-         margin: 0;
-         /* vertical-align: bottom; */
-         position: relative;
-         top: -1px;
-         *overflow: hidden;
-      }
+        /* checkbox */
+        .textarea-wrap .sub-tip input[type='checkbox'] {
+            width: 13px;
+            height: 13px;
+            padding: 0;
+            margin: 0;
+            /* vertical-align: bottom; */
+            position: relative;
+            top: -1px;
+            *overflow: hidden;
+        }
 
-      /* Scroll bar */
-      .highlight-words textarea::-webkit-scrollbar {
-         width: 11px;
-         height: auto;
-      }
+        /* Scroll bar */
+        .highlight-words textarea::-webkit-scrollbar {
+            width: 11px;
+            height: auto;
+        }
 
-      .highlight-words textarea::-webkit-scrollbar-button:start:decrement,
-      .highlight-words textarea::-webkit-scrollbar-button:end:increment {
-         width: 0;
-         height: 0;
-      }
+        .highlight-words textarea::-webkit-scrollbar-button:start:decrement,
+        .highlight-words textarea::-webkit-scrollbar-button:end:increment {
+            width: 0;
+            height: 0;
+        }
 
-      .highlight-words textarea::-webkit-scrollbar-track-piece {
-         background-clip: padding-box;
-         background-color: #fff;
-         border: 0;
-      }
+        .highlight-words textarea::-webkit-scrollbar-track-piece {
+            background-clip: padding-box;
+            background-color: #fff;
+            border: 0;
+        }
 
-      .highlight-words textarea::-webkit-scrollbar-thumb {
-         border-radius: 7px;
-         background-color: #888;
-         background-clip: padding-box;
-         border: 2px solid transparent;
-         -webkit-transition: all 0.5s ease;
-      }
+        .highlight-words textarea::-webkit-scrollbar-thumb {
+            border-radius: 7px;
+            background-color: #888;
+            background-clip: padding-box;
+            border: 2px solid transparent;
+            -webkit-transition: all 0.5s ease;
+        }
 
-      .highlight-words textarea::-webkit-scrollbar-thumb:hover {
-         background-color: #777;
-      }
+        .highlight-words textarea::-webkit-scrollbar-thumb:hover {
+            background-color: #777;
+        }
 
-      .highlight-words textarea::-webkit-scrollbar-thumb:vertical {
-         width: 7px;
-         min-height: 24px;
-      }
+        .highlight-words textarea::-webkit-scrollbar-thumb:vertical {
+            width: 7px;
+            min-height: 24px;
+        }
 
-      .highlight-words textarea::-webkit-scrollbar-thumb:horizontal {
-         height: 7px;
-         min-width: 24px;
-      }
+        .highlight-words textarea::-webkit-scrollbar-thumb:horizontal {
+            height: 7px;
+            min-width: 24px;
+        }
 
-      .highlight-words textarea::placeholder {
-         color: blue;
-         font-size: 1.2em;
-         font-style: italic;
-         text-align: center;
-         vertical-align: middle;
-      }
+        .highlight-words textarea::placeholder {
+            color: blue;
+            font-size: 1.2em;
+            font-style: italic;
+            text-align: center;
+            vertical-align: middle;
+        }
 
-      #highlightWords {
-         min-height: 100px;
-      }
+        #highlightWords {
+            min-height: 100px;
+        }
 
-      #options_icon {
-         width: 1.5em;
-         display: inline;
-         margin-left: .5em;
-         margin-right: .2em;
-      }
+        #options_icon {
+            width: 1.5em;
+            display: inline;
+            margin-left: .5em;
+            margin-right: .2em;
+        }
 
-      #kw-list {
-         display: block;
-         max-width: 100%;
-         background-color: #eee;
-         border: 1px solid #eee;
-         box-shadow: 0 0px 10px #eee;
-         padding: 0.3em;
-      }
+        #kw-list {
+            display: block;
+            max-width: 100%;
+            background-color: #eee;
+            border: 1px solid #eee;
+            box-shadow: 0 0px 10px #eee;
+            padding: 0.3em;
+        }
 
-      .keywords {
-         /* line-height: 1.2em; */
-         margin: .2em .2em;
-         text-align: center;
-         border-radius: 0.3em;
-         display: inline-block;
-         min-width: 2em;
-         padding: 0 .3em;
-         /* min-width: 20%; */
-      }
+        .keywords {
+            /* line-height: 1.2em; */
+            margin: .2em .2em;
+            text-align: center;
+            border-radius: 0.3em;
+            display: inline-block;
+            min-width: 2em;
+            padding: 0 .3em;
+            /* min-width: 20%; */
+        }
 
-      .keywords:nth-of-type(2n) {
-         border: solid 2px #f37e63;
-      }
+        .keywords:nth-of-type(2n) {
+            border: solid 2px #f37e63;
+        }
 
-      .keywords:nth-of-type(2n+1) {
-         border: solid 2px #379bb0;
-      }
+        .keywords:nth-of-type(2n+1) {
+            border: solid 2px #379bb0;
+        }
 
-      .keywords.notAvailable {
-         border: solid 2px #dddddd;
-      }
+        .keywords.notAvailable {
+            border: solid 2px #dddddd;
+        }
 
 
-      #settings1 {
-         float: right;
-      }
+        #settings1 {
+            float: right;
+        }
 
-      /* https://www.w3schools.com/howto/howto_css_switch.asp*/
-      /* The switch - the box around the slider */
-      .switch {
-         position: relative;
-         display: inline-block;
-         /* margin of switch */
-         margin: .2em .5em;
-         top: -0.25em;
-         /* size of button */
-         width: 2em;
-         height: 1.2em;
-      }
+        /* https://www.w3schools.com/howto/howto_css_switch.asp*/
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            /* margin of switch */
+            margin: .2em .5em;
+            top: -0.25em;
+            /* size of button */
+            width: 2em;
+            height: 1.2em;
+        }
 
-      /* style of refresh button */
-      #forceRefresh {
-         padding: 0em;
-         /* margin of refresh button */
-         position: relative;
-         margin: 0em .5em;
-         /* margin-right: .5em; */
-         top: -.3em;
-         width: 1.5em;
-         height: 1.5em;
-      }
+        /* style of refresh button */
+        #forceRefresh {
+            padding: 0em;
+            /* margin of refresh button */
+            position: relative;
+            margin: 0em .5em;
+            /* margin-right: .5em; */
+            top: -.3em;
+            width: 1.5em;
+            height: 1.5em;
+        }
 
-      /* Hide default HTML checkbox */
-      .switch input {
-         opacity: 0;
-         width: 0;
-         height: 0;
-      }
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-      /* The slider */
-      .slider {
-         position: absolute;
-         cursor: pointer;
-         top: 0;
-         left: 0;
-         right: 0;
-         bottom: 0;
-         background-color: #ccc;
-         -webkit-transition: .4s;
-         transition: .4s;
-      }
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
 
-      .slider:before {
-         position: absolute;
-         content: "";
-         /* size of button */
-         height: 0.8em;
-         width: 0.8em;
-         /* position of button */
-         left: .2em;
-         bottom: .2em;
-         background-color: white;
-         -webkit-transition: .3s;
-         transition: .3s;
-      }
+        .slider:before {
+            position: absolute;
+            content: "";
+            /* size of button */
+            height: 0.8em;
+            width: 0.8em;
+            /* position of button */
+            left: .2em;
+            bottom: .2em;
+            background-color: white;
+            -webkit-transition: .3s;
+            transition: .3s;
+        }
 
-      input:checked+.slider {
-         background-color: #2196F3;
-      }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
 
-      input:focus+.slider {
-         box-shadow: 0 0 1px #2196F3;
-      }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
 
-      input:checked+.slider:before {
-         -webkit-transform: translateX(0.9em);
-         -ms-transform: translateX(0.9em);
-         transform: translateX(0.9em);
-      }
+        input:checked + .slider:before {
+            -webkit-transform: translateX(0.9em);
+            -ms-transform: translateX(0.9em);
+            transform: translateX(0.9em);
+        }
 
-      /* Rounded sliders */
-      .slider.round {
-         border-radius: 1em;
-      }
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 1em;
+        }
 
-      .slider.round:before {
-         border-radius: 100%;
-      }
-   </style>
+        .slider.round:before {
+            border-radius: 100%;
+        }
+    </style>
 </head>
 
 <body>
-   <div id="container">
-      <div class="textarea-wrap">
-         <div class="tip">
+<div id="container">
+    <div class="textarea-wrap">
+        <div class="tip">
             <span class="main-tip" style="vertical-align: -webkit-baseline-middle;">Multi Highlight</span>
             <span id="settings1">
                <img id="options_icon" src="./img/options_icon.svg">
                <button id="forceRefresh" title="ReHighligh">&#8635;</button>
-               <label class="switch" title="Toggle extension"> <input type="checkbox" id="toggleMHL">
-                  <span class="slider round"></span> </label>
+               <label class="switch" title="Toggle extension">
+                   <input type="checkbox" id="toggleMHL">
+                  <span class="slider round"></span>
+               </label>
             </span>
-         </div>
-         <div class="highlight-words" id="highlight-words">
-            <textarea id="highlightWords" spellcheck="false" autofocus></textarea>
-         </div>
-         <div class="sub-tip">
-            <div class="toolColumn">
-               <label title="The symbol that separates your words, such as a comma or space">Word Separator <input type="text"
-                     id="delimiter" name="delimiter" maxlength="1" /></label>
-               <br>
-               <label id="instantLabel" title="Highlight matches in real-time as you type. When disabled, highlights only when delimiter is used"><input type="checkbox" id="instant"
-                     name="instant" /> Real-time Highlight</label>
-               <br>
-               <label id="saveWordsLabel" title="Retain the current word list in future tabs"><input type="checkbox"
-                     id="saveWords" name="saveWords" /> Keep Word List</label><br>
-               <label id="alwaysSearchLabel"
-                  title="Automatically reapply highlights when tab content changes and new tabs load"><input type="checkbox"
-                     id="alwaysSearch" name="alwaysSearch" /> Auto-ReHighligh</label>
-            </div>
-            <div class="toolColumn">
-               <br>
-               <label id="newlineNewColorLabel"
-                  title="On: change highlight color after newline&#10;Off: change highlight color after every word"><input
-                     type="checkbox" id="newlineNewColor" name="newlineNewColor" /> Newline Highlighting</label>
-               <br>
-               <label id="wholeWordLabel" title="Highlight whole words only"><input type="checkbox" id="wholeWord"
-                     name="wholeWord" /> Match Whole Word Only</label>
-               <br>
-               <label id="casesensitiveLabel" title="Perform a case-sensitive search"><input type="checkbox"
-                     id="casesensitive" name="casesensitive" /> Match Case</label>
-            </div>
-         </div>
-      </div>
-      <div id="kw-list">
-      </div>
-   </div>
-   <script src="jquery/jquery.js"></script>
-   <script src="jquery/jquery.highlight.js"></script>
-   <script src="jquery/jquery.inactivity.min.js"></script>
-   <script src="popup.js"></script>
-</body>
+        </div>
 
+        <div class="highlight-words" id="highlight-words">
+            <textarea id="highlightWords" spellcheck="false" autofocus></textarea>
+        </div>
+
+        <div class="sub-tip">
+            <div class="toolColumn">
+                <label title="The symbol that separates your words, such as a comma or space"> Word Separator
+                    <input type="text" id="delimiter" name="delimiter" maxlength="1"/>
+                </label>
+
+                <br>
+
+                <label id="instantLabel" title="Highlight matches in real-time as you type. When disabled, highlights only when delimiter is used">
+                    <input type="checkbox" id="instant" name="instant"/> Real-Time Highlight
+                </label>
+
+                <br>
+
+                <label id="saveWordsLabel" title="Retain the current word list in future tabs">
+                    <input type="checkbox" id="saveWords" name="saveWords"/> Keep Word List
+                </label>
+
+                <br>
+
+                <label id="alwaysSearchLabel" title="Automatically reapply highlights when tab content changes and new tabs load">
+                    <input type="checkbox" id="alwaysSearch" name="alwaysSearch"/> Auto-ReHighlight
+                </label>
+            </div>
+            <div class="toolColumn">
+                <br>
+                <label id="newlineNewColorLabel" title="On: change highlight color after newline&#10;Off: change highlight color after every word">
+                    <input type="checkbox" id="newlineNewColor" name="newlineNewColor"/> Newline Highlighting</label>
+                <br>
+                <label id="wholeWordLabel" title="Highlight whole words only">
+                    <input type="checkbox" id="wholeWord" name="wholeWord"/> Match Whole Word Only
+                </label>
+                <br>
+                <label id="casesensitiveLabel" title="Perform a case-sensitive search">
+                    <input type="checkbox" id="casesensitive" name="casesensitive"/> Match Case</label>
+            </div>
+        </div>
+    </div>
+    <div id="kw-list">
+    </div>
+</div>
+
+<script src="jquery/jquery.js"></script>
+<script src="jquery/jquery.highlight.js"></script>
+<script src="jquery/jquery.inactivity.min.js"></script>
+<script src="popup.js"></script>
+
+</body>
 </html>

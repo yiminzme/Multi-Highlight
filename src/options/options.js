@@ -1,7 +1,7 @@
 // ************************************************************************
 // Multi Highlight options js
 // ************************************************************************
-debugger;
+// debugger;
 document.addEventListener('DOMContentLoaded', function () {
 
     chrome.storage.local.get(['settings', 'popupConfig'], function (result) {
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         popupWidth.value = popupConfig.popup_width;
         addKw.checked = settings.enableAddKw;
         removeKw.checked = settings.enableRemoveKw;
+        blacklist.value = settings.blacklist.join('\n')
 
         // register listener
         $("#popupHeight").on("input", function () {
@@ -59,6 +60,14 @@ document.addEventListener('DOMContentLoaded', function () {
             )
             // console.log($(this)[0].checked);
             // handle_removeKw_change($(this)[0].checked);
+        })
+        $("#blacklist").on("input", function () {
+            chrome.runtime.sendMessage(
+                { // message
+                    action: "handle_blacklist_change",
+                    newBlacklist: $(this)[0].value
+                }
+            )
         })
     });
 });

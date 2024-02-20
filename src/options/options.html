@@ -18,34 +18,50 @@
         <p class="section-option"><label for="delimiter">Delimiter</label><input type="text" id="delimiter"
                                                                                  name="delimiter" maxlength="1"><span
                 class="separate-menus-msg">What delimiter to separate your keywords?</span></p> -->
-        <p class="section-option"><label for="popup_size">Height of Textbox &nbsp;</label><input id="popupHeight"
-                                                                                          name="popupHeight"
-                                                                                          placeholder=" "
-                                                                                          type="number" min="100"
-                                                                                          max="500"><span
-                class="separate-menus-msg">Allowed range [40, 500]. Default: 100</span></p>
-        <p class="section-option"><label for="popup_size">Width of Pop-up Window &nbsp;</label><input id="popupWidth"
-                                                                                               name="popupWidth"
-                                                                                               placeholder=" "
-                                                                                               type="number" min="400"
-                                                                                               max="760"><span
-                class="separate-menus-msg">Allowed range [400, 760]. Default: 400</span></p>
+
+        <p class="section-option"><label for="popupHeight">Height of Textbox &nbsp;</label>
+            <input id="popupHeight" name="popupHeight" placeholder=" " type="number" min="100" max="500">
+            <span class="separate-menus-msg">Allowed range [40, 500]. Default: 100</span>
+        </p>
+
+        <p class="section-option"><label for="popupWidth">Width of Pop-up Window &nbsp;</label>
+            <input id="popupWidth" name="popupWidth" placeholder=" " type="number" min="400" max="760">
+            <span class="separate-menus-msg">Allowed range [400, 760]. Default: 400</span>
+        </p>
+
     </div>
+
     <h2 class="section-heading">Context Menu Settings</h2>
     <div class="section">
-        <p class="section-option"><label for="addKw">Add keyword</label><input id="addKw" type="checkbox"
-                                                                               name="sync-engines"/></p>
-        <p class="section-option"><label for="removeKw">Remove keyword</label><input id="removeKw" type="checkbox"
-                                                                                     name="sync-engines"/></p>
+        <p class="section-option">
+            <label for="addKw">Add keyword</label>
+            <input id="addKw" type="checkbox" name="sync-engines"/>
+        </p>
+
+        <p class="section-option">
+            <label for="removeKw">Remove keyword</label>
+            <input id="removeKw" type="checkbox" name="sync-engines"/>
+        </p>
     </div>
+
+    <h2 class="section-heading">Site Blacklisting</h2>
+    <div class="section" style="display: flex; flex-direction: column">
+        <label for="blacklist">Don't highlight on the following sites</label>
+        <textarea name="blacklist" id="blacklist" cols="30" rows="10" placeholder="example.com"
+                  style="width: 570px"></textarea>
+    </div>
+
     <h2 class="section-heading">Contact Me</h2>
     <div class="section">
-        <a href="https://github.com/vinc96/Multi-Highlight" target="_blank"><img class="logo" src="../img/github.png"
-                                                                                 alt="github logo"></a>
+        <a href="https://github.com/vinc96/Multi-Highlight" target="_blank">
+            <img class="logo" src="../img/github.png" alt="github logo">
+        </a>
     </div>
 </div>
+
 <script src="../jquery/jquery.js"></script>
 <script src="../jquery/jquery.highlight.js"></script>
 <script src="options.js"></script>
+
 </body>
 </html>
